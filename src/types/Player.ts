@@ -1,4 +1,4 @@
-import TowerColor from '../material/TowerColor'
+import TowerColor from '../clans/TowerColor'
 
 
 type Player = {

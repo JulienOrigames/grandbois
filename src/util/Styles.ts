@@ -2,6 +2,7 @@ import {css, keyframes} from '@emotion/core'
 import Theme, {LightTheme} from '../Theme'
 
 export const screenRatio = 16 / 9
+export const drawPileScale = 0.7
 export const boardWidth = 66
 export const boardHeight = 23
 export const boardTop = 21
@@ -15,7 +16,6 @@ export const tokenWidth = 4
 export const tokenHeight = tokenWidth * screenRatio
 export const empireCardRatio = 343 / 400
 export const empireCardWidth = 9
-export const empireCardHeight = empireCardWidth * empireCardRatio * screenRatio // percentage of playing area cardWidth
 export const empireCardLeftMargin = 1
 export const empireCardBottomMargin = 10
 export const developmentCardVerticalShift = 2.6

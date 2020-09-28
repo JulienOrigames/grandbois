@@ -4,11 +4,13 @@ import GameView from './types/GameView'
 import {fadeIn} from './util/Styles'
 import {css} from '@emotion/core'
 import DrawPile from './tiles/DrawPile'
+import River from './tiles/River'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
   return (
     <Letterbox css={letterBoxStyle}>
       <DrawPile game={game}/>
+      <River game={game}/>
     </Letterbox>
   )
 }

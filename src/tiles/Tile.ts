@@ -1,7 +1,16 @@
-import Animal from './Animal'
+import Clan from '../clans/Clan'
 
-type Tile = {
-  quarters: { [key in Animal]?: number }
+type Tile = [Space, Space, Space, Space]
+
+type Space = typeof Clearing | typeof Bear | Troop
+
+
+export const Clearing = 'Clearing'
+export const Bear = 'Bear'
+
+type Troop = {
+  clan : Clan
+  size : number
 }
 
 export default Tile

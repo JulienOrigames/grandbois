@@ -1,10 +1,9 @@
 import {css} from '@emotion/core'
 import React, {FunctionComponent} from 'react'
 import GameView from '../types/GameView'
-import {cardHeight, cardStyle, cardWidth, headerHeight, topMargin} from '../util/Styles'
+import {cardHeight, cardStyle, cardWidth, drawPileScale, headerHeight, topMargin} from '../util/Styles'
 import ReactTooltip from 'react-tooltip'
 import {useTranslation} from 'react-i18next'
-import {tiles} from './Tiles'
 import TileCard from './TileCard'
 
 const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
@@ -20,7 +19,7 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
         box-shadow: 0 0 3px black;
       }
     `]}/>)}
-    <div css={drawPileTooltip} data-tip />
+    <div css={drawPileTooltip} />
     <ReactTooltip type='warning' effect='solid' place='left' >
       <span>{t('Nb de tuiles : {nbDeck}',{nbDeck:game.deck})}  </span>
     </ReactTooltip>
@@ -28,7 +27,7 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
 }
 
 export const drawPileMaxSize = 8
-export const drawPileScale = 0.8
+
 export const drawPileCardX = (index: number) => 10 + index * 0.05
 export const drawPileCardY = (index: number) => headerHeight + topMargin + cardHeight * (drawPileScale - 1) / 2 + index * 0.05
 

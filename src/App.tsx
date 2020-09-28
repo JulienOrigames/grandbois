@@ -8,10 +8,9 @@ import ICU from 'i18next-icu'
 import translations from './translations.json'
 import moment from 'moment'
 import 'moment/locale/fr'
-import {useDisplayState, useFailures, useGame} from '@interlude-games/workshop'
+import {useFailures, useGame} from '@interlude-games/workshop'
 import GameView from './types/GameView'
 import Move from './moves/Move'
-import WatchTowerColour from './clans/TowerColor'
 import {DndProvider} from 'react-dnd-multi-backend'
 import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
 import {ThemeProvider} from 'emotion-theming'
@@ -47,7 +46,6 @@ function App() {
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem(userTheme) || DarkTheme)
   const game = useGame<GameView>()
   const [failures, clearFailures] = useFailures<Move>()
-  const [displayedEmpire] = useDisplayState<WatchTowerColour>()
   const [imagesLoading, setImagesLoading] = useState(true)
   const theme = {
     color: themeColor,

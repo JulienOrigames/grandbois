@@ -47,7 +47,7 @@ const EjectPopup: FunctionComponent<Props> = ({playerId, players, now, onClose})
           <p>{t('Au dela de {duration} de dépassement vous pourrez l’expulser et poursuivre la partie.', {duration: moment.duration(maxDuration).humanize()})}</p>
           : <>
             <p>{t('Si vous pensez qu’il·elle ne reviendra pas, vous avez la possibilité de l’expulser de la partie.', {duration: moment.duration(maxDuration).humanize()})}</p>
-            <Button onClick={() => false}>{t('Expulser {player}', {player: awaitedPlayerName})}</Button>
+            <Button onClick={() => eject(awaitedPlayer.id)}>{t('Expulser {player}', {player: awaitedPlayerName})}</Button>
           </>
         }
       </div>

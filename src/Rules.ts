@@ -25,9 +25,11 @@ type GameType = SequentialGame<Game, Move, TowerColor>
 
 const GrandBoisRules: GameType = {
   setup(options?: GameOptions) {
+    const deck = shuffle(Array.from(tiles.keys()))
     return {
       players: setupPlayers(options?.players),
-      deck: shuffle(Array.from(tiles.keys())),
+      deck,
+      river: deck.splice(0,4),
       activePlayer: TowerColor.BlackTower
     }
   },

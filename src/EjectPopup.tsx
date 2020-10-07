@@ -10,7 +10,7 @@ import Theme, {LightTheme} from './Theme'
 import Button from './util/Button'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
 import TowerColor from './clans/TowerColor'
-import {getClanName} from './clans/ClanInfo'
+import {getTowerName} from './clans/TowerInfo'
 import {useEjection} from '@interlude-games/workshop'
 
 type Props = {
@@ -36,7 +36,7 @@ const EjectPopup: FunctionComponent<Props> = ({playerId, players, now, onClose})
   const eject = useEjection()
   if (!awaitedPlayer)
     return null
-  const awaitedPlayerName = awaitedPlayer.name || getClanName(t, awaitedPlayer.id)
+  const awaitedPlayerName = awaitedPlayer.name || getTowerName(t, awaitedPlayer.id)
   return (
     <div css={popupFixedBackgroundStyle} onClick={onClose}>
       <div css={[popupStyle, popupPosition, css`width: 70%`, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}

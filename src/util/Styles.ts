@@ -2,16 +2,32 @@ import {css, keyframes} from '@emotion/core'
 import Theme, {LightTheme} from '../Theme'
 
 export const screenRatio = 16 / 9
-export const drawPileScale = 0.7
+export const cardScale = 0.7
 export const boardWidth = 66
-export const boardHeight = 23
-export const boardTop = 21
 export const headerHeight = 7
-export const topMargin = 1
+export const topMargin = 2
 export const bottomMargin = 3
-export const cardHeight = 23  // percentage of playing area cardHeight
+
+export const cardHeight = 23 * cardScale  // percentage of playing area cardHeight
 export const cardRatio = 1
 export const cardWidth = cardHeight * cardRatio / screenRatio  // percentage of playing area cardWidth
+
+export const drawpileTop = headerHeight + topMargin
+export const riverTop = headerHeight + topMargin * 2 + 1 + cardHeight
+export const forestTop = headerHeight + topMargin
+export const forestLeft = cardWidth + topMargin
+export const forestWidth = 67
+export const forestHeight = 90
+export const forestRatioY = 100 / forestHeight
+export const forestRatioX = 100 / forestWidth
+
+export const forestCardWidth = cardWidth * forestRatioX
+export const forestCardHeight = cardHeight * forestRatioY
+export const halfForestCardWidth = forestCardWidth/2
+export const halfForestCardHeight = forestCardHeight/2
+export const centerLeft = 50 - halfForestCardWidth
+export const centerTop = 50 - halfForestCardHeight
+
 export const tokenWidth = 4
 export const tokenHeight = tokenWidth * screenRatio
 export const empireCardRatio = 343 / 400
@@ -22,7 +38,7 @@ export const developmentCardVerticalShift = 2.6
 export const constructedCardLeftMargin = 1.3
 export const constructedCardBottomMargin = empireCardBottomMargin + 12.4
 export const playerPanelWidth = 19.5
-export const playerPanelHeight = 16.7
+export const playerPanelHeight = 10
 export const playerPanelMargin = 1.5
 export const areasBorders = 0.3
 export const areasCardMargin = 1
@@ -33,9 +49,6 @@ export const areasX = areasCardX - areasBorders * 5 / screenRatio
 export const constructedCardY = (index: number) => 100 - cardHeight - constructedCardBottomMargin - index * developmentCardVerticalShift
 export const playerPanelY = (index: number) => headerHeight + playerPanelMargin + index * (playerPanelHeight + playerPanelMargin)
 export const playerPanelRightMargin = 1
-export const charactersPilesY = 91.7
-export const financiersPileX = empireCardLeftMargin
-export const generalsPileX = 6
 export const gameOverDelay = 10
 
 export const platformUri = process.env.REACT_APP_PLATFORM_URI || 'http://localhost:3000'

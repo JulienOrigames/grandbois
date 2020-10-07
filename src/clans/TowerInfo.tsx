@@ -3,6 +3,7 @@ import React, {FunctionComponent} from 'react'
 import TowerColor from './TowerColor'
 import Player from '../types/Player'
 import PlayerView from '../types/PlayerView'
+import Images from '../material/Images'
 
 type Props = {
   player: Player | PlayerView
@@ -10,12 +11,12 @@ type Props = {
   withResourceDrop?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-const ClanInfo: FunctionComponent<Props> = ({player, gameOver, withResourceDrop = false, ...props}) => {
+const TowerInfo: FunctionComponent<Props> = ({player, gameOver, withResourceDrop = false, ...props}) => {
   return <></>
 }
 
-export function getClanName(t: TFunction, clan: TowerColor) {
-  switch (clan) {
+export function getTowerName(t: TFunction, tower: TowerColor) {
+  switch (tower) {
     case TowerColor.BlackTower:
       return t('Tour de garde noire')
     case TowerColor.BlueTower:
@@ -27,4 +28,11 @@ export function getClanName(t: TFunction, clan: TowerColor) {
   }
 }
 
-export default ClanInfo
+export const towerImage = {
+  [TowerColor.BrownTower]: Images.brownTower,
+  [TowerColor.BlackTower]: Images.blackTower,
+  [TowerColor.BlueTower]: Images.blueTower,
+  [TowerColor.WhiteTower]: Images.whiteTower
+}
+
+export default TowerInfo

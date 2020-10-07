@@ -44,6 +44,16 @@ import tile33 from './tiles/tile-33.jpg'
 import tile34 from './tiles/tile-34.jpg'
 import tile35 from './tiles/tile-35.jpg'
 import tile36 from './tiles/tile-36.jpg'
+import cardToads from './cards/clan-card-toads.jpg'
+import cardRabbits from './cards/clan-card-rabbits.jpg'
+import cardFoxes from './cards/clan-card-foxes.jpg'
+import cardRaccoons from './cards/clan-card-raccoons.jpg'
+import cardLizards from './cards/clan-card-lizards.jpg'
+import cardClanBack from './cards/clan-card-back.jpg'
+import brownTower from './towers/tower-brown.png'
+import blackTower from './towers/tower-black.png'
+import blueTower from './towers/tower-blue.png'
+import whiteTower from './towers/tower-white.png'
 
 
 const Images = {
@@ -52,7 +62,9 @@ const Images = {
   tile1, tile2, tile3, tile4, tile5, tile6, tile7, tile8, tile9, tile10,
   tile11, tile12, tile13, tile14, tile15, tile16, tile17, tile18, tile19, tile20,
   tile21, tile22, tile23, tile24, tile25, tile26, tile27, tile28, tile29, tile30,
-  tile31, tile32, tile33, tile34, tile35, tile36
+  tile31, tile32, tile33, tile34, tile35, tile36,
+  cardToads, cardRabbits, cardFoxes, cardRaccoons, cardLizards, cardClanBack,
+  brownTower, blackTower, blueTower, whiteTower
 }
 
 export default Images

@@ -3,6 +3,7 @@ import Clan from '../clans/Clan'
 
 const {Fox, Toad, Raccoon, Rabbit, Lizard} = Clan
 
+export const TileStart: Tile = [Clearing, Clearing, Clearing, Clearing]
 export const Tile1: Tile = [Bear, {clan: Raccoon, size : 3}, {clan: Toad, size : 1}, {clan: Toad, size : 1}]
 export const Tile2: Tile = [{clan: Toad, size : 3}, Bear, {clan: Rabbit, size : 1}, {clan: Rabbit, size : 1}]
 export const Tile3: Tile = [{clan: Rabbit, size : 1}, {clan: Lizard, size : 2}, Bear, {clan: Rabbit, size : 2}]

@@ -9,7 +9,7 @@ import Theme, {LightTheme} from './Theme'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
 import {humanize} from './util/TimeUtil'
 import TowerColor from './clans/TowerColor'
-import {getClanName} from './clans/ClanInfo'
+import {getTowerName} from './clans/TowerInfo'
 
 type Props = {
   onClose: () => void
@@ -43,7 +43,7 @@ const TimePopup: FunctionComponent<Props> = ({onClose}) => {
           <tbody>
             {players.map(player => (
               <tr key={player.id}>
-                <td>{player.name || getClanName(t, player.id)}</td>
+                <td>{player.name || getTowerName(t, player.id)}</td>
                 <td>{player.time && humanize(player.time.highestDownTime)}</td>
                 <td>{player.time && humanize(player.time.cumulatedDownTime)}</td>
                 <td>{player.time && humanize(player.time.highestPlayTime)}</td>

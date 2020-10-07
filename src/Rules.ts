@@ -8,11 +8,13 @@ import Player from './types/Player'
 import GameOptions from './types/GameOptions'
 import {tiles} from './tiles/Tiles'
 import GameWithIncompleteInformation from '@interlude-games/workshop/dist/Types/GameWithIncompleteInformation'
+import Clan, {clans} from './clans/Clan'
+import PlayerView from './types/PlayerView'
 
 
 const playersMin = 2
 const playersMax = 5
-export const defaultNumberOfPlayers = 3
+export const defaultNumberOfPlayers = 4
 
 type GameType = SequentialGame<Game, Move, TowerColor>
   & GameWithIncompleteInformation<Game, Move, TowerColor, GameView, Move>
@@ -30,6 +32,7 @@ const GrandBoisRules: GameType = {
       players: setupPlayers(options?.players),
       deck,
       river: deck.splice(0,4),
+      forest:[{tile:deck.splice(0,1)[0],x:1,y:-1,rotate:180},{tile:deck.splice(0,1)[0],x:-1,y:1,rotate:180}],
       activePlayer: TowerColor.BlackTower
     }
   },
@@ -56,22 +59,29 @@ const GrandBoisRules: GameType = {
 }
 
 export function isOver(game: Game | GameView): boolean {
-  return false
+  return game.deck === 0 && game.river.length === 0
 }
 
-function setupPlayers( players?: number | { clan?: TowerColor }[] ) {
+function setupPlayers( players?: number | { tower?: TowerColor }[] ) {
+  const shuffledClans = shuffle(clans)
   if (Array.isArray(players) && players.length >= playersMin && players.length <= playersMax) {
-    const empiresLeft = shuffle(Object.values(TowerColor).filter(clan => players.some(player => player.clan === clan)))
-    return players.map<Player>(player => setupPlayer(player.clan || empiresLeft.pop()!))
+    const towerLeft = shuffle(Object.values(TowerColor).filter(tower => players.some(player => player.tower === tower)))
+    return players.map<Player>(player => setupPlayer(player.tower || towerLeft.pop()!, shuffledClans.pop()!))
   } else if (typeof players === 'number' && Number.isInteger(players) && players >= playersMin && players <= playersMax) {
-    return shuffle(Object.values(TowerColor)).slice(0, players).map<Player>(clan => setupPlayer(clan))
+    return shuffle(Object.values(TowerColor)).slice(0, players).map<Player>(tower => setupPlayer(tower, shuffledClans.pop()!))
   } else {
-    return shuffle(Object.values(TowerColor)).slice(0, defaultNumberOfPlayers).map<Player>(clan => setupPlayer(clan))
+    return shuffle(Object.values(TowerColor)).slice(0, defaultNumberOfPlayers).map<Player>(tower => setupPlayer(tower, shuffledClans.pop()!))
   }
 }
 
-function setupPlayer(tower: TowerColor): Player {
-  return { tower }
+function setupPlayer(tower: TowerColor, clan : Clan): Player {
+  return { tower, clan : clan }
+}
+
+export function getPlayer(game: Game, tower: TowerColor): Player
+export function getPlayer(game: Game | GameView, tower: TowerColor): Player | PlayerView
+export function getPlayer(game: Game | GameView, tower: TowerColor): Player | PlayerView {
+  return game.players.find(player => player.tower === tower)!
 }
 
 export default GrandBoisRules

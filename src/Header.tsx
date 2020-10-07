@@ -16,7 +16,7 @@ import Player from './types/Player'
 import PlayerView from './types/PlayerView'
 import {isPlayer} from './types/typeguards'
 import {gameOverDelay, headerHeight, textColor} from './util/Styles'
-import {getClanName} from './clans/ClanInfo'
+import {getTowerName} from './clans/TowerInfo'
 
 
 const headerStyle = (theme: Theme) => css`
@@ -54,7 +54,7 @@ type Props = {
 }
 
 const Header: FunctionComponent<Props> = ({game, loading}) => {
-  const clan = usePlayerId<TowerColor>()
+  const tower = usePlayerId<TowerColor>()
   const play = usePlay<Move>()
   const players = usePlayers<TowerColor>()
   const {t} = useTranslation()
@@ -70,7 +70,7 @@ const Header: FunctionComponent<Props> = ({game, loading}) => {
   }, [game, gameOver, setScoreSuspense])
   const text = loading ? t('Chargement de la partie...') :
     gameOver && scoreSuspense ? t('Calcul du score...') :
-      getText(t, play, players, game!, clan)
+      getText(t, play, players, game!, tower)
   return (
     <header css={headerStyle(theme)}>
       <div css={bufferArea}/>
@@ -80,9 +80,9 @@ const Header: FunctionComponent<Props> = ({game, loading}) => {
   )
 }
 
-function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerInfo<TowerColor>[], game: GameView, clan?: TowerColor, animation?: Animation<Move>) {
-  const player = game.players.find(player => player.tower === clan)
-  const getPlayerName = (clan: TowerColor) => playersInfo.find(p => p.id === clan)?.name || getClanName(t, clan)
+function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerInfo<TowerColor>[], game: GameView, tower?: TowerColor, animation?: Animation<Move>) {
+  const player = game.players.find(player => player.tower === tower)
+  const getPlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, tower)
   if (game.tutorial && !animation && player && isPlayer(player)) {
     const tutorialText = getTutorialText(t, game, player)
     if (tutorialText) {

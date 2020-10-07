@@ -6,7 +6,7 @@ import {
   Tile1, Tile2, Tile3, Tile4, Tile5, Tile6, Tile7, Tile8, Tile9, Tile10,
   Tile11, Tile12, Tile13, Tile14, Tile15, Tile16, Tile17, Tile18, Tile19, Tile20,
   Tile21, Tile22, Tile23, Tile24, Tile25, Tile26, Tile27, Tile28, Tile29, Tile30,
-  Tile31, Tile32, Tile33, Tile34, Tile35, Tile36
+  Tile31, Tile32, Tile33, Tile34, Tile35, Tile36, TileStart
 } from './Tiles'
 
 
@@ -23,7 +23,8 @@ const TileCard = forwardRef<HTMLDivElement, Props>(({tile, ...props}, ref) => {
 
 const style = css`
   height: 100%;
-  border-radius: 6% / ${65 / 100 * 6}%;
+  width: 100%;
+  border-radius: 6%;
   box-shadow: 0 0 5px black;
   transform-style: preserve-3d;
   transform: translateZ(0);
@@ -33,7 +34,7 @@ const style = css`
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 6% / ${65 / 100 * 6}%;
+    border-radius: 6%;
     background-image: url(${Images.tileBack});
     background-size: cover;
     transform: rotateY(180deg);
@@ -51,7 +52,7 @@ const frontFace = css`
   height: 100%;
   backface-visibility: hidden;
   background-size: cover;
-  border-radius: 6% / ${65 / 100 * 6}%;
+  border-radius: 6%;
 `
 
 const getBackgroundImage = (tile?: Tile) => css`
@@ -60,6 +61,7 @@ const getBackgroundImage = (tile?: Tile) => css`
 
 const images = new Map<Tile, any>()
 
+images.set(TileStart, Images.tileStart)
 images.set(Tile1, Images.tile1)
 images.set(Tile2, Images.tile2)
 images.set(Tile3, Images.tile3)

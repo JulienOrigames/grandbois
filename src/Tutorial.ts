@@ -1,7 +1,7 @@
 import TowerColor from './clans/TowerColor'
 import Player from './types/Player'
 
-export const setupTutorial = (setupPlayers: (players?: (number | { clan?: TowerColor }[])) => (Player[])) => ({
+export const setupTutorial = (setupPlayers: (players?: (number | { tower?: TowerColor }[])) => (Player[])) => ({
   players: setupPlayers(),
   tutorial: true
 })

@@ -1,7 +1,7 @@
 import {css} from '@emotion/core'
 import React, {FunctionComponent} from 'react'
 import GameView from '../types/GameView'
-import {cardHeight, cardStyle, cardWidth, drawpileTop} from '../util/Styles'
+import {cardHeight, cardStyle, cardWidth, drawpileTop, riverLeft} from '../util/Styles'
 import ReactTooltip from 'react-tooltip'
 import {useTranslation} from 'react-i18next'
 import TileCard from './TileCard'
@@ -11,7 +11,6 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
   return <>
     {[...Array(Math.min(game.deck, drawPileMaxSize))].map((_, index) =>
       <TileCard key={index} css={[cardStyle, css`
-      position: absolute;
       top: ${drawPileCardY(index)}%;
       left: ${drawPileCardX(index)}%;
     `]}/>)}
@@ -24,7 +23,7 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
 
 export const drawPileMaxSize = 8
 
-export const drawPileCardX = (index: number) => index * 0.05
+export const drawPileCardX = (index: number) => riverLeft + index * 0.05
 export const drawPileCardY = (index: number) => drawpileTop + index * 0.05
 
 const drawPileTooltip = css`

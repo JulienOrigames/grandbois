@@ -42,6 +42,7 @@ export const Tile35: Tile = [{clan: Raccoon, size : 1}, {clan: Rabbit, size : 3}
 export const Tile36: Tile = [{clan: Fox, size : 3}, {clan: Fox, size : 1}, {clan: Lizard, size : 3}, {clan: Lizard, size : 1}]
 
 export const tiles: Tile[] = [
+  TileStart,
   Tile1, Tile2, Tile3, Tile4, Tile5, Tile6, Tile7, Tile8, Tile9, Tile10,
   Tile11, Tile12, Tile13, Tile14, Tile15, Tile16, Tile17, Tile18, Tile19, Tile20,
   Tile21, Tile22, Tile23, Tile24, Tile25, Tile26, Tile27, Tile28, Tile29, Tile30,

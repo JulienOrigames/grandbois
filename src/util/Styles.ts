@@ -11,22 +11,28 @@ export const bottomMargin = 3
 export const cardHeight = 23 * cardScale  // percentage of playing area cardHeight
 export const cardRatio = 1
 export const cardWidth = cardHeight * cardRatio / screenRatio  // percentage of playing area cardWidth
+export const spaceHeight = cardHeight / 2
+export const spaceWidth = cardWidth / 2
 
 export const drawpileTop = headerHeight + topMargin
+export const riverLeft = 1
 export const riverTop = headerHeight + topMargin * 2 + 1 + cardHeight
+
 export const forestTop = headerHeight + topMargin
-export const forestLeft = cardWidth + topMargin
+export const forestLeft = cardWidth + topMargin + riverLeft
 export const forestWidth = 67
 export const forestHeight = 90
 export const forestRatioY = 100 / forestHeight
 export const forestRatioX = 100 / forestWidth
-
 export const forestCardWidth = cardWidth * forestRatioX
 export const forestCardHeight = cardHeight * forestRatioY
-export const halfForestCardWidth = forestCardWidth/2
-export const halfForestCardHeight = forestCardHeight/2
-export const centerLeft = 50 - halfForestCardWidth
-export const centerTop = 50 - halfForestCardHeight
+export const forestSpaceWidth = forestCardWidth/2
+export const forestSpaceHeight = forestCardHeight/2
+export const forestCenterLeft = 50 - forestSpaceWidth
+export const forestCenterTop = 50 - forestSpaceHeight
+
+export const centerLeft = forestLeft + forestWidth/2 - spaceWidth
+export const centerTop = forestTop + forestHeight/2 - spaceHeight
 
 export const tokenWidth = 4
 export const tokenHeight = tokenWidth * screenRatio
@@ -55,9 +61,22 @@ export const platformUri = process.env.REACT_APP_PLATFORM_URI || 'http://localho
 export const discordUri = 'https://discord.gg/nMSDRag'
 
 export const cardStyle = css`
+  position: absolute;
   width: ${cardWidth}%;
   height: ${cardHeight}%;
 `
+
+export const forestCardStyle = css`
+  position: absolute;
+  width: ${forestCardWidth}%;
+  height: ${forestCardHeight}%;
+`
+
+export const forestCardX = (x: number) => forestCenterLeft + ( forestSpaceWidth * x )
+export const forestCardY = (y: number) => forestCenterTop + ( forestSpaceHeight * y )
+
+export const placedCardX = (x: number) => centerLeft + ( spaceWidth * x )
+export const placedCardY = (y: number) => centerTop + ( spaceHeight * y )
 
 export const getAreaCardY = (row: number) => 100 - cardHeight - bottomMargin - (cardHeight + marginBetweenCardRows) * row
 

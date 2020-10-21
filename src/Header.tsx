@@ -13,10 +13,8 @@ import {isOver} from './Rules'
 import Theme, {LightTheme} from './Theme'
 import GameView from './types/GameView'
 import Player from './types/Player'
-import PlayerView from './types/PlayerView'
 import {isPlayer} from './types/typeguards'
 import {gameOverDelay, headerHeight, textColor} from './util/Styles'
-import {getTowerName} from './clans/TowerInfo'
 
 
 const headerStyle = (theme: Theme) => css`
@@ -82,10 +80,10 @@ const Header: FunctionComponent<Props> = ({game, loading}) => {
 
 function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerInfo<TowerColor>[], game: GameView, tower?: TowerColor, animation?: Animation<Move>) {
   const player = game.players.find(player => player.tower === tower)
-  const getPlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, tower)
+  // const getPlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, tower)
   if (game.tutorial && !animation && player && isPlayer(player)) {
     const tutorialText = getTutorialText(t, game, player)
-    if (tutorialText) {
+    if (tutorialText){
       return tutorialText
     }
   }
@@ -96,8 +94,8 @@ function getTutorialText(t: TFunction, game: GameView, player: Player): string |
   return
 }
 
-function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], game: GameView, player?: Player | PlayerView) {
-  return
-}
+// function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], game: GameView, player?: Player | PlayerView) {
+//   return
+// }
 
 export default Header

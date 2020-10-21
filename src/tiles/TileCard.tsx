@@ -25,7 +25,7 @@ const style = css`
   height: 100%;
   width: 100%;
   border-radius: 6%;
-  box-shadow: 0 0 5px black;
+  box-shadow: 0 0 3px black;
   transform-style: preserve-3d;
   transform: translateZ(0);
   -webkit-font-smoothing: subpixel-antialiased;

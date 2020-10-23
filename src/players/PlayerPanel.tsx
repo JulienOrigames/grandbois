@@ -1,5 +1,5 @@
 import {css} from '@emotion/core'
-import {GameSpeed, useOptions, usePlayer} from '@interlude-games/workshop'
+import {GameSpeed, useOptions, usePlayer} from '@gamepark/workshop'
 import React, {FunctionComponent} from 'react'
 import {useTranslation} from 'react-i18next'
 import Player from '../types/Player'

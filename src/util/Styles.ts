@@ -78,6 +78,11 @@ export const forestCardY = (y: number) => forestCenterTop + ( forestSpaceHeight 
 export const placedCardX = (x: number) => centerLeft + ( spaceWidth * x )
 export const placedCardY = (y: number) => centerTop + ( spaceHeight * y )
 
+export const mod = (n:number, m:number) => ((n % m) + m) % m
+
+
+
+
 export const getAreaCardY = (row: number) => 100 - cardHeight - bottomMargin - (cardHeight + marginBetweenCardRows) * row
 
 export const getAreasStyle = (row: number, fullWidth: boolean, isValidTarget = false) => css`

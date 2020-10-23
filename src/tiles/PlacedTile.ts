@@ -2,7 +2,7 @@ type PlacedTile = {
   tile: number
   x : number
   y: number
-  rotate : number
+  rotation : number
 }
 
 export default PlacedTile

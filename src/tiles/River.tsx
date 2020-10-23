@@ -4,39 +4,78 @@ import {cardHeight, cardStyle, placedCardX, placedCardY, riverLeft, riverTop, to
 import TileCard from './TileCard'
 import {tiles} from './Tiles'
 import GameView from '../types/GameView'
-import {Draggable} from '@interlude-games/workshop'
+import {Draggable, usePlayerId} from '@gamepark/workshop'
 import {draggedTile} from '../drag-objects/DraggedTile'
 import PlacedTile from './PlacedTile'
+import {getForestView, isLegalTilePosition} from '../Rules'
+import Images from '../material/Images'
+import TowerColor from '../clans/TowerColor'
 
 type Props = {
   game: GameView
   playingTile?: PlacedTile
+  setPlayingTile: (playingTile:PlacedTile) => void
 }
 
-const River: FunctionComponent<Props> = ({game, playingTile}) => {
+const River: FunctionComponent<Props> = ({game, playingTile,setPlayingTile}) => {
+  const playerId = usePlayerId<TowerColor>()
   return <>
-    {game.river.map((tile, index) =>
+    {game.river.map((tile, index) => {
 
-        ( playingTile && playingTile.tile === tile )?
-            <Draggable item={{type: draggedTile, tile}}
-                       css={[cardStyle, css`
+        if( !tile ) return null
+
+        return (playingTile && playingTile.tile === tile) ?
+          <Draggable key={tile} item={{type: draggedTile, tile}} onDrop={setPlayingTile}
+                     disabled={game.activePlayer !== playerId}
+                     animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
+                     css={[cardStyle,
+                            borderStyle(isLegalTilePosition(getForestView(game.forest),playingTile)),
+                            css`
                             left: ${placedCardX(playingTile.x)}%;
                             top: ${placedCardY(playingTile.y)}%;
                             z-index: 1;
-                `]}>
-              <TileCard key={tile} tile={tiles[tile]} css={css`transform: rotate(${90 * playingTile.rotate}deg);`}/>
-            </Draggable>
+                          `]}>
+            <TileCard tile={tiles[tile]} css={draggedTileStyle(playingTile.rotation)}
+                      onClick={()=>setPlayingTile({...playingTile,rotation:(playingTile.rotation + 1)%4})}/>
+          </Draggable>
           :
-            <Draggable item={{type: draggedTile, tile}}
-                       css={[cardStyle, css`
+          <Draggable key={tile} item={{type: draggedTile, tile}} onDrop={setPlayingTile}
+                     disabled={game.activePlayer !== playerId}
+                     animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
+                     css={[cardStyle, css`
                                 top: ${riverCardY(index)}%;
                                 left: ${riverLeft}%;
               `]}>
-            <TileCard key={tile} tile={tiles[tile]}/>
-            </Draggable>
-      )}
+            <TileCard tile={tiles[tile]}/>
+          </Draggable>
+      }
+    )}
   </>
 }
+
+const borderStyle = (highlight: boolean) => highlight ? css`
+  border: 0.2em solid greenyellow;
+  box-shadow: 0.2em 0.2em 1em greenyellow;
+` : css`
+  border: 0.2em solid darkred;
+  box-shadow: 0.2em 0.2em 1em darkred;
+`
+
+const draggedTileStyle = (rotation: number) => css`
+  transform: rotate(${90 * rotation}deg);
+  &:before {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    left:85%;
+    top:20%;
+    background-image: url(${Images.rotate});
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: rotate(-60deg);
+  }
+`
 
 export const riverCardY = (index: number) => riverTop + ( cardHeight + topMargin ) * index
 

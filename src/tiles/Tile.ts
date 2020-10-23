@@ -2,7 +2,7 @@ import Clan from '../clans/Clan'
 
 type Tile = [Space, Space, Space, Space]
 
-type Space = typeof Clearing | typeof Bear | Troop
+export type Space = typeof Clearing | typeof Bear | Troop
 
 
 export const Clearing = 'Clearing'

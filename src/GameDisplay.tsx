@@ -1,5 +1,5 @@
-import {Letterbox, usePlayerId} from '@interlude-games/workshop'
-import React, {FunctionComponent, useMemo, useState} from 'react'
+import {Letterbox, usePlay, usePlayerId} from '@gamepark/workshop'
+import React, {FunctionComponent, useEffect, useMemo, useState} from 'react'
 import GameView from './types/GameView'
 import {cardHeight, cardStyle, cardWidth, fadeIn} from './util/Styles'
 import {css} from '@emotion/core'
@@ -8,30 +8,37 @@ import River from './tiles/River'
 import Forest from './tiles/Forest'
 import ClanCard from './clans/ClanCard'
 import TowerColor from './clans/TowerColor'
-import {isOver} from './Rules'
+import {getForestView, isLegalTilePosition, isOver} from './Rules'
 import PlayerPanel from './players/PlayerPanel'
 import PlacedTile from './tiles/PlacedTile'
 import Button from './util/Button'
 import {useTranslation} from 'react-i18next'
+import PlaceForestTile, {placeForestTile} from './moves/PlaceForestTile'
+import Player from './types/Player'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
   const {t} = useTranslation()
+  const play = usePlay<PlaceForestTile>()
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
-  const player = players.find(player => player.tower === playerId)
+  const player = players.find(player => player.tower === playerId) as Player | undefined
   const gameOver = isOver(game)
-  // TODO : useState pour gérer la tuile en cours de positionnement (setState à passer à la Foret)
   const [playingTile,setPlayingTile] = useState<PlacedTile>()
+  useEffect(() => {
+    if(playingTile && !game.river.some(tile => tile === playingTile.tile))
+      setPlayingTile(undefined)
+  }, [game,playingTile])
   return (
     <Letterbox css={letterBoxStyle}>
       <DrawPile game={game}/>
-      <River game={game} playingTile={playingTile} />
+      <River game={game} playingTile={playingTile} setPlayingTile={setPlayingTile} />
       <Forest game={game} playingTile={playingTile} setPlayingTile={setPlayingTile} />
       <ClanCard css={[cardStyle,clanStyle]} clan={player?.clan} />
       {players.map((player, index) =>
         <PlayerPanel key={player.tower} player={player} position={index} highlight={player.tower === playerId}  showScore={gameOver} />
       )}
-      {playingTile && <Button css={validStyle}>{t('Valider')}</Button>}
+      {playingTile && isLegalTilePosition(getForestView(game.forest),playingTile)
+      && <Button css={validStyle} onClick={() => play(placeForestTile(playingTile))}>{t('Valider')}</Button>}
     </Letterbox>
   )
 }

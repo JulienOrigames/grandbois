@@ -10,6 +10,7 @@ import {DropTargetMonitor, useDrop, XYCoord} from 'react-dnd'
 import DraggedTile from '../drag-objects/DraggedTile'
 import PlacedTile from './PlacedTile'
 import {riverTileTop} from './River'
+import {getForestView, isAvailablePosition} from '../Rules'
 
 type Props = {
   game: GameView
@@ -22,18 +23,17 @@ const Forest: FunctionComponent<Props> = ({game, playingTile, setPlayingTile}) =
     accept: 'Tile',
     canDrop:(item: DraggedTile, monitor: DropTargetMonitor ) => {
       const overPosition = getForestPosition(game,item,monitor,playingTile);
-      if(overPosition === false) return false
-      console.log(overPosition.x+'/'+overPosition.y)
-      return canDropTile(game,overPosition)
+      if(!overPosition) return false
+      // console.log(overPosition.x+'/'+overPosition.y)
+      return isAvailablePosition(getForestView(game.forest),overPosition.x,overPosition.y)
     },
     drop: (item: DraggedTile,monitor) => {
       const overPosition = getForestPosition(game,item,monitor,playingTile);
-      if(overPosition === false) return false
-      setPlayingTile({ tile : item.tile,
-                        x : overPosition.x,
-                        y : overPosition.y,
-                        rotate : 2
-                      })
+      return { tile : item.tile,
+        x : overPosition!.x,
+        y : overPosition!.y,
+        rotation : playingTile?playingTile.rotation:0
+      }
     }
   })
   return <div ref={ref} css={style}>
@@ -44,7 +44,7 @@ const Forest: FunctionComponent<Props> = ({game, playingTile, setPlayingTile}) =
                    css={[forestCardStyle, css`
                        left: ${forestCardX(placedTile.x)}%;
                        top: ${forestCardY(placedTile.y)}%;
-                       transform: rotate(${90*placedTile.rotate}deg);
+                       transform: rotate(${90*placedTile.rotation}deg);
      `                ]}
          />)
     }
@@ -59,24 +59,10 @@ const style = css`
   height: ${forestHeight}%;
 `
 
-// function getForestPosition(coordinates: XYCoord) {
-//   const screenWidth = window.innerWidth
-//   const screenHeight = window.innerHeight
-//   let forestWidthPX, forestHeightPX
-//   if( screenWidth / screenHeight > screenRatio ){
-//     forestWidthPX = screenHeight * screenRatio * forestWidth
-//     forestHeightPX = screenHeight * forestHeight
-//   }
-//   else{
-//     forestWidthPX = screenWidth * forestWidth
-//     forestHeightPX = ( screenWidth / screenRatio ) * forestHeight
-//   }
-// }
-
 function getForestPosition(game:GameView, item: DraggedTile, monitor: DropTargetMonitor, playingTile?: PlacedTile){
 
   const position = monitor.getDifferenceFromInitialOffset();
-  if (!position) return false
+  if (!position) return
   const percent = convertIntoPercent(position)
   let overPosition: XYCoord = {x: 0, y: 0}
   if (playingTile && item.tile === playingTile.tile) {
@@ -103,68 +89,5 @@ const getInsideForestCoordinates = (game:GameView, playingTile: PlacedTile, coor
   x: Math.round(playingTile.x + ( coordinates.x / spaceWidth) ),
   y: Math.round(playingTile.y + ( coordinates.y / spaceHeight) )
 })
-
-function canDropTile(game:GameView, coordinates: XYCoord){
-  let emptyLocation = true
-  let fullLocation = false
-  let space1:boolean = false
-  let space2:boolean = false
-  let space3:boolean = false
-  let space4:boolean = false
-  game.forest.forEach((placedTile) => {
-    if( (emptyLocation || !fullLocation) && (Math.abs(placedTile.x - coordinates.x) < 2 && Math.abs(placedTile.y - coordinates.y) < 2 )){
-      emptyLocation = false
-      const deltaX = coordinates.x - placedTile.x
-      const deltaY = coordinates.y - placedTile.y
-      if(!fullLocation) {
-        switch(deltaX){
-          case 1 :
-            switch(deltaY){
-              case 1 :
-                space1 = true
-              break
-              case 0 :
-                space1 = space4 = true
-              break
-              case -1 :
-                space4 = true
-              break
-            }
-          break
-          case 0 :
-            switch(deltaY){
-              case 1 :
-                space1 = space2 = true
-              break
-              case 0 :
-                space1 = space2 = space3 = space4 = true
-              break
-              case -1 :
-                space3 = space4 = true
-              break
-            }
-          break
-          case -1 :
-            switch(deltaY){
-              case 1 :
-                space2 = true
-                break
-              case 0 :
-                space2 = space3 = true
-                break
-              case -1 :
-                space3 = true
-                break
-            }
-          break
-        }
-      }
-      if(space1 && space2 && space3 && space4) fullLocation = true
-      // console.log(deltaX+"/"+deltaY)
-      // console.log(space1+"/"+space2+"/"+space3+"/"+space4+"=>"+fullLocation)
-    }
-  })
-  return !emptyLocation && !fullLocation
-}
 
 export default Forest

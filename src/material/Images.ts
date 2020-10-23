@@ -54,6 +54,7 @@ import brownTower from './towers/tower-brown.png'
 import blackTower from './towers/tower-black.png'
 import blueTower from './towers/tower-blue.png'
 import whiteTower from './towers/tower-white.png'
+import rotate from './rotate.png'
 
 
 const Images = {
@@ -64,7 +65,8 @@ const Images = {
   tile21, tile22, tile23, tile24, tile25, tile26, tile27, tile28, tile29, tile30,
   tile31, tile32, tile33, tile34, tile35, tile36,
   cardToads, cardRabbits, cardFoxes, cardRaccoons, cardLizards, cardClanBack,
-  brownTower, blackTower, blueTower, whiteTower
+  brownTower, blackTower, blueTower, whiteTower,
+  rotate
 }
 
 export default Images

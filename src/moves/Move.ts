@@ -1,8 +1,9 @@
-import RevealTiles from './RevealTiles'
-import ChooseRiverTile from './ChooseRiverTile'
+import RevealNewRiverTile, {RevealNewRiverTileView} from './RevealNewRiverTile'
+import PlaceForestTile from './PlaceForestTile'
+import ChangeActivePlayer from './ChangeActivePlayer'
 
-type Move = RevealTiles | ChooseRiverTile
+type Move = RevealNewRiverTile | PlaceForestTile | ChangeActivePlayer
 
 export default Move
 
-export type MoveView = RevealTiles | ChooseRiverTile
+export type MoveView = Move | RevealNewRiverTileView

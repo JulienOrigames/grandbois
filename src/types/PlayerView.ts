@@ -1,6 +1,6 @@
 import Player from './Player'
 
-type PlayerView = Omit<Player, 'Clan' > & {
+type PlayerView = Omit<Player, 'clan' > & {
 
 }
 

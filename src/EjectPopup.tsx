@@ -1,7 +1,7 @@
 import {css} from '@emotion/core'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import Player from '@interlude-games/workshop/dist/Types/Player'
+import Player from '@gamepark/workshop/dist/Types/Player'
 import {useTheme} from 'emotion-theming'
 import moment from 'moment'
 import React, {FunctionComponent, useEffect} from 'react'
@@ -11,7 +11,7 @@ import Button from './util/Button'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
 import TowerColor from './clans/TowerColor'
 import {getTowerName} from './clans/TowerInfo'
-import {useEjection} from '@interlude-games/workshop'
+import {useEjection} from '@gamepark/workshop'
 
 type Props = {
   playerId: TowerColor

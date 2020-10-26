@@ -60,7 +60,7 @@ const GrandBoisRules: GameType = {
   },
   getLegalMoves(game: Game): Move[] {
     const forestView = getForestView(game.forest)
-    console.log(forestView)
+    // console.log(forestView)
     const xMin = Math.min(...Array.from(forestView.keys()))
     const xMax = Math.max(...Array.from(forestView.keys()))
     const yMin = Math.min(...Array.from(forestView.values()).flatMap(map => Array.from(map.keys())))
@@ -71,7 +71,7 @@ const GrandBoisRules: GameType = {
         if (isAvailablePosition(forestView, x, y)) availablePositions.push({x, y})
       }
     }
-    console.log(availablePositions)
+    // console.log(availablePositions)
     return availablePositions.flatMap(({x, y}) =>
       game.river.flatMap(tile =>
         tile ? [0, 1, 2, 3].filter(rotation => isLegalTilePosition(forestView, {tile, x, y, rotation: rotation}))
@@ -100,7 +100,7 @@ const GrandBoisRules: GameType = {
         break
       }
       case MoveType.ChangeActivePlayer: {
-        game.tilePlayed = undefined
+        delete game.tilePlayed
         const activePlayerIndex = game.players.findIndex(player => player.tower === game.activePlayer)
         const nextPlayerIndex = (activePlayerIndex + 1) % game.players.length
         game.activePlayer = game.players[nextPlayerIndex].tower
@@ -191,19 +191,25 @@ export function isLegalTilePosition(forestView: ForestView, placedTile: PlacedTi
   if (canCoverSpace(getPlacedSpace(placedTile, 1), forestView.get(placedTile.x + 1)?.get(placedTile.y))) legalSpace++
   if (canCoverSpace(getPlacedSpace(placedTile, 2), forestView.get(placedTile.x + 1)?.get(placedTile.y + 1))) legalSpace++
   if (canCoverSpace(getPlacedSpace(placedTile, 3), forestView.get(placedTile.x)?.get(placedTile.y + 1))) legalSpace++
+  // console.log(placedTile.tile)
   // console.log(placedTile.rotation)
-  // console.log(getPlacedSpace(placedTile,0))
-  // console.log('=>')
-  // console.log(forestView.get(placedTile.x)?.get(placedTile.y))
-  // console.log(getPlacedSpace(placedTile,1))
-  // console.log('=>')
-  // console.log(forestView.get(placedTile.x+1)?.get(placedTile.y))
-  // console.log(getPlacedSpace(placedTile,2))
-  // console.log('=>')
-  // console.log(forestView.get(placedTile.x+1)?.get(placedTile.y+1))
-  // console.log(getPlacedSpace(placedTile,3))
-  // console.log('=>')
-  // console.log(forestView.get(placedTile.x)?.get(placedTile.y+1))
+  // console.log('--')
+  //  console.log(getPlacedSpace(placedTile,0))
+  //  console.log('=>')
+  //  console.log(forestView.get(placedTile.x)?.get(placedTile.y))
+  // console.log('--')
+  //  console.log(getPlacedSpace(placedTile,1))
+  //  console.log('=>')
+  //  console.log(forestView.get(placedTile.x+1)?.get(placedTile.y))
+  // console.log('--')
+  //  console.log(getPlacedSpace(placedTile,2))
+  //  console.log('=>')
+  //  console.log(forestView.get(placedTile.x+1)?.get(placedTile.y+1))
+  // console.log('--')
+  //  console.log(getPlacedSpace(placedTile,3))
+  //  console.log('=>')
+  //  console.log(forestView.get(placedTile.x)?.get(placedTile.y+1))
+  // console.log('--')
   return legalSpace === 4
 }
 

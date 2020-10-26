@@ -1,57 +1,106 @@
 import {css} from '@emotion/core'
-import React, {FunctionComponent} from 'react'
+import React, {FunctionComponent, useEffect, useState} from 'react'
 import {cardHeight, cardStyle, placedCardX, placedCardY, riverLeft, riverTop, topMargin} from '../util/Styles'
 import TileCard from './TileCard'
 import {tiles} from './Tiles'
 import GameView from '../types/GameView'
-import {Draggable, usePlayerId} from '@gamepark/workshop'
+import {Draggable, useDisplayState, usePlay, usePlayerId} from '@gamepark/workshop'
 import {draggedTile} from '../drag-objects/DraggedTile'
 import PlacedTile from './PlacedTile'
 import {getForestView, isLegalTilePosition} from '../Rules'
 import Images from '../material/Images'
 import TowerColor from '../clans/TowerColor'
+import Button from '../util/Button'
+import PlaceForestTile, {placeForestTile} from '../moves/PlaceForestTile'
+import {useTranslation} from 'react-i18next'
+import {XYCoord} from 'react-dnd'
+import {convertIntoPercent, initialForestPosition} from './Forest'
 
 type Props = {
   game: GameView
-  playingTile?: PlacedTile
-  setPlayingTile: (playingTile:PlacedTile) => void
 }
 
-const River: FunctionComponent<Props> = ({game, playingTile,setPlayingTile}) => {
+const River: FunctionComponent<Props> = ({game}) => {
+  const {t} = useTranslation()
   const playerId = usePlayerId<TowerColor>()
+  const play = usePlay<PlaceForestTile>()
+  const [playingTile, setPlayingTile] = useState<PlacedTile>()
+  useEffect(() => {
+    if (playingTile && !game.river.some(tile => tile === playingTile.tile))
+      setPlayingTile(undefined)
+  }, [game, playingTile])
+  const rotate = (event: React.MouseEvent<HTMLDivElement>, tile: number) => {
+    event.stopPropagation()
+    if (playingTile && playingTile.tile === tile) {
+      setPlayingTile({...playingTile, rotation: (playingTile.rotation + 1) % 4})
+    }
+  }
+  const [forestCenter] = useDisplayState<XYCoord>(initialForestPosition)
+  const deltaPercent = convertIntoPercent(forestCenter)
+  const isLegalTile = playingTile && isLegalTilePosition(getForestView(game.forest), playingTile)
   return <>
-    {game.river.map((tile, index) => {
-
-        if( !tile ) return null
-
-        return (playingTile && playingTile.tile === tile) ?
-          <Draggable key={tile} item={{type: draggedTile, tile}} onDrop={setPlayingTile}
-                     disabled={game.activePlayer !== playerId}
-                     animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
-                     css={[cardStyle,
-                            borderStyle(isLegalTilePosition(getForestView(game.forest),playingTile)),
-                            css`
-                            left: ${placedCardX(playingTile.x)}%;
-                            top: ${placedCardY(playingTile.y)}%;
-                            z-index: 1;
-                          `]}>
-            <TileCard tile={tiles[tile]} css={draggedTileStyle(playingTile.rotation)}
-                      onClick={()=>setPlayingTile({...playingTile,rotation:(playingTile.rotation + 1)%4})}/>
+    {
+      game.river.map((tile, index) => {
+          if (!tile) return null
+          const item = playingTile && playingTile.tile === tile ? {type: draggedTile, ...playingTile} : {type: draggedTile, tile}
+          return <Draggable key={tile} item={item}
+                            onDrop={setPlayingTile}
+                            disabled={game.activePlayer !== playerId}
+                            animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
+                            css={[cardStyle,
+                              playingTile && playingTile.tile === tile && borderStyle(isLegalTile!),
+                              playingTile && playingTile.tile === tile ? playingTileStyle(playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y) : riverTileStyle(index)
+                            ]}>
+            <TileCard tile={tiles[tile]} css={playingTile && playingTile.tile === tile && draggedTileStyle(playingTile.rotation)}
+                      onClick={event => rotate(event, tile)}/>
           </Draggable>
-          :
-          <Draggable key={tile} item={{type: draggedTile, tile}} onDrop={setPlayingTile}
-                     disabled={game.activePlayer !== playerId}
-                     animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
-                     css={[cardStyle, css`
-                                top: ${riverCardY(index)}%;
-                                left: ${riverLeft}%;
-              `]}>
-            <TileCard tile={tiles[tile]}/>
-          </Draggable>
-      }
-    )}
+        }
+      )
+    }
+    {
+      playingTile && isLegalTile
+      && <Button css={validStyle} onClick={() => play(placeForestTile(playingTile))}>{t('Valider')}</Button>
+    }
+    <div css={style}></div>
   </>
 }
+
+const style = css`
+  z-index:1;
+  position:absolute;
+  left: 0;
+  top:7%;
+  width:11%;
+  height:93%;
+  background-image: url(${Images.woodTexture});
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: cover;
+  border-radius: 0 1em 1em 0;
+  border: solid 0.1em rosybrown;
+  border-left: solid 0 rosybrown;
+  box-shadow: 0 0 1em #000;
+`
+
+const validStyle = css`
+  position:absolute;
+  bottom: 30%;
+  right: 2%;
+  font-size:4em;
+  z-index:2;
+`
+
+const playingTileStyle = (x: number, deltaX: number, y: number, deltaY: number) => css`
+  left: ${placedCardX(x, deltaX)}%;
+  top: ${placedCardY(y, deltaY)}%;
+  z-index: 2;
+`
+
+const riverTileStyle = (index: number) => css`
+                  top: ${riverCardY(index)}%;
+                  left: ${riverLeft}%;
+                  z-index: 2;
+`
 
 const borderStyle = (highlight: boolean) => highlight ? css`
   border: 0.2em solid greenyellow;
@@ -77,7 +126,7 @@ const draggedTileStyle = (rotation: number) => css`
   }
 `
 
-export const riverCardY = (index: number) => riverTop + ( cardHeight + topMargin ) * index
+export const riverCardY = (index: number) => riverTop + (cardHeight + topMargin) * index
 
 export const riverTileTop = (game: GameView, tile: number) => riverCardY(game.river.indexOf(tile))
 

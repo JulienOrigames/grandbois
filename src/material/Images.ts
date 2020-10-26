@@ -55,6 +55,8 @@ import blackTower from './towers/tower-black.png'
 import blueTower from './towers/tower-blue.png'
 import whiteTower from './towers/tower-white.png'
 import rotate from './rotate.png'
+import forestGround from './menus/forest-ground.jpg'
+import woodTexture from './menus/wood-texture.jpg'
 
 
 const Images = {
@@ -66,7 +68,8 @@ const Images = {
   tile31, tile32, tile33, tile34, tile35, tile36,
   cardToads, cardRabbits, cardFoxes, cardRaccoons, cardLizards, cardClanBack,
   brownTower, blackTower, blueTower, whiteTower,
-  rotate
+  rotate,
+  forestGround, woodTexture
 }
 
 export default Images

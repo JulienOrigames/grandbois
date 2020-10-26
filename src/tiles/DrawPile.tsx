@@ -13,6 +13,7 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
       <TileCard key={index} css={[cardStyle, css`
       top: ${drawPileCardY(index)}%;
       left: ${drawPileCardX(index)}%;
+      z-index:2;
     `]}/>)}
     <div css={drawPileTooltip} data-tip />
     <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green' >
@@ -32,6 +33,7 @@ const drawPileTooltip = css`
   left: ${drawPileCardX(0)}%;
   width: ${cardWidth + drawPileMaxSize*0.05}%;
   height: ${cardHeight}%;
+  z-index:2;
 `
 
 export default DrawPile

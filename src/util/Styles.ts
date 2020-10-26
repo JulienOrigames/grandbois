@@ -18,10 +18,15 @@ export const drawpileTop = headerHeight + topMargin
 export const riverLeft = 1
 export const riverTop = headerHeight + topMargin * 2 + 1 + cardHeight
 
-export const forestTop = headerHeight + topMargin
-export const forestLeft = cardWidth + topMargin + riverLeft
-export const forestWidth = 67
-export const forestHeight = 90
+// export const forestTop = headerHeight + topMargin
+// export const forestLeft = cardWidth + topMargin + riverLeft
+// export const forestWidth = 67
+// export const forestHeight = 90
+export const forestTop = 0
+export const forestLeft = 0
+export const forestWidth = 100
+export const forestHeight = 100
+
 export const forestRatioY = 100 / forestHeight
 export const forestRatioX = 100 / forestWidth
 export const forestCardWidth = cardWidth * forestRatioX
@@ -75,8 +80,8 @@ export const forestCardStyle = css`
 export const forestCardX = (x: number) => forestCenterLeft + ( forestSpaceWidth * x )
 export const forestCardY = (y: number) => forestCenterTop + ( forestSpaceHeight * y )
 
-export const placedCardX = (x: number) => centerLeft + ( spaceWidth * x )
-export const placedCardY = (y: number) => centerTop + ( spaceHeight * y )
+export const placedCardX = (x: number, delta:number) => centerLeft + ( spaceWidth * x ) + delta
+export const placedCardY = (y: number, delta:number) => centerTop + ( spaceHeight * y ) + delta
 
 export const mod = (n:number, m:number) => ((n % m) + m) % m
 

@@ -15,6 +15,8 @@ import PlaceForestTile, {placeForestTile} from '../moves/PlaceForestTile'
 import {useTranslation} from 'react-i18next'
 import {XYCoord} from 'react-dnd'
 import {convertIntoPercent, initialForestPosition} from './Forest'
+import {useTheme} from 'emotion-theming'
+import Theme, {LightTheme} from '../Theme'
 
 type Props = {
   game: GameView
@@ -22,6 +24,7 @@ type Props = {
 
 const River: FunctionComponent<Props> = ({game}) => {
   const {t} = useTranslation()
+  const theme = useTheme<Theme>()
   const playerId = usePlayerId<TowerColor>()
   const play = usePlay<PlaceForestTile>()
   const [playingTile, setPlayingTile] = useState<PlacedTile>()
@@ -37,7 +40,7 @@ const River: FunctionComponent<Props> = ({game}) => {
   }
   const [forestCenter] = useDisplayState<XYCoord>(initialForestPosition)
   const deltaPercent = convertIntoPercent(forestCenter)
-  const isLegalTile = playingTile && isLegalTilePosition(getForestView(game.forest), playingTile)
+  const isLegalTile = playingTile && isLegalTilePosition(getForestView(game), playingTile)
   return <>
     {
       game.river.map((tile, index) => {
@@ -51,7 +54,7 @@ const River: FunctionComponent<Props> = ({game}) => {
                               playingTile && playingTile.tile === tile && borderStyle(isLegalTile!),
                               playingTile && playingTile.tile === tile ? playingTileStyle(playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y) : riverTileStyle(index)
                             ]}>
-            <TileCard tile={tiles[tile]} css={playingTile && playingTile.tile === tile && draggedTileStyle(playingTile.rotation)}
+            <TileCard tile={tiles[tile]} css={playingTile && playingTile.tile === tile && draggedTileStyle(playingTile.rotation,theme)}
                       onClick={event => rotate(event, tile)}/>
           </Draggable>
         }
@@ -68,17 +71,16 @@ const River: FunctionComponent<Props> = ({game}) => {
 const style = css`
   z-index:1;
   position:absolute;
-  left: 0;
+  left: 1.1%;
   top:7%;
-  width:11%;
+  width:10.9%;
   height:93%;
   background-image: url(${Images.woodTexture});
   background-position: center center;
   background-repeat: repeat;
   background-size: cover;
-  border-radius: 0 1em 1em 0;
-  border: solid 0.1em rosybrown;
-  border-left: solid 0 rosybrown;
+  border-radius: 1em;
+  border: solid 0.1em saddlebrown;
   box-shadow: 0 0 1em #000;
 `
 
@@ -110,7 +112,7 @@ const borderStyle = (highlight: boolean) => highlight ? css`
   box-shadow: 0.2em 0.2em 1em darkred;
 `
 
-const draggedTileStyle = (rotation: number) => css`
+const draggedTileStyle = (rotation: number,theme: Theme) => css`
   transform: rotate(${90 * rotation}deg);
   &:before {
     content: '';
@@ -119,7 +121,7 @@ const draggedTileStyle = (rotation: number) => css`
     height: 80%;
     left:85%;
     top:20%;
-    background-image: url(${Images.rotate});
+    background-image: url(${theme.color === LightTheme ?Images.rotate:Images.rotateDark});
     background-size: contain;
     background-repeat: no-repeat;
     transform: rotate(-60deg);

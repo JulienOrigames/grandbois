@@ -15,7 +15,7 @@ export const spaceHeight = cardHeight / 2
 export const spaceWidth = cardWidth / 2
 
 export const drawpileTop = headerHeight + topMargin
-export const riverLeft = 1
+export const riverLeft = 2
 export const riverTop = headerHeight + topMargin * 2 + 1 + cardHeight
 
 // export const forestTop = headerHeight + topMargin

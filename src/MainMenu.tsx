@@ -205,12 +205,12 @@ const menuStyle = css`
   top: 0;
   right: 0;
   transition: opacity 0.5s ease-in-out;
-  background-image: url(${Images.textureGrey});
-  background-position: top right;
+  background-image: url(${Images.woodTexture});
+  background-position: center center;
   padding: 0.1em;
   border-radius: 0 0 0 1em;
-  border: solid 0.1em #ccc;
-  border-top: solid 0 #ccc;
+  border: solid 0.1em saddlebrown;
+  border-top: solid 0 saddlebrown;
   box-shadow: 0 0 1em #000;
 `
 

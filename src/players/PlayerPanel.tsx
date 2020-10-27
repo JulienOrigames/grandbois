@@ -22,7 +22,7 @@ const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, sho
   const playerInfo = usePlayer<TowerColor>(player.tower)
   return (
     <div css={style(player.tower, position, highlight)} {...props}>
-      <img alt={t('Tour du joueur')} src={towerImage[player.tower]} css={towerStyle} draggable="false"/>
+      <img alt={t('Tour du joueur')} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined)} draggable="false"/>
       <h3 css={[titleStyle, player.eliminated && eliminatedStyle]}>
         <span css={nameStyle}>{playerInfo?.name || getTowerName(t, player.tower)}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
@@ -55,18 +55,19 @@ const style = (tower: TowerColor, position: number, highlight: boolean) => css`
 `
 
 const borderStyle = (highlight: boolean) => highlight ? css`
-  border: 0.2em solid gold;
+  border: 0.2em solid #ffd700;
   box-shadow: 0.2em 0.2em 1em gold;
 ` : css`
   border: 0.2em solid lightslategrey;
   box-shadow: 0.2em 0.2em 1em black;
 `
 
-const towerStyle = css`
+const towerStyle = (towerPlayed:boolean) => css`
   position: absolute;
   height: 90%;
   top: 5%;
   left: 1%;
+  opacity:${towerPlayed?'0.5':'1'};
 `
 
 const titleStyle = css`

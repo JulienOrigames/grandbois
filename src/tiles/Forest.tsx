@@ -1,7 +1,8 @@
 import {css} from '@emotion/core'
-import React, {FunctionComponent, useContext, useEffect, useReducer, useRef, useState} from 'react'
+import React, {FunctionComponent, useContext, useEffect, useRef, useState} from 'react'
 import {
-  forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestTop, forestWidth, riverLeft, screenRatio, spaceHeight, spaceWidth
+  forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestSpaceHeight, forestSpaceWidth, forestTop, forestWidth, riverLeft, screenRatio,
+  spaceHeight, spaceWidth
 } from '../util/Styles'
 import TileCard from './TileCard'
 import GameView from '../types/GameView'
@@ -9,17 +10,25 @@ import {tiles} from './Tiles'
 import {DndContext, DropTargetMonitor, useDrag, useDrop, XYCoord} from 'react-dnd'
 import DraggedTile from '../drag-objects/DraggedTile'
 import {riverTileTop} from './River'
-import {getForestView, isAvailablePosition} from '../Rules'
+import {activePlayerCanPlaceTower, getForestView, isAvailablePosition} from '../Rules'
 import {forestArea} from '../drag-objects/ForestArea'
 import {getEmptyImage} from 'react-dnd-html5-backend'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
-import {useDisplayState} from '@gamepark/workshop'
+import {useDisplayState, usePlay, usePlayerId} from '@gamepark/workshop'
+import TowerColor from '../clans/TowerColor'
+import Button from '../util/Button'
+import {useTranslation} from 'react-i18next'
+import PlaceTower, {placeTower} from '../moves/PlaceTower'
+import ChangeActivePlayer, {changeActivePlayer} from '../moves/ChangeActivePlayer'
+import Images from '../material/Images'
+import {towerImage} from '../clans/TowerInfo'
 
 type Props = {
   game: GameView
 }
 
 const Forest: FunctionComponent<Props> = ({game}) => {
+  const {t} = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
   const [, dropRef] = useDrop({
     accept: 'Tile',
@@ -28,7 +37,7 @@ const Forest: FunctionComponent<Props> = ({game}) => {
       const overPosition = getForestPosition(game, item, monitor,forestCenter)
       if (!overPosition) return false
       //console.log(overPosition.x+'/'+overPosition.y)
-      return isAvailablePosition(getForestView(game.forest), overPosition.x, overPosition.y)
+      return isAvailablePosition(getForestView(game), overPosition.x, overPosition.y)
     },
     drop: (item: DraggedTile, monitor) => {
       const overPosition = getForestPosition(game, item, monitor,forestCenter)
@@ -51,7 +60,6 @@ const Forest: FunctionComponent<Props> = ({game}) => {
     preview(getEmptyImage())
   }, [preview])
   const dragOffsetDiff = useDragOffsetDiff(dragging)
-
   const [forestCenter, setForestCenter] = useDisplayState<XYCoord>(initialForestPosition)
   useEffect(() => {
       // console.log(forestCenter)
@@ -65,6 +73,8 @@ const Forest: FunctionComponent<Props> = ({game}) => {
       )
   }, [dragOffsetDiff, dragging, forestCenter,setForestCenter])
   dragRef(dropRef(ref))
+  const playerId = usePlayerId<TowerColor>()
+  const play = usePlay<PlaceTower|ChangeActivePlayer>()
   return <div css={style} ref={ref}>
     <div css={forestStyle(forestCenter.x + (dragOffsetDiff?.x ?? 0), forestCenter.y + (dragOffsetDiff?.y ?? 0))}>
       {
@@ -77,6 +87,19 @@ const Forest: FunctionComponent<Props> = ({game}) => {
                          transform: rotate(${90 * placedTile.rotation}deg);
        `]}
           />)
+      }
+      {
+        game.players.filter(player => player.towerPosition).map( player =>
+              <div key={player.tower} css={towerStyle(player.tower,player.towerPosition!.x,player.towerPosition!.y)} />
+        )
+      }
+      {
+        playerId && playerId === game.activePlayer && activePlayerCanPlaceTower(game) &&
+        <div css={towerChoiceStyle}>
+            {t('Souhaitez-vous placer votre tour de garde ici ?')}
+            <Button css={css`margin:10px`} onClick={() => play(placeTower())}>{t('Oui')}</Button>
+            <Button css={css`margin:10px`} onClick={() => play(changeActivePlayer())}>{t('Non')}</Button>
+        </div>
       }
     </div>
   </div>
@@ -97,6 +120,45 @@ const forestStyle = (deltaX: number, deltaY: number) => css`
   width:100%;
   height:100%;
   // background:rgba(0,0,0,0.1);
+`
+
+const towerStyle = (tower:TowerColor,x:number,y:number) => css`
+  position:absolute;
+  left: ${forestCardX(x)}%;
+  top: ${forestCardY(y)}%;
+  width: ${forestSpaceWidth}%;
+  height: ${forestSpaceHeight}%;
+  z-index:3;
+  background-image: url(${towerImage[tower]});
+  filter: drop-shadow(0.1em 0.1em 0.4em black);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+`
+
+const images = new Map<TowerColor, any>()
+images.set(TowerColor.WhiteTower, Images.whiteTower)
+images.set(TowerColor.BlueTower, Images.blueTower)
+images.set(TowerColor.BlackTower, Images.blackTower)
+images.set(TowerColor.BrownTower, Images.brownTower)
+
+const towerChoiceStyle = css`
+  position:absolute;
+  top: 58%;
+  right: 2%;
+  width:20%;
+  font-size:3.5em;
+  padding:0.5em;
+  z-index:3;
+  background-image: url(${Images.woodTexture});
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: cover;
+  border-radius: 1em;
+  border: solid 0.1em #8b4513;
+  box-shadow: 0 0 1em #000;
+  text-align:center;
+  color:#fced6c;
 `
 
 function getForestPosition(game: GameView, item: DraggedTile, monitor: DropTargetMonitor, forestCenter:XYCoord) {

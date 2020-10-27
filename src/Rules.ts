@@ -12,12 +12,14 @@ import Clan, {clans} from './clans/Clan'
 import PlayerView from './types/PlayerView'
 import MoveType from './moves/MoveType'
 import PlacedTile from './tiles/PlacedTile'
-import {Bear, Clearing, Space} from './tiles/Tile'
+import {Bear, Clearing, Space, Tower} from './tiles/Tile'
 import {placeForestTile} from './moves/PlaceForestTile'
 import WithAutomaticMoves from '@gamepark/workshop/dist/Types/WithAutomaticMoves'
 import {isGameView} from './types/typeguards'
 import {isRevealNewRiverTileView} from './moves/RevealNewRiverTile'
 import {mod} from './util/Styles'
+import {placeTower} from './moves/PlaceTower'
+import {changeActivePlayer} from './moves/ChangeActivePlayer'
 
 
 const playersMin = 2
@@ -56,29 +58,37 @@ const GrandBoisRules: GameType = {
   },
   getAutomaticMove(game: Game | GameView): void | Move {
     if (!isGameView(game) && game.river.some(tile => !tile) && game.deck.length > 0) return {type: MoveType.RevealNewRiverTile}
-    else if (!isGameView(game) && game.tilePlayed !== undefined) return {type: MoveType.ChangeActivePlayer} // TODO : Clearing and Tower ?
+    else if (!isGameView(game) && automaticEndOfTurn(game)) return {type: MoveType.ChangeActivePlayer}
   },
   getLegalMoves(game: Game): Move[] {
-    const forestView = getForestView(game.forest)
-    // console.log(forestView)
-    const xMin = Math.min(...Array.from(forestView.keys()))
-    const xMax = Math.max(...Array.from(forestView.keys()))
-    const yMin = Math.min(...Array.from(forestView.values()).flatMap(map => Array.from(map.keys())))
-    const yMax = Math.max(...Array.from(forestView.values()).flatMap(map => Array.from(map.keys())))
-    const availablePositions = []
-    for (let x = xMin - 1; x <= xMax + 1; x++) {
-      for (let y = yMin - 1; y <= yMax + 1; y++) {
-        if (isAvailablePosition(forestView, x, y)) availablePositions.push({x, y})
+    let moves: Move[] = []
+
+    if (game.tilePlayed === undefined) {
+      const forestView = getForestView(game)
+      // console.log(forestView)
+      const xMin = Math.min(...Array.from(forestView.keys()))
+      const xMax = Math.max(...Array.from(forestView.keys()))
+      const yMin = Math.min(...Array.from(forestView.values()).flatMap(map => Array.from(map.keys())))
+      const yMax = Math.max(...Array.from(forestView.values()).flatMap(map => Array.from(map.keys())))
+      const availablePositions = []
+      for (let x = xMin - 1; x <= xMax + 1; x++) {
+        for (let y = yMin - 1; y <= yMax + 1; y++) {
+          if (isAvailablePosition(forestView, x, y)) availablePositions.push({x, y})
+        }
       }
-    }
-    // console.log(availablePositions)
-    return availablePositions.flatMap(({x, y}) =>
-      game.river.flatMap(tile =>
-        tile ? [0, 1, 2, 3].filter(rotation => isLegalTilePosition(forestView, {tile, x, y, rotation: rotation}))
-          .map(rotation => placeForestTile({tile, x, y, rotation: rotation})
-          ) : []
+      // console.log(availablePositions)
+      moves = availablePositions.flatMap(({x, y}) =>
+        game.river.flatMap(tile =>
+          tile ? [0, 1, 2, 3].filter(rotation => isLegalTilePosition(forestView, {tile, x, y, rotation: rotation}))
+            .map(rotation => placeForestTile({tile, x, y, rotation: rotation})
+            ) : []
+        )
       )
-    )
+    } else if (activePlayerCanPlaceTower(game)) {
+      moves.push(placeTower())
+      moves.push(changeActivePlayer())
+    }
+    return moves
   },
   play(move: Move | MoveView, game: Game | GameView, playerId: TowerColor) {
     switch (move.type) {
@@ -106,6 +116,17 @@ const GrandBoisRules: GameType = {
         game.activePlayer = game.players[nextPlayerIndex].tower
         break
       }
+      case MoveType.PlaceTower: {
+        const activePlayer = getPlayer(game, game.activePlayer)
+        const clearingIndex = tiles[game.tilePlayed!].findIndex(space => space === Clearing)
+        const tilePlayed = game.forest[game.forest.length - 1]
+        activePlayer.towerPosition = getPlacedTileSpaceXY(tilePlayed, clearingIndex)
+        /*console.log(game.tilePlayed)
+        console.log(tilePlayed)
+        console.log(clearingIndex)
+        console.log(activePlayer.towerPosition)*/
+        break
+      }
     }
   },
 
@@ -117,7 +138,7 @@ const GrandBoisRules: GameType = {
           if (player.tower === playerId) {
             return player
           } else {
-            const { clan, ...playerView } = player
+            const {clan, ...playerView} = player
             return playerView
           }
         }
@@ -151,7 +172,7 @@ function setupPlayers(players?: number | { tower?: TowerColor }[]) {
 }
 
 function setupPlayer(tower: TowerColor, clan: Clan): Player {
-  return {tower, clan: clan}
+  return {tower, clan: clan, towerPosition: undefined}
 }
 
 export function getPlayer(game: Game, tower: TowerColor): Player
@@ -162,9 +183,9 @@ export function getPlayer(game: Game | GameView, tower: TowerColor): Player | Pl
 
 type ForestView = Map<number, Map<number, Space>>
 
-export function getForestView(forest: PlacedTile[]) {
+export function getForestView(game: Game|GameView) {
   const forestView: ForestView = new Map()
-  for (const placedTile of forest) {
+  for (const placedTile of game.forest) {
     if (!forestView.has(placedTile.x)) forestView.set(placedTile.x, new Map())
     if (!forestView.has(placedTile.x + 1)) forestView.set(placedTile.x + 1, new Map())
     forestView.get(placedTile.x)!.set(placedTile.y, tiles[placedTile.tile][mod((0 - placedTile.rotation), 4)])
@@ -172,6 +193,9 @@ export function getForestView(forest: PlacedTile[]) {
     forestView.get(placedTile.x + 1)!.set(placedTile.y + 1, tiles[placedTile.tile][mod((2 - placedTile.rotation), 4)])
     forestView.get(placedTile.x)!.set(placedTile.y + 1, tiles[placedTile.tile][mod((3 - placedTile.rotation), 4)])
   }
+  game.players.filter(player => player.towerPosition).map( player =>
+    forestView.get(player.towerPosition!.x)!.set(player.towerPosition!.y, Tower)
+  )
   return forestView
 }
 
@@ -214,12 +238,34 @@ export function isLegalTilePosition(forestView: ForestView, placedTile: PlacedTi
 }
 
 function canCoverSpace(overSpace: Space, underSpace: Space | undefined) {
-  if (underSpace === Bear) return false // TODO : add Tower condition
-  if (underSpace === undefined || underSpace === Clearing || overSpace === Bear) return true
+  if (underSpace === Bear || underSpace === Tower) return false
+  if (underSpace === undefined || underSpace === Clearing || overSpace === Bear || overSpace === Tower) return true
   if (overSpace === Clearing) return false
   return (overSpace.size > underSpace.size)
 }
 
 const getPlacedSpace = (placedTile: PlacedTile, space: number) => tiles[placedTile.tile][mod((space - placedTile.rotation), 4)]
+
+function getPlacedTileSpaceXY(placedTile: PlacedTile, space: number) {
+  switch(mod((space + placedTile.rotation), 4)){
+    case 0 : return {x:placedTile.x, y:placedTile.y}
+    case 1 : return {x:placedTile.x+1, y:placedTile.y}
+    case 2 : return {x:placedTile.x+1, y:placedTile.y+1}
+    case 3 : return {x:placedTile.x, y:placedTile.y+1}
+  }
+}
+
+export function activePlayerCanPlaceTower(game: Game | GameView) {
+  const activePlayer = getPlayer(game, game.activePlayer)
+  return game.tilePlayed !== undefined
+    && !activePlayer.towerPosition
+    && tiles[game.tilePlayed].find(space => space === Clearing)
+}
+
+export function automaticEndOfTurn(game: Game | GameView) {
+  const activePlayer = getPlayer(game, game.activePlayer)
+  return game.tilePlayed !== undefined
+    && (activePlayer.towerPosition || !tiles[game.tilePlayed].find(space => space === Clearing))
+}
 
 export default GrandBoisRules

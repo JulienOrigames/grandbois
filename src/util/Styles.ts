@@ -50,6 +50,7 @@ export const constructedCardLeftMargin = 1.3
 export const constructedCardBottomMargin = empireCardBottomMargin + 12.4
 export const playerPanelWidth = 19.5
 export const playerPanelHeight = 10
+export const endPlayerPanelHeight = 16.5
 export const playerPanelMargin = 1.5
 export const areasBorders = 0.3
 export const areasCardMargin = 1
@@ -59,6 +60,7 @@ export const areasCardX = constructedCardLeftMargin + cardHeight * cardRatio / s
 export const areasX = areasCardX - areasBorders * 5 / screenRatio
 export const constructedCardY = (index: number) => 100 - cardHeight - constructedCardBottomMargin - index * developmentCardVerticalShift
 export const playerPanelY = (index: number) => headerHeight + playerPanelMargin + index * (playerPanelHeight + playerPanelMargin)
+export const endPlayerPanelY = (index: number) => headerHeight + playerPanelMargin + index * (endPlayerPanelHeight + playerPanelMargin)
 export const playerPanelRightMargin = 1
 export const gameOverDelay = 10
 

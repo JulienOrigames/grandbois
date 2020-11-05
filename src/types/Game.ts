@@ -11,6 +11,7 @@ type Game = {
   activePlayer: TowerColor
   tilePlayed? : number
   tutorial?: boolean
+  over:boolean
 }
 
 export default Game

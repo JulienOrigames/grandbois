@@ -13,7 +13,6 @@ import EjectPopup from './EjectPopup'
 import Images from './material/Images'
 import Move from './moves/Move'
 import RematchPopup from './RematchPopup'
-import {isOver} from './Rules'
 // @ts-ignore
 import toggleSound from './sounds/toggle.ogg'
 import Theme, {LightTheme} from './Theme'
@@ -60,7 +59,7 @@ const MainMenu = () => {
 
   useEffect(() => {
     if (game) {
-      if (isOver(game)) {
+      if (game.over) {
         if (gameOverRef.current === false) {
           setDisplayRematchTooltip(true)
           gameOverRef.current = true
@@ -96,7 +95,7 @@ const MainMenu = () => {
           <FontAwesomeIcon icon={faUserSlash}/>
         </IconButton>
         }
-        {game && !!playerId && (isOver(game) && !game.tutorial ?
+        {game && !!playerId && (game.over && !game.tutorial ?
             <IconButton css={[menuButtonStyle, rematchButtonStyle]} title={t('Proposer une revanche')} onClick={() => rematch()}>
               <FontAwesomeIcon icon={faChess}/>
               {displayRematchTooltip && <span css={tooltipStyle}>{t('Proposer une revanche')}</span>}
@@ -128,6 +127,12 @@ const MainMenu = () => {
           <span css={subMenuTitle}>{t('Cacher le Menu')}</span>
           <FontAwesomeIcon icon={faChevronUp}/>
         </IconButton>
+        {game && !!playerId && game.over && !game.tutorial &&
+        <IconButton css={[menuButtonStyle, rematchButtonStyle]} title={t('Proposer une revanche')}>
+            <span css={subMenuTitle}>{t('Proposer une revanche')}</span>
+            <FontAwesomeIcon icon={faChess}/>
+        </IconButton>
+        }
         {fscreen.fullscreenEnabled && (fullScreen ?
             <IconButton css={[menuButtonStyle, fullScreenButtonStyle]}
                         onClick={() => toggle.play() && fscreen.exitFullscreen()}>
@@ -140,13 +145,7 @@ const MainMenu = () => {
               <FontAwesomeIcon icon={faExpand}/>
             </IconButton>
         )}
-        {game && !!playerId && isOver(game) && !game.tutorial &&
-        <IconButton css={[menuButtonStyle, rematchButtonStyle]} title={t('Proposer une revanche')}>
-          <span css={subMenuTitle}>{t('Proposer une revanche')}</span>
-          <FontAwesomeIcon icon={faChess}/>
-        </IconButton>
-        }
-        {game && !!playerId && !isOver(game) &&
+        {game && !!playerId && !game.over &&
         <IconButton css={[menuButtonStyle, undoButtonStyle]}
                     onClick={() => toggle.play() } >
           <span css={subMenuTitle}>{t('Annuler mon dernier coup')}</span>

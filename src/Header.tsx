@@ -9,7 +9,6 @@ import {useTranslation} from 'react-i18next'
 import MainMenu from './MainMenu'
 import TowerColor from './clans/TowerColor'
 import Move from './moves/Move'
-import {isOver} from './Rules'
 import Theme, {LightTheme} from './Theme'
 import GameView from './types/GameView'
 import Player from './types/Player'
@@ -57,7 +56,7 @@ const Header: FunctionComponent<Props> = ({game, loading}) => {
   const players = usePlayers<TowerColor>()
   const {t} = useTranslation()
   const theme = useTheme<Theme>()
-  const gameOver = game !== undefined && isOver(game)
+  const gameOver = game !== undefined && game.over
   const [scoreSuspense, setScoreSuspense] = useState(false)
   useEffect(() => {
     if (gameOver) {

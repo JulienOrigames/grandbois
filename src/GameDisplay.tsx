@@ -1,5 +1,5 @@
 import {Letterbox, usePlayerId} from '@gamepark/workshop'
-import React, {FunctionComponent, useMemo} from 'react'
+import React, {FunctionComponent, useMemo, useRef} from 'react'
 import GameView from './types/GameView'
 import {cardHeight, cardStyle, cardWidth, fadeIn} from './util/Styles'
 import {css} from '@emotion/core'
@@ -8,24 +8,25 @@ import River from './tiles/River'
 import Forest from './tiles/Forest'
 import ClanCard from './clans/ClanCard'
 import TowerColor from './clans/TowerColor'
-import {isOver} from './Rules'
 import PlayerPanel from './players/PlayerPanel'
 import Player from './types/Player'
+import ScorePanel from './players/ScorePanel'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const player = players.find(player => player.tower === playerId) as Player | undefined
-  const gameOver = isOver(game)
+  const gameWasLive = useRef(!game.over)
   return (
     <Letterbox css={letterBoxStyle}>
       <DrawPile game={game}/>
-      <River game={game} />
+      { !game.over && <River game={game} />}
       <Forest game={game}/>
-      <ClanCard css={[cardStyle,clanStyle]} clan={player?.clan} />
+      <ClanCard css={[cardStyle,clanStyle]} clan={player?.clan} showScore={game.over}/>
       {players.map((player, index) =>
-        <PlayerPanel key={player.tower} player={player} position={index} highlight={player.tower === playerId}  showScore={gameOver} />
+        <PlayerPanel key={player.tower} player={player} position={index} highlight={player.tower === playerId}  showScore={game.over} />
       )}
+      {game.over && <ScorePanel game={game} animation={gameWasLive.current}/>}
     </Letterbox>
   )
 }

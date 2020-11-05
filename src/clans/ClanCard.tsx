@@ -4,13 +4,13 @@ import Images from '../material/Images'
 import Clan from './Clan'
 
 
-type Props = { clan?: Clan } & React.HTMLAttributes<HTMLDivElement>
+type Props = { clan?: Clan, showScore:boolean } & React.HTMLAttributes<HTMLDivElement>
 
-const ClanCard = forwardRef<HTMLDivElement, Props>(({clan, ...props}, ref) => {
-  const [showClanCard, setShowClanCard] = useState(false)
+const ClanCard = forwardRef<HTMLDivElement, Props>(({clan, showScore,...props}, ref) => {
+  const [showClanCard, setShowClanCard] = useState(showScore)
   return (
     <div ref={ref} {...props} css={[style(clan),showClanCard && flipStyle ]}
-         onMouseDown={() => setShowClanCard(true)} onMouseUp={() => setShowClanCard(false)}>
+         onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}>
     </div>
   )
 })

@@ -58,7 +58,29 @@ import rotate from './rotate.png'
 import rotateDark from './rotate-dark.png'
 import forestGround from './menus/forest-ground.jpg'
 import woodTexture from './menus/wood-texture.jpg'
-
+import arrowOrange from './menus/arrow-orange.png'
+import arrowWhite from './menus/arrow-white.png'
+import scoreIcon from './score-icon.png'
+import iconFox from './icon-fox.png'
+import iconToad from './icon-toad.png'
+import iconRaccoon from './icon-raccoon.png'
+import iconLizard from './icon-lizard.png'
+import iconRabbit from './icon-rabbit.png'
+import iconFoxes from './icon-foxes.png'
+import iconToads from './icon-toads.png'
+import iconRaccoons from './icon-raccoons.png'
+import iconLizards from './icon-lizards.png'
+import iconRabbits from './icon-rabbits.png'
+import iconFoxOthers from './icon-fox-others.png'
+import iconToadOthers from './icon-toad-others.png'
+import iconRaccoonOthers from './icon-raccoon-others.png'
+import iconLizardOthers from './icon-lizard-others.png'
+import iconRabbitOthers from './icon-rabbit-others.png'
+import iconFoxesTower from './icon-foxes-tower.png'
+import iconToadsTower from './icon-toads-tower.png'
+import iconRaccoonsTower from './icon-raccoons-tower.png'
+import iconLizardsTower from './icon-lizards-tower.png'
+import iconRabbitsTower from './icon-rabbits-tower.png'
 
 const Images = {
   buttonBlack, buttonBlue, buttonGreen, buttonGrey, buttonRed, buttonYellow, coverArtwork169,textureGrey,
@@ -70,7 +92,11 @@ const Images = {
   cardToads, cardRabbits, cardFoxes, cardRaccoons, cardLizards, cardClanBack,
   brownTower, blackTower, blueTower, whiteTower,
   rotate,rotateDark,
-  forestGround, woodTexture
+  forestGround, woodTexture, arrowOrange, arrowWhite, scoreIcon,
+  iconFox,iconLizard,iconRabbit,iconRaccoon,iconToad,
+  iconFoxes,iconLizards,iconRabbits,iconRaccoons,iconToads,
+  iconFoxesTower,iconLizardsTower,iconRabbitsTower,iconRaccoonsTower,iconToadsTower,
+  iconFoxOthers,iconLizardOthers,iconRabbitOthers,iconRaccoonOthers,iconToadOthers
 }
 
 export default Images

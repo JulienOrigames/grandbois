@@ -8,9 +8,5 @@ export function isGameView(game: Game | GameView): game is GameView {
 }
 
 export function isPlayer(player: Player | PlayerView): player is Player {
-  return true
-}
-
-export function isPlayerView(player: Player | PlayerView): player is PlayerView {
-  return true
+  return (player as Player).clan !== undefined
 }

@@ -4,7 +4,7 @@ import React, {FunctionComponent} from 'react'
 import {useTranslation} from 'react-i18next'
 import Player from '../types/Player'
 import PlayerView from '../types/PlayerView'
-import {playerPanelHeight, playerPanelRightMargin, playerPanelWidth, playerPanelY} from '../util/Styles'
+import {endPlayerPanelHeight, endPlayerPanelY, playerPanelHeight, playerPanelRightMargin, playerPanelWidth, playerPanelY} from '../util/Styles'
 import Timer from './Timer'
 import TowerColor from '../clans/TowerColor'
 import {getTowerName, towerImage} from '../clans/TowerInfo'
@@ -21,7 +21,7 @@ const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, sho
   const options = useOptions()
   const playerInfo = usePlayer<TowerColor>(player.tower)
   return (
-    <div css={style(player.tower, position, highlight)} {...props}>
+    <div css={style(player.tower, position, highlight, showScore)} {...props}>
       <img alt={t('Tour du joueur')} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined)} draggable="false"/>
       <h3 css={[titleStyle, player.eliminated && eliminatedStyle]}>
         <span css={nameStyle}>{playerInfo?.name || getTowerName(t, player.tower)}</span>
@@ -31,13 +31,13 @@ const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, sho
   )
 }
 
-const style = (tower: TowerColor, position: number, highlight: boolean) => css`
+const style = (tower: TowerColor, position: number, highlight: boolean, showScore:boolean) => css`
   position: absolute;
   z-index: 1;
-  top: ${playerPanelY(position)}%;
+  top: ${showScore?endPlayerPanelY(position):playerPanelY(position)}%;
   right: ${playerPanelRightMargin}%;
   width: ${playerPanelWidth}%;
-  height: ${playerPanelHeight}%;
+  height: ${showScore?endPlayerPanelHeight:playerPanelHeight}%;
   border-radius: 5px;
   ${borderStyle(highlight)};
   

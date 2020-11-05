@@ -9,16 +9,19 @@ import TileCard from './TileCard'
 const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
   const {t} = useTranslation()
   return <>
-    {[...Array(Math.min(game.deck, drawPileMaxSize))].map((_, index) =>
-      <TileCard key={index} css={[cardStyle, css`
-      top: ${drawPileCardY(index)}%;
-      left: ${drawPileCardX(index)}%;
-      z-index:2;
-    `]}/>)}
-    <div css={drawPileTooltip} data-tip />
-    <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green' >
-      <span>{t('Nb de tuiles : {nbDeck}',{nbDeck:game.deck})}  </span>
-    </ReactTooltip>
+    {
+      !game.over &&
+      <>
+        {[...Array(Math.min(game.deck, drawPileMaxSize))].map((_, index) =>
+          <TileCard key={index} css={[cardStyle, css`
+                                                  top: ${drawPileCardY(index)}%;
+                                                  left: ${drawPileCardX(index)}%;
+                                                  z-index:2;
+                                                `]}/>)}
+          <div css={drawPileTooltip} data-tip={t('Nb de tuiles : {nbDeck}', {nbDeck: game.deck})}/>
+      </>
+    }
+    <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green'/>
   </>
 }
 
@@ -31,7 +34,7 @@ const drawPileTooltip = css`
   position: absolute;
   top: ${drawPileCardY(0)}%;
   left: ${drawPileCardX(0)}%;
-  width: ${cardWidth + drawPileMaxSize*0.05}%;
+  width: ${cardWidth + drawPileMaxSize * 0.05}%;
   height: ${cardHeight}%;
   z-index:2;
 `

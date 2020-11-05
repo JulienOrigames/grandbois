@@ -144,8 +144,8 @@ images.set(TowerColor.BrownTower, Images.brownTower)
 
 const towerChoiceStyle = css`
   position:absolute;
-  top: 58%;
-  right: 2%;
+  top: 56%;
+  right: 1%;
   width:20%;
   font-size:3.5em;
   padding:0.5em;

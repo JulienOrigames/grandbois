@@ -250,25 +250,6 @@ export function isLegalTilePosition(forestView: ForestView, placedTile: PlacedTi
   if (canCoverSpace(getPlacedSpace(placedTile, 1), forestView.get(placedTile.x + 1)?.get(placedTile.y))) legalSpace++
   if (canCoverSpace(getPlacedSpace(placedTile, 2), forestView.get(placedTile.x + 1)?.get(placedTile.y + 1))) legalSpace++
   if (canCoverSpace(getPlacedSpace(placedTile, 3), forestView.get(placedTile.x)?.get(placedTile.y + 1))) legalSpace++
-  // console.log(placedTile.tile)
-  // console.log(placedTile.rotation)
-  // console.log('--')
-  //  console.log(getPlacedSpace(placedTile,0))
-  //  console.log('=>')
-  //  console.log(forestView.get(placedTile.x)?.get(placedTile.y))
-  // console.log('--')
-  //  console.log(getPlacedSpace(placedTile,1))
-  //  console.log('=>')
-  //  console.log(forestView.get(placedTile.x+1)?.get(placedTile.y))
-  // console.log('--')
-  //  console.log(getPlacedSpace(placedTile,2))
-  //  console.log('=>')
-  //  console.log(forestView.get(placedTile.x+1)?.get(placedTile.y+1))
-  // console.log('--')
-  //  console.log(getPlacedSpace(placedTile,3))
-  //  console.log('=>')
-  //  console.log(forestView.get(placedTile.x)?.get(placedTile.y+1))
-  // console.log('--')
   return legalSpace === 4
 }
 

@@ -22,8 +22,8 @@ const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, sho
   const playerInfo = usePlayer<TowerColor>(player.tower)
   return (
     <div css={style(player.tower, position, highlight, showScore)} {...props}>
-      <img alt={t('Tour du joueur')} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined)} draggable="false"/>
-      <h3 css={[titleStyle, player.eliminated && eliminatedStyle]}>
+      <img alt={getTowerName(t, player.tower)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined)} draggable="false"/>
+      <h3 css={[titleStyle(showScore), player.eliminated && eliminatedStyle]}>
         <span css={nameStyle}>{playerInfo?.name || getTowerName(t, player.tower)}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
@@ -33,7 +33,7 @@ const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, sho
 
 const style = (tower: TowerColor, position: number, highlight: boolean, showScore:boolean) => css`
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: ${showScore?endPlayerPanelY(position):playerPanelY(position)}%;
   right: ${playerPanelRightMargin}%;
   width: ${playerPanelWidth}%;
@@ -70,15 +70,15 @@ const towerStyle = (towerPlayed:boolean) => css`
   opacity:${towerPlayed?'0.5':'1'};
 `
 
-const titleStyle = css`
+const titleStyle = (showScore:boolean) => css`
   color: #333333;
   position: absolute;
   top: 5%;
-  left: 20%;
+  left: ${showScore?'25':'20'}%;
   right: 2%;
   height: 90%;
   margin: 0;
-  font-size: 2.9em;
+  font-size: 2em;
   line-height: 3em;
   font-weight: bold;
   display: flex;

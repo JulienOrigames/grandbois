@@ -1,17 +1,17 @@
 {
   "name": "grandbois",
   "version": "0.1.0",
-  "description": "GrandBois adaptation for interlude.games",
+  "description": "GrandBois adaptation for Game Park",
   "main": "dist/Rules.js",
   "files": [
     "dist"
   ],
   "keywords": [
-    "Interlude",
+    "Game Park",
     "Board game",
     "GrandBois"
   ],
-  "author": "Romain Fromi <romain.fromi@interlude.games> (https://interlude.games/)",
+  "author": "Julien Bes <julien@origames.fr> (https://game-park.com/)",
   "license": "ISC",
   "dependencies": {
     "@emotion/core": "^10.0.28",
@@ -23,6 +23,7 @@
     "emotion-theming": "^10.0.27",
     "fscreen": "^1.0.2",
     "i18next-icu": "^1.3.1",
+    "imagemin-webp-webpack-plugin": "^3.3.3",
     "moment": "^2.27.0",
     "nosleep.js": "^0.9.0",
     "react-dnd": "^11.1.3",

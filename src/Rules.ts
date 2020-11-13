@@ -97,7 +97,7 @@ const GrandBoisRules: GameType = {
     }
     return moves
   },
-  play(move: Move | MoveView, game: Game | GameView, playerId: TowerColor) {
+  play(move: Move | MoveView, game: Game | GameView) {
     switch (move.type) {
       case MoveType.PlaceForestTile: {
         game.forest.push(move.placedTile)
@@ -218,7 +218,7 @@ export function getForestView(game: Game | GameView) {
     forestView.get(placedTile.x + 1)!.set(placedTile.y + 1, tiles[placedTile.tile][mod((2 - placedTile.rotation), 4)])
     forestView.get(placedTile.x)!.set(placedTile.y + 1, tiles[placedTile.tile][mod((3 - placedTile.rotation), 4)])
   }
-  game.players.filter(player => player.towerPosition).map(player =>
+  game.players.filter(player => player.towerPosition).forEach(player =>
     forestView.get(player.towerPosition!.x)!.set(player.towerPosition!.y, Tower)
   )
   return forestView
@@ -270,7 +270,7 @@ function getPlacedTileSpaceXY(placedTile: PlacedTile, space: number) {
       return {x: placedTile.x + 1, y: placedTile.y}
     case 2 :
       return {x: placedTile.x + 1, y: placedTile.y + 1}
-    case 3 :
+    default :
       return {x: placedTile.x, y: placedTile.y + 1}
   }
 }

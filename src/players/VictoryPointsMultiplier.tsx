@@ -99,7 +99,7 @@ const getScoreTypeDescription = (t: TFunction, item: number) => {
       return t('2 x le nombre de cases de la plus grande zone de son clan')
     case 2:
       return t('2 x le nombre de cases de son clan autour de sa tour de garde')
-    case 3:
+    default:
       return t('1 x le nombre de cases d’autres clans autour de sa tour de garde')
   }
 }

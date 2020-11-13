@@ -1,6 +1,6 @@
 {
   "name": "grandbois",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "GrandBois adaptation for Game Park",
   "main": "dist/Rules.js",
   "files": [

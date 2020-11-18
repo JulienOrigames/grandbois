@@ -10,8 +10,9 @@ const ClanCard = forwardRef<HTMLDivElement, Props>(({clan, showScore,...props}, 
   const [showClanCard, setShowClanCard] = useState(showScore)
   return (
     <div ref={ref} {...props} css={[style(clan),showClanCard && flipStyle ]}
-         onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}>
-    </div>
+         onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
+         onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
+    />
   )
 })
 
@@ -19,6 +20,7 @@ const style = (clan?: Clan) => css`
   border-radius: 6%;
   box-shadow: 0 0 5px black;
   transform-style: preserve-3d;
+  cursor:pointer;
   &:before, &:after {
     content: '';
     position: absolute;

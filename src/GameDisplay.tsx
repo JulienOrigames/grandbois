@@ -1,7 +1,7 @@
 import {Letterbox, usePlayerId} from '@gamepark/workshop'
 import React, {FunctionComponent, useMemo, useRef} from 'react'
 import GameView from './types/GameView'
-import {cardHeight, cardStyle, cardWidth, fadeIn} from './util/Styles'
+import {cardStyle, fadeIn} from './util/Styles'
 import {css} from '@emotion/core'
 import DrawPile from './tiles/DrawPile'
 import River from './tiles/River'
@@ -48,12 +48,7 @@ const letterBoxStyle = css`
 const clanStyle = css`
   bottom: 2%;
   right: 1%;
-  height:${cardHeight}%;
-  width:${cardWidth}%;
   z-index:2;
-  & > img {
-    box-shadow: 0 0 3px black;
-  }
 `
 
 

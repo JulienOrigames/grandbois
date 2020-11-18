@@ -10,7 +10,7 @@ import {tiles} from './Tiles'
 import {DndContext, DropTargetMonitor, useDrag, useDrop, XYCoord} from 'react-dnd'
 import DraggedTile from '../drag-objects/DraggedTile'
 import {riverTileTop} from './River'
-import {activePlayerCanPlaceTower, getForestView, isAvailablePosition} from '../Rules'
+import {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, isAvailablePosition} from '../Rules'
 import {forestArea} from '../drag-objects/ForestArea'
 import {getEmptyImage} from 'react-dnd-html5-backend'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
@@ -22,6 +22,7 @@ import PlaceTower, {placeTower} from '../moves/PlaceTower'
 import ChangeActivePlayer, {changeActivePlayer} from '../moves/ChangeActivePlayer'
 import Images from '../material/Images'
 import {towerImage} from '../clans/TowerInfo'
+import {Clearing} from './Tile'
 
 type Props = {
   game: GameView
@@ -95,7 +96,7 @@ const Forest: FunctionComponent<Props> = ({game}) => {
       }
       {
         playerId && playerId === game.activePlayer && activePlayerCanPlaceTower(game) &&
-        <div css={towerChoiceStyle}>
+        <div css={towerChoiceStyle(getTowerChoicePosition(game))}>
             {t('Souhaitez-vous placer votre tour de garde ici ?')}
             <Button css={css`margin:10px`} onClick={() => play(placeTower())}>{t('Oui')}</Button>
             <Button css={css`margin:10px`} onClick={() => play(changeActivePlayer())}>{t('Non')}</Button>
@@ -107,19 +108,23 @@ const Forest: FunctionComponent<Props> = ({game}) => {
 
 export const initialForestPosition = {x: 0, y: 0}
 
+function getTowerChoicePosition (game:GameView){
+  const lastTile = game.forest[game.forest.length - 1]
+  const clearingIndex = tiles[lastTile.tile].findIndex(space => space === Clearing)
+  return getPlacedTileSpaceXY(lastTile, clearingIndex)
+}
+
 const style = css`
   position: absolute;
   top: ${forestTop}%;
   left: ${forestLeft}%;
   width: ${forestWidth}%;
   height: ${forestHeight}%;
-  //overflow:hidden;
 `
 const forestStyle = (deltaX: number, deltaY: number) => css`
   transform:translate(${deltaX}px,${deltaY}px);
   width:100%;
   height:100%;
-  // background:rgba(0,0,0,0.1);
 `
 
 const towerStyle = (tower:TowerColor,x:number,y:number) => css`
@@ -142,19 +147,19 @@ images.set(TowerColor.BlueTower, Images.blueTower)
 images.set(TowerColor.BlackTower, Images.blackTower)
 images.set(TowerColor.BrownTower, Images.brownTower)
 
-const towerChoiceStyle = css`
+const towerChoiceStyle = (clearingSpace:XYCoord) => css`
   position:absolute;
-  top: 56%;
-  right: 1%;
+  left: ${forestCardX(clearingSpace.x)+(spaceWidth/2)}%;
+  top: ${forestCardY(clearingSpace.y)+(spaceHeight/2)}%;
   width:20%;
-  font-size:3.5em;
+  font-size:2.5em;
   padding:0.5em;
-  z-index:3;
+  z-index:5;
   background-image: url(${Images.woodTexture});
   background-position: center center;
   background-repeat: repeat;
   background-size: cover;
-  border-radius: 1em;
+  border-radius: 0 1em 1em 1em;
   border: solid 0.1em #8b4513;
   box-shadow: 0 0 1em #000;
   text-align:center;
@@ -192,14 +197,6 @@ const getInsideForestCoordinates = (game: GameView, playingTile: DraggedTile, co
   x: Math.round(playingTile.x! + (coordinates.x / spaceWidth)),
   y: Math.round(playingTile.y! + (coordinates.y / spaceHeight))
 })
-
-// function fromPXToSpace (coordinates: XYCoord) {
-//   const percent = convertIntoPercent(coordinates)
-//   return {
-//     x: Math.round(percent.x / spaceWidth),
-//     y: Math.round(percent.y / spaceHeight)
-//   }
-// }
 
 const useDragOffsetDiff = (enabled: Boolean, fps = 60) => {
   const {dragDropManager} = useContext(DndContext)

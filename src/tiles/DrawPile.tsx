@@ -18,10 +18,11 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
                                                   left: ${drawPileCardX(index)}%;
                                                   z-index:2;
                                                 `]}/>)}
-          <div css={drawPileTooltip} data-tip={t('Nb de tuiles : {nbDeck}', {nbDeck: game.deck})}/>
+          <div css={drawPileTooltip} data-tip={t('Nombre de tuiles restantes : {nbDeck}', {nbDeck: game.deck})}/>
       </>
     }
     <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green'/>
+    { game.deck && <div css={nbStyle} data-tip={t('Nombre de tuiles restantes : {nbDeck}', {nbDeck: game.deck})}>{game.deck}</div> }
   </>
 }
 
@@ -37,6 +38,18 @@ const drawPileTooltip = css`
   width: ${cardWidth + drawPileMaxSize * 0.05}%;
   height: ${cardHeight}%;
   z-index:2;
+`
+
+const nbStyle = css`
+  position: absolute;
+  top: ${drawpileTop + 1}%;
+  left: ${riverLeft + cardWidth - 2}%;
+  z-index:3;
+  font-weight: bold;
+  color: #fff381;
+  text-shadow: 0 0 0.01em black;
+  font-size: 2em;
+  text-align:right;
 `
 
 export default DrawPile

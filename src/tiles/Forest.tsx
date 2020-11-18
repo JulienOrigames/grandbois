@@ -158,7 +158,7 @@ const towerChoiceStyle = css`
   border: solid 0.1em #8b4513;
   box-shadow: 0 0 1em #000;
   text-align:center;
-  color:#fced6c;
+  color:#fff381;
 `
 
 function getForestPosition(game: GameView, item: DraggedTile, monitor: DropTargetMonitor, forestCenter:XYCoord) {

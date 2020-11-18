@@ -128,10 +128,6 @@ const GrandBoisRules: GameType = {
         const clearingIndex = tiles[game.tilePlayed!].findIndex(space => space === Clearing)
         const tilePlayed = game.forest[game.forest.length - 1]
         activePlayer.towerPosition = getPlacedTileSpaceXY(tilePlayed, clearingIndex)
-        /*console.log(game.tilePlayed)
-        console.log(tilePlayed)
-        console.log(clearingIndex)
-        console.log(activePlayer.towerPosition)*/
         break
       }
       case MoveType.RevealClans: {
@@ -262,7 +258,7 @@ function canCoverSpace(overSpace: Space, underSpace: Space | undefined) {
 
 const getPlacedSpace = (placedTile: PlacedTile, space: number) => tiles[placedTile.tile][mod((space - placedTile.rotation), 4)]
 
-function getPlacedTileSpaceXY(placedTile: PlacedTile, space: number) {
+export function getPlacedTileSpaceXY(placedTile: PlacedTile, space: number) {
   switch (mod((space + placedTile.rotation), 4)) {
     case 0 :
       return {x: placedTile.x, y: placedTile.y}

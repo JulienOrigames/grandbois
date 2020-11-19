@@ -57,6 +57,7 @@ const GrandBoisRules: GameType = {
     return game.players.map(player => player.tower)
   },
   getActivePlayer(game: Game): TowerColor {
+    // return game.over?undefined:game.activePlayer
     return game.activePlayer
   },
   getAutomaticMove(game: Game | GameView): void | Move {

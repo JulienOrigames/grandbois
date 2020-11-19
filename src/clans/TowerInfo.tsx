@@ -18,13 +18,13 @@ const TowerInfo: FunctionComponent<Props> = ({player, gameOver, withResourceDrop
 export function getTowerName(t: TFunction, tower: TowerColor) {
   switch (tower) {
     case TowerColor.BlackTower:
-      return t('Tour de garde noire')
+      return t('Joueur noir')
     case TowerColor.BlueTower:
-      return t('Tour de garde bleue')
+      return t('Joueur bleu')
     case TowerColor.BrownTower:
-      return t('Tour de garde marron')
+      return t('Joueur marron')
     case TowerColor.WhiteTower:
-      return t('Tour de garde blanche')
+      return t('Joueur blanc')
   }
 }
 

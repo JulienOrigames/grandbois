@@ -1,5 +1,5 @@
 import {css} from '@emotion/core'
-import {GameSpeed, useOptions, usePlayer} from '@gamepark/workshop'
+import {GameSpeed, useOptions, usePlayer, usePlayerId} from '@gamepark/workshop'
 import React, {FunctionComponent} from 'react'
 import {useTranslation} from 'react-i18next'
 import Player from '../types/Player'
@@ -20,11 +20,12 @@ const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, sho
   const {t} = useTranslation()
   const options = useOptions()
   const playerInfo = usePlayer<TowerColor>(player.tower)
+  const playerID = usePlayerId<TowerColor>()
   return (
     <div css={style(player.tower, position, highlight, showScore)} {...props}>
       <img alt={getTowerName(t, player.tower)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined)} draggable="false"/>
       <h3 css={[titleStyle(showScore), player.eliminated && eliminatedStyle]}>
-        <span css={nameStyle}>{playerInfo?.name || getTowerName(t, player.tower)}</span>
+        <span css={nameStyle}>{ player.tower === playerID ? t('Vous') : ( playerInfo?.name || getTowerName(t, player.tower) )}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
     </div>

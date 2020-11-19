@@ -26,7 +26,7 @@ const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
       <Forest game={game}/>
       <ClanCard css={[cardStyle,clanStyle]} clan={player?.clan} showScore={game.over} data-tip={game.over?t('Tuile Clan'):t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}/>
       {players.map((player, index) =>
-        <PlayerPanel key={player.tower} player={player} position={index} highlight={player.tower === playerId}  showScore={game.over} />
+        <PlayerPanel key={player.tower} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}
       {game.over && <ScorePanel game={game} animation={gameWasLive.current}/>}
     </Letterbox>

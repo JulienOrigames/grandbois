@@ -110,9 +110,9 @@ export const areaCardStyle = css`
   z-index: 1;
 `
 
-export const getCardFocusTransform = css`
+export const getCardFocusTransform = (rotation:number) => css`
   z-index: 100;
-  transform: translate(${50 * 100 / cardWidth - 50}%, ${50 * 100 / cardHeight - 50}%) scale(3) !important;
+  transform: translate(${50 * 100 / cardWidth - 50}%, ${50 * 100 / cardHeight - 50}%) scale(3) rotate(${90 * rotation}deg) !important;
 `
 
 export const glow = (color: string, from = '5px', to = '30px') => keyframes`
@@ -236,4 +236,32 @@ export const closePopupStyle = css`
     cursor: pointer;
     color: #26d9d9;
   }
+`
+
+export const button = css`
+  position: absolute;
+  z-index: 100;
+  left: ${51 + cardWidth * 1.5}%;
+  font-size: 3.2em;
+  font-weight: lighter;
+  color: #EEE;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 1em;
+  padding: 0.3em 0.6em;
+  & svg {
+    margin-right: 0.3em;
+  }
+  &:hover, &:focus {
+    outline:0;
+    transform: translateY(1px) scale(1.05);
+    cursor: pointer;
+  }
+  &:active {
+    border-style: inset;
+    transform: translateY(1px);
+  }
+`
+
+export const closeButton = css`
+  top: ${16.5}%;
 `

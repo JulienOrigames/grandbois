@@ -1,8 +1,11 @@
 import {css} from '@emotion/core'
+import {faTimes} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import React, {FunctionComponent, useContext, useEffect, useRef, useState} from 'react'
 import {
-  forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestSpaceHeight, forestSpaceWidth, forestTop, forestWidth, riverLeft, screenRatio,
-  spaceHeight, spaceWidth
+  button, closeButton, forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestSpaceHeight, forestSpaceWidth, forestTop, forestWidth,
+  getCardFocusTransform,
+  popupBackgroundStyle, riverLeft, screenRatio, spaceHeight, spaceWidth
 } from '../util/Styles'
 import TileCard from './TileCard'
 import GameView from '../types/GameView'
@@ -76,17 +79,27 @@ const Forest: FunctionComponent<Props> = ({game}) => {
   dragRef(dropRef(ref))
   const playerId = usePlayerId<TowerColor>()
   const play = usePlay<PlaceTower|ChangeActivePlayer>()
+  const [focusedTile, setFocusedTile] = useState<number>()
   return <div css={style} ref={ref}>
+    {focusedTile !== undefined &&
+    <>
+        <div css={popupBackgroundStyle} onClick={() => setFocusedTile(undefined)}/>
+        <button css={[button, closeButton]} onClick={() => setFocusedTile(undefined)}><FontAwesomeIcon icon={faTimes}/>{t('Fermer')}</button>
+        <TileCard tile={tiles[focusedTile]} css={[forestCardStyle,getCardFocusTransform(game.forest.find(placedTile => placedTile.tile === focusedTile )!.rotation)]} />
+    </>
+    }
     <div css={forestStyle(forestCenter.x + (dragOffsetDiff?.x ?? 0), forestCenter.y + (dragOffsetDiff?.y ?? 0))}>
       {
         game.forest.map((placedTile) =>
           <TileCard key={placedTile.tile}
                     tile={tiles[placedTile.tile]}
-                    css={[forestCardStyle, css`
+                    css={[forestCardStyle,
+                          css`
                          left: ${forestCardX(placedTile.x)}%;
                          top: ${forestCardY(placedTile.y)}%;
                          transform: rotate(${90 * placedTile.rotation}deg);
-       `]}
+                          `]}
+                    onClick={() => setFocusedTile(placedTile.tile)}
           />)
       }
       {

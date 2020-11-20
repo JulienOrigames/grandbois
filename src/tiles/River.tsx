@@ -1,11 +1,13 @@
 import {css} from '@emotion/core'
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import {cardHeight, cardStyle, placedCardX, placedCardY, riverLeft, riverTop, topMargin} from '../util/Styles'
+import {
+  cardHeight, cardStyle, placedCardX, placedCardY, riverAreaHeight, riverAreaLeft, riverAreaTop, riverAreaWidth, riverLeft, riverTop, topMargin
+} from '../util/Styles'
 import TileCard from './TileCard'
 import {tiles} from './Tiles'
 import GameView from '../types/GameView'
 import {Draggable, useDisplayState, usePlay, usePlayerId} from '@gamepark/workshop'
-import {draggedTile} from '../drag-objects/DraggedTile'
+import DraggedTile, {draggedTile} from '../drag-objects/DraggedTile'
 import PlacedTile from './PlacedTile'
 import {getForestView, isLegalTilePosition} from '../Rules'
 import Images from '../material/Images'
@@ -13,7 +15,7 @@ import TowerColor from '../clans/TowerColor'
 import Button from '../util/Button'
 import PlaceForestTile, {placeForestTile} from '../moves/PlaceForestTile'
 import {useTranslation} from 'react-i18next'
-import {XYCoord} from 'react-dnd'
+import {useDrop, XYCoord} from 'react-dnd'
 import {convertIntoPercent, initialForestPosition} from './Forest'
 import {useTheme} from 'emotion-theming'
 import Theme, {LightTheme} from '../Theme'
@@ -41,6 +43,11 @@ const River: FunctionComponent<Props> = ({game}) => {
   const [forestCenter] = useDisplayState<XYCoord>(initialForestPosition)
   const deltaPercent = convertIntoPercent(forestCenter)
   const isLegalTile = playingTile && isLegalTilePosition(getForestView(game), playingTile)
+  const [, ref] = useDrop({
+    accept: 'Tile',
+    canDrop: (item: DraggedTile) => item.rotation !== undefined,
+    drop: () => undefined
+  })
   return <>
     {
       game.river.map((tile, index) => {
@@ -54,7 +61,7 @@ const River: FunctionComponent<Props> = ({game}) => {
                               playingTile && playingTile.tile === tile && borderStyle(isLegalTile!),
                               playingTile && playingTile.tile === tile ? playingTileStyle(playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y) : riverTileStyle(index)
                             ]}>
-            <TileCard tile={tiles[tile]} css={playingTile && playingTile.tile === tile && draggedTileStyle(playingTile.rotation,theme)}
+            <TileCard tile={tiles[tile]} css={playingTile && playingTile.tile === tile && draggedTileStyle(playingTile.rotation, theme)}
                       onClick={event => rotate(event, tile)}/>
           </Draggable>
         }
@@ -64,17 +71,17 @@ const River: FunctionComponent<Props> = ({game}) => {
       playingTile && isLegalTile
       && <Button css={validStyle} onClick={() => play(placeForestTile(playingTile))}>{t('Valider')}</Button>
     }
-    <div css={style}></div>
+    <div ref={ref} css={riverAreaStyle} />
   </>
 }
 
-const style = css`
+const riverAreaStyle = css`
   z-index:1;
   position:absolute;
-  left: 1.1%;
-  top:7%;
-  width:10.9%;
-  height:93%;
+  left: ${riverAreaLeft}%;
+  top:${riverAreaTop}%;
+  width:${riverAreaWidth}%;
+  height:${riverAreaHeight}%;
   background-image: url(${Images.woodTexture});
   background-position: center center;
   background-repeat: repeat;
@@ -112,7 +119,7 @@ const borderStyle = (highlight: boolean) => highlight ? css`
   box-shadow: 0.2em 0.2em 1em darkred;
 `
 
-const draggedTileStyle = (rotation: number,theme: Theme) => css`
+const draggedTileStyle = (rotation: number, theme: Theme) => css`
   transform: rotate(${90 * rotation}deg);
   &:before {
     content: '';
@@ -121,7 +128,7 @@ const draggedTileStyle = (rotation: number,theme: Theme) => css`
     height: 80%;
     left:85%;
     top:20%;
-    background-image: url(${theme.color === LightTheme ?Images.rotate:Images.rotateDark});
+    background-image: url(${theme.color === LightTheme ? Images.rotate : Images.rotateDark});
     background-size: contain;
     background-repeat: no-repeat;
     transform: rotate(-60deg);

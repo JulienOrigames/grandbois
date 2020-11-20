@@ -4,7 +4,6 @@ import Images from '../material/Images'
 import Clan from './Clan'
 import {useTranslation} from 'react-i18next'
 
-
 type Props = { clan?: Clan, showScore:boolean } & React.HTMLAttributes<HTMLDivElement>
 
 const ClanCard = forwardRef<HTMLDivElement, Props>(({clan, showScore,...props}, ref) => {

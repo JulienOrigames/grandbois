@@ -8,7 +8,7 @@ import {tiles} from './Tiles'
 import GameView from '../types/GameView'
 import {Draggable, useDisplayState, usePlay, usePlayerId} from '@gamepark/workshop'
 import DraggedTile, {draggedTile} from '../drag-objects/DraggedTile'
-import PlacedTile from './PlacedTile'
+import PlacedTile, {isPlacedTile} from './PlacedTile'
 import {getForestView, isLegalTilePosition} from '../Rules'
 import Images from '../material/Images'
 import TowerColor from '../clans/TowerColor'
@@ -19,6 +19,8 @@ import {useDrop, XYCoord} from 'react-dnd'
 import {convertIntoPercent, initialForestPosition} from './Forest'
 import {useTheme} from 'emotion-theming'
 import Theme, {LightTheme} from '../Theme'
+import RotatedTile from './RotatedTile'
+import equal from 'fast-deep-equal'
 
 type Props = {
   game: GameView
@@ -30,6 +32,7 @@ const River: FunctionComponent<Props> = ({game}) => {
   const playerId = usePlayerId<TowerColor>()
   const play = usePlay<PlaceForestTile>()
   const [playingTile, setPlayingTile] = useState<PlacedTile>()
+  const [riverTiles, setRiverTiles] = useState<(RotatedTile|null)[]>([])
   useEffect(() => {
     if (playingTile && !game.river.some(tile => tile === playingTile.tile))
       setPlayingTile(undefined)
@@ -37,32 +40,36 @@ const River: FunctionComponent<Props> = ({game}) => {
   const rotate = (event: React.MouseEvent<HTMLDivElement>, tile: number) => {
     event.stopPropagation()
     if (playingTile && playingTile.tile === tile) {
-      setPlayingTile({...playingTile, rotation: (playingTile.rotation + 1) % 4})
+       setPlayingTile({...playingTile, rotation: (playingTile.rotation + 1) % 4})
     }
+    setRiverTiles(riverTiles.map(riverTile => riverTile?.tile === tile?{...riverTile, rotation:(riverTile.rotation + 1) % 4}:riverTile ))
   }
+  useEffect(() => {
+    if(!equal(game.river, riverTiles.map(riverTile => riverTile?.tile)))
+      setRiverTiles(game.river.map(tile => tile ? riverTiles.find(rotatedTile => rotatedTile?.tile === tile) || {tile, rotation: 0} : null))
+  }, [game, riverTiles])
   const [forestCenter] = useDisplayState<XYCoord>(initialForestPosition)
   const deltaPercent = convertIntoPercent(forestCenter)
   const isLegalTile = playingTile && isLegalTilePosition(getForestView(game), playingTile)
   const [, ref] = useDrop({
     accept: 'Tile',
-    canDrop: (item: DraggedTile) => item.rotation !== undefined,
+    canDrop: (item: DraggedTile) => isPlacedTile(item),
     drop: () => undefined
   })
   return <>
     {
-      game.river.map((tile, index) => {
-          if (!tile) return null
-          const item = playingTile && playingTile.tile === tile ? {type: draggedTile, ...playingTile} : {type: draggedTile, tile}
-          return <Draggable key={tile} item={item}
+      riverTiles.map((rotatedTile, index) => {
+          if (!rotatedTile) return null
+          const item = playingTile && playingTile.tile === rotatedTile.tile ? {type: draggedTile, ...playingTile} : {type: draggedTile, ...rotatedTile}
+          return <Draggable key={rotatedTile.tile} item={item}
                             onDrop={setPlayingTile}
                             disabled={game.activePlayer !== playerId}
                             animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
                             css={[cardStyle,
-                              playingTile && playingTile.tile === tile && borderStyle(isLegalTile!),
-                              playingTile && playingTile.tile === tile ? playingTileStyle(playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y) : riverTileStyle(index)
+                              playingTile && playingTile.tile === rotatedTile.tile ? playingTileStyle(isLegalTile!,playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y, theme) : riverTileStyle(index,theme)
                             ]}>
-            <TileCard tile={tiles[tile]} css={playingTile && playingTile.tile === tile && draggedTileStyle(playingTile.rotation, theme)}
-                      onClick={event => rotate(event, tile)}/>
+            <TileCard tile={tiles[rotatedTile.tile]} css={rotatedStyle(rotatedTile.rotation)}
+                      onClick={event => rotate(event, rotatedTile.tile)}/>
           </Draggable>
         }
       )
@@ -99,16 +106,25 @@ const validStyle = css`
   z-index:2;
 `
 
-const playingTileStyle = (x: number, deltaX: number, y: number, deltaY: number) => css`
+const playingTileStyle = (highlight: boolean, x: number, deltaX: number, y: number, deltaY: number, theme: Theme) => css`
   left: ${placedCardX(x, deltaX)}%;
   top: ${placedCardY(y, deltaY)}%;
   z-index: 2;
+  ${rotationArrowStyle(theme)}
+  ${borderStyle(highlight)}
 `
 
-const riverTileStyle = (index: number) => css`
-                  top: ${riverCardY(index)}%;
-                  left: ${riverLeft}%;
-                  z-index: 2;
+const riverTileStyle = (index: number, theme: Theme) => css`
+  top: ${riverCardY(index)}%;
+  left: ${riverLeft}%;
+  z-index: 2;
+  &:hover{
+    ${rotationArrowStyle(theme)}
+  }
+`
+
+const rotatedStyle = (rotation: number) => css`
+  transform: rotate(${90 * rotation}deg);
 `
 
 const borderStyle = (highlight: boolean) => highlight ? css`
@@ -119,8 +135,7 @@ const borderStyle = (highlight: boolean) => highlight ? css`
   box-shadow: 0.2em 0.2em 1em darkred;
 `
 
-const draggedTileStyle = (rotation: number, theme: Theme) => css`
-  transform: rotate(${90 * rotation}deg);
+const rotationArrowStyle = (theme: Theme) => css`
   &:before {
     content: '';
     position: absolute;

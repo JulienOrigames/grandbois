@@ -25,6 +25,7 @@ import ChangeActivePlayer, {changeActivePlayer} from '../moves/ChangeActivePlaye
 import Images from '../material/Images'
 import {towerImage} from '../clans/TowerInfo'
 import {Clearing} from './Tile'
+import {isPlacedTile} from './PlacedTile'
 
 type Props = {
   game: GameView
@@ -181,7 +182,7 @@ function getForestPosition(game: GameView, item: DraggedTile, monitor: DropTarge
   const percent = convertIntoPercent(position)
   const deltaForest = convertIntoPercent(forestCenter)
   let overPosition: XYCoord
-  if (item.rotation !== undefined) {
+  if (isPlacedTile(item)) {
     // drop tile from the forest
     overPosition = getInsideForestCoordinates(game, item, percent)
   } else

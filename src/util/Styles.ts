@@ -18,10 +18,11 @@ export const drawpileTop = headerHeight + topMargin
 export const riverLeft = 2
 export const riverTop = headerHeight + topMargin * 2 + 1 + cardHeight
 
-// export const forestTop = headerHeight + topMargin
-// export const forestLeft = cardWidth + topMargin + riverLeft
-// export const forestWidth = 67
-// export const forestHeight = 90
+export const riverAreaLeft = riverLeft/2
+export const riverAreaTop = headerHeight
+export const riverAreaWidth = cardWidth + riverLeft
+export const riverAreaHeight = 100 - headerHeight
+
 export const forestTop = 0
 export const forestLeft = 0
 export const forestWidth = 100

@@ -88,9 +88,6 @@ export const placedCardY = (y: number, delta:number) => centerTop + ( spaceHeigh
 
 export const mod = (n:number, m:number) => ((n % m) + m) % m
 
-
-
-
 export const getAreaCardY = (row: number) => 100 - cardHeight - bottomMargin - (cardHeight + marginBetweenCardRows) * row
 
 export const getAreasStyle = (row: number, fullWidth: boolean, isValidTarget = false) => css`

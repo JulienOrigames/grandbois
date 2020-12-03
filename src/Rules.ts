@@ -72,7 +72,6 @@ const GrandBoisRules: GameType = {
 
     if (game.tilePlayed === undefined) {
       const forestView = getForestView(game)
-      // console.log(forestView)
       const xMin = Math.min(...Array.from(forestView.keys()))
       const xMax = Math.max(...Array.from(forestView.keys()))
       const yMin = Math.min(...Array.from(forestView.values()).flatMap(map => Array.from(map.keys())))
@@ -83,7 +82,6 @@ const GrandBoisRules: GameType = {
           if (isAvailablePosition(forestView, x, y)) availablePositions.push({x, y})
         }
       }
-      // console.log(availablePositions)
       moves = availablePositions.flatMap(({x, y}) =>
         game.river.flatMap(tile =>
           tile ? [0, 1, 2, 3].filter(rotation => isLegalTilePosition(forestView, {tile, x, y, rotation: rotation}))

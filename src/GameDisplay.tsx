@@ -24,7 +24,7 @@ const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
       <DrawPile game={game}/>
       { !game.over && <River game={game} />}
       <Forest game={game}/>
-      <ClanCard css={[cardStyle,clanStyle]} clan={player?.clan} showScore={game.over} data-tip={game.over?t('Tuile Clan'):t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}/>
+      <ClanCard css={[cardStyle,clanStyle]} game={game} clan={player?.clan} showScore={game.over} data-tip={game.over?t('Tuile Clan'):t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}/>
       {players.map((player, index) =>
         <PlayerPanel key={player.tower} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}
@@ -46,7 +46,7 @@ const letterBoxStyle = css`
   animation: ${fadeIn} 3s ease-in forwards;
 `
 const clanStyle = css`
-  bottom: 2%;
+  bottom: 1%;
   right: 1%;
   z-index:2;
 `

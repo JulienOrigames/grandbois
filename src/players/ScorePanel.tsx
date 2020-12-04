@@ -13,7 +13,7 @@ const ScorePanel: FunctionComponent<Props> = ({game, animation}) => {
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const [displayScore, setDisplayScore] = useState(true)
   return (
-    <div css={scorePanelStyle(displayScore)}>
+    <div css={[scorePanelStyle,!displayScore && shortPanelWidth]}>
       {players.map((player, index) =>
         <PlayerScore key={player.tower} position={index} game={game} player={player} displayScore={displayScore} setDisplayScore={setDisplayScore} animation={animation}/>
       )}
@@ -21,16 +21,21 @@ const ScorePanel: FunctionComponent<Props> = ({game, animation}) => {
   )
 }
 
-const scorePanelStyle = (displayScore:boolean) => css`
+const scorePanelStyle = css`
   position: absolute;
   display: flex;
   justify-content: flex-end;
   top: 8.5%;
   right: 20.6%;
-  min-width: ${displayScore?'69':'13'}%;
+  min-width: 50%;
   height: 90%;
   z-index: 5;   
   overflow: hidden;
+  transition: min-width 0.5s ease-in;
+`
+
+const shortPanelWidth = css`
+  min-width: 13%;
 `
 
 export default ScorePanel

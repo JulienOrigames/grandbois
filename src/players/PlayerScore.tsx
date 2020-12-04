@@ -56,7 +56,7 @@ const style = css`
 `
 
 const topPosition = (index: number) => css`
-  top: ${(1 + index * 20)}%;
+  top: ${(3.5 + index * 25)}%;
 `
 
 const backgroundStyle = (theme: Theme) => css`

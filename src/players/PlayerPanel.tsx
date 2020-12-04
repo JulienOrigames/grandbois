@@ -1,47 +1,56 @@
 import {css} from '@emotion/core'
 import {GameSpeed, useOptions, usePlayer, usePlayerId} from '@gamepark/workshop'
-import React, {FunctionComponent} from 'react'
+import React, {FunctionComponent, useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
 import Player from '../types/Player'
 import PlayerView from '../types/PlayerView'
-import {endPlayerPanelHeight, endPlayerPanelY, playerPanelHeight, playerPanelRightMargin, playerPanelWidth, playerPanelY} from '../util/Styles'
+import {
+  endPlayerPanelHeight, endPlayerPanelY, fadeIn, playerPanelHeight, playerPanelRightMargin, playerPanelWidth, playerPanelY, screenRatio
+} from '../util/Styles'
 import Timer from './Timer'
 import TowerColor from '../clans/TowerColor'
 import {getTowerName, towerImage} from '../clans/TowerInfo'
+import GameView from '../types/GameView'
+import ClanCard from '../clans/ClanCard'
+import {getPlayersStartingWith} from '../GameDisplay'
 
 type Props = {
+  game: GameView
   player: Player | PlayerView
   position: number
   highlight: boolean
   showScore: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-const PlayerPanel: FunctionComponent<Props> = ({player, position, highlight, showScore, ...props}) => {
+const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highlight, showScore, ...props}) => {
   const {t} = useTranslation()
   const options = useOptions()
   const playerInfo = usePlayer<TowerColor>(player.tower)
-  const playerID = usePlayerId<TowerColor>()
+  const playerId = usePlayerId<TowerColor>()
+  const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
+  const currentPlayer = players.find(item => item.tower === player.tower) as Player | undefined
   return (
-    <div css={style(player.tower, position, highlight, showScore)} {...props}>
-      <img alt={getTowerName(t, player.tower)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined)} draggable="false"/>
+    <div css={[style(player.tower, position, highlight),showScore && endStyle(position)]} {...props}>
+      <img alt={getTowerName(t, player.tower)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined && !game.over)} draggable="false"/>
       <h3 css={[titleStyle(showScore), player.eliminated && eliminatedStyle]}>
-        <span css={nameStyle}>{ player.tower === playerID ? t('Vous') : ( playerInfo?.name || getTowerName(t, player.tower) )}</span>
+        <span css={nameStyle}>{ player.tower === playerId ? t('Vous') : ( playerInfo?.name || getTowerName(t, player.tower) )}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
+      {game.over && <ClanCard css={clanStyle} game={game} clan={currentPlayer?.clan} showScore={game.over} /> }
     </div>
   )
 }
 
-const style = (tower: TowerColor, position: number, highlight: boolean, showScore:boolean) => css`
+const style = (tower: TowerColor, position: number, highlight: boolean) => css`
   position: absolute;
   z-index: 2;
-  top: ${showScore?endPlayerPanelY(position):playerPanelY(position)}%;
+  top: ${playerPanelY(position)}%;
   right: ${playerPanelRightMargin}%;
   width: ${playerPanelWidth}%;
-  height: ${showScore?endPlayerPanelHeight:playerPanelHeight}%;
+  height: ${playerPanelHeight}%;
   border-radius: 5px;
   ${borderStyle(highlight)};
-  
+  transition: height 1s ease-in, top 1s ease-in;
   &:before {
     content: '';
     display: block;
@@ -55,6 +64,11 @@ const style = (tower: TowerColor, position: number, highlight: boolean, showScor
   }
 `
 
+const endStyle = (position: number) => css`
+  top: ${endPlayerPanelY(position)}%;
+  height: ${endPlayerPanelHeight}%;
+`
+
 const borderStyle = (highlight: boolean) => highlight ? css`
   border: 0.2em solid #ffd700;
   box-shadow: 0.2em 0.2em 1em gold;
@@ -66,7 +80,7 @@ const borderStyle = (highlight: boolean) => highlight ? css`
 const towerStyle = (towerPlayed:boolean) => css`
   position: absolute;
   height: 90%;
-  top: 5%;
+  bottom: 1%;
   left: 1%;
   opacity:${towerPlayed?'0.5':'1'};
 `
@@ -74,10 +88,10 @@ const towerStyle = (towerPlayed:boolean) => css`
 const titleStyle = (showScore:boolean) => css`
   color: #333333;
   position: absolute;
-  top: 5%;
+  top: ${showScore?'3':'5'}%;
   left: ${showScore?'25':'20'}%;
   right: 2%;
-  height: 90%;
+  height: ${showScore?'20':'90'}%;
   margin: 0;
   font-size: 2em;
   line-height: 3em;
@@ -95,6 +109,16 @@ const nameStyle = css`
 
 const eliminatedStyle = css`
   text-decoration: line-through;
+`
+
+const clanStyle = css`
+  position: absolute;
+  height : 70%;
+  width : ${70 * endPlayerPanelHeight / playerPanelWidth / screenRatio }%;
+  top: 25%;
+  left: 50%;
+  z-index:2;
+  animation: ${fadeIn} 5s ease-in forwards;
 `
 
 export default PlayerPanel

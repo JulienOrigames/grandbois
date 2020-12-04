@@ -1,9 +1,9 @@
 import {css, keyframes} from '@emotion/core'
 import {
-  faChess, faChevronDown, faChevronUp, faClock, faCompress, faExpand, faFastBackward, faHome, faMoon, faSun, faUndoAlt, faUserSlash, faVolumeMute, faVolumeUp
+  faChess, faChevronDown, faChevronUp, faClock, faCompress, faExpand, faFastBackward, faHome, faMoon, faSignOutAlt, faSun, faUserSlash, faVolumeMute, faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {GameSpeed, useActions, useGame, useNow, useOptions, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/workshop'
+import {GameSpeed, useGame, useNow, useOptions, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/workshop'
 import {useTheme} from 'emotion-theming'
 import fscreen from 'fscreen'
 import NoSleep from 'nosleep.js'
@@ -11,7 +11,6 @@ import React, {useEffect, useRef, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 import EjectPopup from './EjectPopup'
 import Images from './material/Images'
-import Move from './moves/Move'
 import RematchPopup from './RematchPopup'
 // @ts-ignore
 import toggleSound from './sounds/toggle.ogg'
@@ -20,20 +19,20 @@ import TimePopup from './TimePopup'
 import {resetTutorial} from './Tutorial'
 import GameView from './types/GameView'
 import IconButton from './util/IconButton'
-import LoadingSpinner from './util/LoadingSpinner'
 import {platformUri} from './util/Styles'
 import TowerColor from './clans/TowerColor'
+import QuitPopup from './QuitPopup'
 
 const noSleep = new NoSleep()
 
 const MainMenu = () => {
   const game = useGame<GameView>()
-  const actions = useActions<Move, TowerColor>()
-  const nonGuaranteedUndoPending = actions?.some(action => action.cancelled && action.cancelPending && !action.animation && !action.delayed)
   const playerId = usePlayerId<TowerColor>()
   const {t} = useTranslation()
   const theme = useTheme<Theme>()
   const players = usePlayers<TowerColor>()
+  const player = players.find(player => player.id === playerId)
+  const quit = game?.players.find(player => player.tower === playerId)?.eliminated
   const isPlaying = players.find(player => player.id === playerId)?.time?.playing
   const now = useNow()
   const options = useOptions()
@@ -46,6 +45,7 @@ const MainMenu = () => {
   const [timePopupOpen, setTimePopupOpen] = useState(false)
   const {rematch, rematchOffer, ignoreRematch} = useRematch<TowerColor>()
   const [toggle, {mute, unmute, muted}] = useSound(toggleSound)
+  const [quitPopupOpen, setQuitPopupOpen] = useState(false)
 
   function toggleSounds() {
     if (muted) {
@@ -95,16 +95,11 @@ const MainMenu = () => {
           <FontAwesomeIcon icon={faUserSlash}/>
         </IconButton>
         }
-        {game && !!playerId && (game.over && !game.tutorial ?
-            <IconButton css={[menuButtonStyle, rematchButtonStyle]} title={t('Proposer une revanche')} onClick={() => rematch()}>
+        {game && !!playerId && game.over && !game.tutorial &&
+            <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Proposer une revanche')} onClick={() => rematch()}>
               <FontAwesomeIcon icon={faChess}/>
               {displayRematchTooltip && <span css={tooltipStyle}>{t('Proposer une revanche')}</span>}
-            </IconButton> :
-            <IconButton css={[menuButtonStyle, undoButtonStyle]} title={t('Annuler mon dernier coup')} aria-label={t('Annuler mon dernier coup')}
-                        onClick={() => toggle.play() } >
-              {!actions || nonGuaranteedUndoPending ? <LoadingSpinner css={loadingSpinnerStyle}/> : <FontAwesomeIcon icon={faUndoAlt}/>}
             </IconButton>
-        )
         }
         {fscreen.fullscreenEnabled && (fullScreen ?
             <IconButton css={[menuButtonStyle, fullScreenButtonStyle]} title={t('Sortir du plein écran')} aria-label={t('Sortir du plein écran')}
@@ -128,7 +123,7 @@ const MainMenu = () => {
           <FontAwesomeIcon icon={faChevronUp}/>
         </IconButton>
         {game && !!playerId && game.over && !game.tutorial &&
-        <IconButton css={[menuButtonStyle, rematchButtonStyle]} title={t('Proposer une revanche')}>
+        <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Proposer une revanche')}>
             <span css={subMenuTitle}>{t('Proposer une revanche')}</span>
             <FontAwesomeIcon icon={faChess}/>
         </IconButton>
@@ -145,13 +140,6 @@ const MainMenu = () => {
               <FontAwesomeIcon icon={faExpand}/>
             </IconButton>
         )}
-        {game && !!playerId && !game.over &&
-        <IconButton css={[menuButtonStyle, undoButtonStyle]}
-                    onClick={() => toggle.play() } >
-          <span css={subMenuTitle}>{t('Annuler mon dernier coup')}</span>
-          {!actions || nonGuaranteedUndoPending ? <LoadingSpinner css={loadingSpinnerStyle}/> : <FontAwesomeIcon icon={faUndoAlt}/>}
-        </IconButton>
-        }
         <IconButton css={[menuButtonStyle, homeButtonStyle]} onClick={() => toggle.play().then(() => window.location.href = platformUri)}>
           <span css={subMenuTitle}>{t('Retour à l’accueil')}</span>
           <FontAwesomeIcon icon={faHome}/>
@@ -179,6 +167,12 @@ const MainMenu = () => {
           <FontAwesomeIcon icon={faClock}/>
         </IconButton>
         }
+        {game && player && !quit && !game.over &&
+        <IconButton css={[menuButtonStyle, redButtonStyle]} onClick={() => setQuitPopupOpen(true)}>
+            <span css={subMenuTitle}>{t('Quitter la partie')}</span>
+            <FontAwesomeIcon icon={faSignOutAlt}/>
+        </IconButton>
+        }
         {playerTimeout && !!playerId && !isPlaying &&
         <IconButton css={[menuButtonStyle, ejectButtonStyle]} onClick={() => toggle.play() && setEjectPopupOpen(true)}>
           <span css={subMenuTitle}>{t('Expulser un joueur')}</span>
@@ -195,6 +189,7 @@ const MainMenu = () => {
       <RematchPopup rematchOffer={rematchOffer} onClose={ignoreRematch}/>
       {timePopupOpen && <TimePopup onClose={() => setTimePopupOpen(false)}/>}
       {ejectPopupOpen && <EjectPopup playerId={playerId!} players={players} now={now} onClose={() => setEjectPopupOpen(false)}/>}
+      {quitPopupOpen && <QuitPopup onClose={() => setQuitPopupOpen(false)}/>}
     </>
   )
 }
@@ -277,26 +272,10 @@ const clockButtonStyle = css`
 const mainMenuButtonStyle = css`
   background-image: url(${Images.buttonYellow});
 `
-const undoButtonStyle = css`
-  padding-right: 0.5em;
-  background-image: url(${Images.buttonRed});
-  &:disabled {
-    background-image: url(${Images.buttonGrey});
-    pointer-events: none;
-  }
-  @media all and (orientation:portrait) {
-    display: none;
-  }
-`
 const fullScreenButtonStyle = css`
   background-image: url(${Images.buttonBlack});
 `
-const loadingSpinnerStyle = css`
-  font-size: 0.25em;
-  margin: 0.125em;
-  transform: scale(1.25);
-`
-const rematchButtonStyle = css`
+const redButtonStyle = css`
   background-image: url(${Images.buttonRed});
 `
 const ejectButtonStyle = css`

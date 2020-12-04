@@ -51,6 +51,4 @@ const clanStyle = css`
   z-index:2;
 `
 
-
-
 export default GameDisplay

@@ -36,7 +36,7 @@ const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highligh
         <span css={nameStyle}>{ player.tower === playerId ? t('Vous') : ( playerInfo?.name || getTowerName(t, player.tower) )}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
-      {game.over && <ClanCard css={clanStyle} game={game} clan={currentPlayer?.clan} showScore={game.over} /> }
+      {game.over && <ClanCard css={clanStyle} game={game} clan={currentPlayer?.clan} showScore={game.over} tower={player.tower} /> }
     </div>
   )
 }

@@ -56,10 +56,6 @@ const multiplierStyle = css`
   height: 40%;
   width: 0;
   margin-right: 15%;
-  filter: drop-shadow(0 0 1px black);
-  & img {
-    filter: none;
-  }
 `
 
 export default ScorePart

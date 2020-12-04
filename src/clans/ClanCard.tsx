@@ -6,35 +6,50 @@ import {useTranslation} from 'react-i18next'
 import GameView from '../types/GameView'
 import {tiles} from '../tiles/Tiles'
 import {isTroop, Space} from '../tiles/Tile'
+import VictoryPointsMultiplier from '../players/VictoryPointsMultiplier'
+import TowerColor from './TowerColor'
+import {fadeIn} from '../util/Styles'
 
-type Props = { game:GameView, clan?: Clan, showScore:boolean } & React.HTMLAttributes<HTMLDivElement>
+type Props = { game: GameView, clan?: Clan, showScore: boolean, tower: TowerColor } & React.HTMLAttributes<HTMLDivElement>
 
-const ClanCard = forwardRef<HTMLDivElement, Props>(({game, clan, showScore,...props}, ref) => {
+const ClanCard = forwardRef<HTMLDivElement, Props>(({game, clan, showScore, tower, ...props}, ref) => {
   const {t} = useTranslation()
   const [showClanCard, setShowClanCard] = useState(showScore)
   return (
     <div ref={ref} {...props} >
-    <h3 css={[headerStyle,!showClanCard && showStyle]} >{t('Tuile de Clan secret')}</h3>
-      <div css={[scaleClanStyle,showClanCard && !game.over && scaleStyle]}>
-      <div css={[style(clan),(showClanCard || game.over) && flipStyle]}
-         onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
-         onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
-      />
+      <h3 css={[headerStyle, !showClanCard && showStyle]}>{t('Tuile de Clan secret')}</h3>
+      <div css={[scaleClanStyle, showClanCard && !game.over && scaleStyle]}>
+        <div css={[style(clan), (showClanCard || game.over) && flipStyle]}
+             onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
+             onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
+        />
       </div>
-    { clan &&  !game.over && [1,2,3,4].map(index => <span key={index} css={[spaceCounterStyle(index),showClanCard && showStyle]} >x{getSpaceClanCount(game,index,clan)}</span> ) }
+      {clan && !game.over && [1, 2, 3, 4].map(index => <span key={index}
+                                                             css={[spaceCounterStyle(index), showClanCard && showStyle]}>x{getSpaceClanCount(game, index, clan)}</span>)}
+      {clan && !game.over && showClanCard &&
+      <div css={ruleStyle}>
+          <h3>{t('Rappel des points de victoire')}</h3>
+          <VictoryPointsMultiplier css={multiplierStyle} item={0} clan={clan} tower={tower} multiplier={1} legend={true}/>
+          <VictoryPointsMultiplier css={multiplierStyle} item={1} clan={clan} tower={tower} multiplier={2} legend={true}/>
+          <VictoryPointsMultiplier css={multiplierStyle} item={2} clan={clan} tower={tower} multiplier={2} legend={true}/>
+          <VictoryPointsMultiplier css={multiplierStyle} item={3} clan={clan} tower={tower} multiplier={1} legend={true}/>
+      </div>
+      }
     </div>
   )
-})
+}
+)
 
 const scaleClanStyle = css`
-  position: absolute;
-  bottom:0;
-  right:0;
-  width:200%;
-  height:200%;
-  transform: scale(0.5);
-  transform-origin: bottom right;
-  transition: transform 0.5s ease-in-out;
+position: absolute;
+bottom:0;
+right:0;
+width:200%;
+height:200%;
+transform: scale(0.5);
+transform-origin: bottom right;
+transition: transform 0.5s ease-in-out;
+z-index: 2;
 `
 
 const style = (clan?: Clan) => css`
@@ -110,6 +125,27 @@ const showStyle = css`
   opacity:1;
 `
 
+const ruleStyle = css`
+  position: absolute;
+  height: 200%;
+  width:210%;
+  top:-100%;
+  left:-300%;
+  padding:1em;
+  border-radius: 1em;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 0.2em solid lightslategrey;
+  box-shadow: 0.2em 0.2em 1em black;
+  z-index: 1;
+  animation: ${fadeIn} 2s ease-in forwards; 
+  & h3{ font-size: 2em; margin : 0.5em 0;}
+`
+const multiplierStyle = css`
+  height: 22%;
+  justify-content: flex-start;
+  
+`
+
 const images = new Map<Clan, any>()
 
 images.set(Clan.Toad, Images.cardToads)
@@ -138,16 +174,16 @@ function getSpaceClanCount(game:GameView,number:number,clan:Clan){
       return 0
   }
   for (const placedTile of game.forest) {
-    for (let i = 0; i < 4; i++){
+    for (let i = 0; i < 4; i++) {
       space = tiles[placedTile.tile][i]
-      if(isTroop(space) && space.clan === clan && space.size === number) clanCounter--
+      if (isTroop(space) && space.clan === clan && space.size === number) clanCounter--
     }
   }
   for (const tile of game.river) {
-    if(tile){
-      for (let i = 0; i < 4; i++){
-       space = tiles[tile][i]
-        if(isTroop(space) && space.clan === clan && space.size === number) clanCounter--
+    if (tile) {
+      for (let i = 0; i < 4; i++) {
+        space = tiles[tile][i]
+        if (isTroop(space) && space.clan === clan && space.size === number) clanCounter--
       }
     }
   }

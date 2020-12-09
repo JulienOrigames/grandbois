@@ -3,7 +3,7 @@ import Game from './types/Game'
 import Move, {MoveView} from './moves/Move'
 import TowerColor from './clans/TowerColor'
 import GameView from './types/GameView'
-import {shuffle} from '@gamepark/workshop'
+import {shuffle, WithEliminations, WithTimeLimit} from '@gamepark/workshop'
 import Player from './types/Player'
 import GameOptions from './types/GameOptions'
 import {tiles} from './tiles/Tiles'
@@ -22,6 +22,7 @@ import {placeTower} from './moves/PlaceTower'
 import {changeActivePlayer} from './moves/ChangeActivePlayer'
 import {isRevealClansView} from './moves/RevealClans'
 import {XYCoord} from 'react-dnd'
+import {concede} from './moves/Concede'
 
 
 const playersMin = 2
@@ -31,6 +32,8 @@ export const defaultNumberOfPlayers = 4
 type GameType = SequentialGame<Game, Move, TowerColor>
   & GameWithIncompleteInformation<Game, Move, TowerColor, GameView, Move>
   & WithAutomaticMoves<Game, Move>
+  & WithTimeLimit<Game, TowerColor>
+  & WithEliminations<Game, Move, TowerColor>
 /*& CompetitiveGame<Game, Move, EmpireName>
 & GameWithIncompleteInformation<Game, Move, EmpireName, GameView, MoveView>
 & WithOptions<Game, GameOptions>
@@ -39,7 +42,6 @@ type GameType = SequentialGame<Game, Move, TowerColor>
 
 const GrandBoisRules: GameType = {
   setup(options?: GameOptions) {
-
     const startDeck = Array.from(tiles.keys())
     const tileStart = startDeck.splice(0, 1)[0]
     const deck = shuffle(startDeck)
@@ -137,6 +139,11 @@ const GrandBoisRules: GameType = {
         game.over = true
         break
       }
+      case MoveType.Concede: {
+        const player = getPlayer(game, move.playerId)
+        player.eliminated = game.players.filter(player => player.eliminated).length + 1
+        break
+      }
     }
   },
 
@@ -170,7 +177,24 @@ const GrandBoisRules: GameType = {
         }
     }
     return move
-  }
+  },
+
+  isEliminated(game: Game, playerId: TowerColor): boolean {
+    return !!getPlayer(game, playerId).eliminated
+  },
+
+  getConcedeMove(playerId: TowerColor): Move {
+    return concede(playerId)
+  },
+
+  giveTime(game: Game, playerId: TowerColor): number {
+    if (game.deck.length > 1) {
+       return 120
+    }else{
+       return 60
+    }
+  },
+
 }
 
 export function isOver(game: Game | GameView): boolean {

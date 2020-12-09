@@ -188,7 +188,7 @@ const GrandBoisRules: GameType = {
   },
 
   giveTime(game: Game, playerId: TowerColor): number {
-    if (game.deck.length > 1) {
+    if (game.deck.length > 28) {
        return 120
     }else{
        return 60

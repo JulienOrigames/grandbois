@@ -7,7 +7,7 @@ type Game = {
   deck: number[]
   river: (number | null)[]
   forest: PlacedTile[]
-  activePlayer: TowerColor
+  activePlayer?: TowerColor
   tilePlayed?: number
   tutorial?: boolean
   over: boolean

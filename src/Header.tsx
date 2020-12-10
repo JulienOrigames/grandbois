@@ -102,7 +102,7 @@ function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerIn
       return t('Vous devez choisir une tuile dans la rivière et la placer dans la forêt')
   }
   else {
-    const activePlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, game.activePlayer)
+    const activePlayerName = (tower?: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, game.activePlayer)
     if (activePlayerCanPlaceTower(game))
       return t('{player} peut placer sa tour de garde', {player: activePlayerName(game.activePlayer)})
     else

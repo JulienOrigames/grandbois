@@ -27,7 +27,7 @@ import {concede} from './moves/Concede'
 
 const playersMin = 2
 const playersMax = 5
-export const defaultNumberOfPlayers = 4
+export const defaultNumberOfPlayers = 3
 
 type GameType = SequentialGame<Game, Move, TowerColor>
   & GameWithIncompleteInformation<Game, Move, TowerColor, GameView, Move>
@@ -137,6 +137,7 @@ const GrandBoisRules: GameType = {
           )
         }
         game.over = true
+        game.activePlayer = undefined
         break
       }
       case MoveType.Concede: {
@@ -218,9 +219,9 @@ function setupPlayer(tower: TowerColor, clan: Clan): Player {
   return {tower, clan: clan, towerPosition: undefined}
 }
 
-export function getPlayer(game: Game, tower: TowerColor): Player
-export function getPlayer(game: Game | GameView, tower: TowerColor): Player | PlayerView
-export function getPlayer(game: Game | GameView, tower: TowerColor): Player | PlayerView {
+export function getPlayer(game: Game, tower?: TowerColor): Player
+export function getPlayer(game: Game | GameView, tower?: TowerColor): Player | PlayerView
+export function getPlayer(game: Game | GameView, tower?: TowerColor): Player | PlayerView {
   return game.players.find(player => player.tower === tower)!
 }
 

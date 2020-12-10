@@ -24,7 +24,7 @@ const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
       <DrawPile game={game}/>
       { !game.over && <River game={game} />}
       <Forest game={game}/>
-      { !game.over && <ClanCard css={[cardStyle,clanStyle]} game={game} clan={player?.clan} showScore={game.over} tower={player!.tower} data-tip={game.over?t('Tuile Clan'):t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}/>}
+      { !game.over && <ClanCard css={[cardStyle,clanStyle]} game={game} clan={player?.clan} showScore={game.over} tower={player!.tower} data-place='top' data-tip={game.over?t('Tuile Clan'):t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}/>}
       {players.map((player, index) =>
         <PlayerPanel game={game} key={player.tower} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}

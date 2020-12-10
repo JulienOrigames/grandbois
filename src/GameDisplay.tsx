@@ -11,10 +11,8 @@ import TowerColor from './clans/TowerColor'
 import PlayerPanel from './players/PlayerPanel'
 import Player from './types/Player'
 import ScorePanel from './players/ScorePanel'
-import {useTranslation} from 'react-i18next'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
-  const {t} = useTranslation()
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const player = players.find(player => player.tower === playerId) as Player | undefined
@@ -24,7 +22,7 @@ const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
       <DrawPile game={game}/>
       { !game.over && <River game={game} />}
       <Forest game={game}/>
-      { !game.over && <ClanCard css={[cardStyle,clanStyle]} game={game} clan={player?.clan} showScore={game.over} tower={player!.tower} data-place='top' data-tip={game.over?t('Tuile Clan'):t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}/>}
+      { !game.over && <ClanCard css={[cardStyle,clanStyle]} game={game} clan={player?.clan} showScore={game.over} tower={player!.tower} />}
       {players.map((player, index) =>
         <PlayerPanel game={game} key={player.tower} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}

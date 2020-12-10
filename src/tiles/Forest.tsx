@@ -94,7 +94,9 @@ const Forest: FunctionComponent<Props> = ({game}) => {
                          left: ${forestCardX(placedTile.x)}%;
                          top: ${forestCardY(placedTile.y)}%;
                          transform: rotate(${90 * placedTile.rotation}deg);
-                          `]}
+                          `,
+                      !game.over && game.forest.indexOf(placedTile) === (game.forest.length - 1) && lastTileStyle
+                    ]}
                     onClick={() => setFocusedTile(placedTile.tile)}
           />)
       }
@@ -134,6 +136,11 @@ const forestStyle = (deltaX: number, deltaY: number) => css`
   transform:translate(${deltaX}px,${deltaY}px);
   width:100%;
   height:100%;
+`
+
+const lastTileStyle = css`
+  border: 0.2em solid white;
+  box-shadow: 0.2em 0.2em 1em white;
 `
 
 const towerStyle = (tower: TowerColor, x: number, y: number) => css`

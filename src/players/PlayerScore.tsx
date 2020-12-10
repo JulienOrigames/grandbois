@@ -53,6 +53,7 @@ const style = css`
   height: 16.7%;
   overflow: hidden;
   transition: max-width 0.5s linear, background-color 1s ease-in;
+  pointer-events: auto;
 `
 
 const topPosition = (index: number) => css`

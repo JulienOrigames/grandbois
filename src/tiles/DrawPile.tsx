@@ -22,7 +22,7 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
           { game.deck && <div css={nbStyle} data-tip={t('Nombre de tuiles restantes : {nbDeck}', {nbDeck: game.deck})}>{game.deck}</div> }
       </>
     }
-    <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green'/>
+    <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='top' backgroundColor='green'/>
   </>
 }
 

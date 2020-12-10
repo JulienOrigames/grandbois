@@ -32,6 +32,7 @@ const scorePanelStyle = css`
   z-index: 5;   
   overflow: hidden;
   transition: min-width 0.5s ease-in;
+  pointer-events: none;
 `
 
 const shortPanelWidth = css`

@@ -45,7 +45,7 @@ const River: FunctionComponent<Props> = ({game}) => {
     setRiverTiles(riverTiles.map(riverTile => riverTile?.tile === tile?{...riverTile, rotation:(riverTile.rotation + 1) % 4}:riverTile ))
   }
   useEffect(() => {
-    if(!equal(game.river, riverTiles.map(riverTile => riverTile?.tile)))
+    if(!equal(game.river, riverTiles.map(riverTile => riverTile?.tile || null )))
       setRiverTiles(game.river.map(tile => tile ? riverTiles.find(rotatedTile => rotatedTile?.tile === tile) || {tile, rotation: 0} : null))
   }, [game, riverTiles])
   const [forestCenter] = useDisplayState<XYCoord>(initialForestPosition)
@@ -100,7 +100,7 @@ const riverAreaStyle = css`
 
 const validStyle = css`
   position:absolute;
-  bottom: 30%;
+  bottom: 37%;
   right: 2%;
   font-size:4em;
   z-index:2;

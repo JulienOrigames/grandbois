@@ -15,7 +15,7 @@ const TowerInfo: FunctionComponent<Props> = ({player, gameOver, withResourceDrop
   return <></>
 }
 
-export function getTowerName(t: TFunction, tower: TowerColor) {
+export function getTowerName(t: TFunction, tower?: TowerColor) {
   switch (tower) {
     case TowerColor.BlackTower:
       return t('Joueur noir')
@@ -25,6 +25,8 @@ export function getTowerName(t: TFunction, tower: TowerColor) {
       return t('Joueur marron')
     case TowerColor.WhiteTower:
       return t('Joueur blanc')
+    default :
+      return t('Joueur')
   }
 }
 

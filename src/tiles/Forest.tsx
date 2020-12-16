@@ -16,16 +16,17 @@ import {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, isAvaila
 import {forestArea} from '../drag-objects/ForestArea'
 import {getEmptyImage} from 'react-dnd-html5-backend'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
-import {useDisplayState, usePlay, usePlayerId} from '@gamepark/workshop'
+import {useDisplayState, usePlay, usePlayerId, usePlayers} from '@gamepark/workshop'
 import TowerColor from '../clans/TowerColor'
 import Button from '../util/Button'
 import {useTranslation} from 'react-i18next'
 import PlaceTower, {placeTower} from '../moves/PlaceTower'
 import ChangeActivePlayer, {changeActivePlayer} from '../moves/ChangeActivePlayer'
 import Images from '../material/Images'
-import {towerImage} from '../clans/TowerInfo'
+import {getTowerName, towerImage} from '../clans/TowerInfo'
 import {Clearing} from './Tile'
 import {isPlacedTile} from './PlacedTile'
+import ReactTooltip from 'react-tooltip'
 
 type Props = {
   game: GameView
@@ -74,7 +75,15 @@ const Forest: FunctionComponent<Props> = ({game}) => {
   dragRef(dropRef(ref))
   const playerId = usePlayerId<TowerColor>()
   const play = usePlay<PlaceTower | ChangeActivePlayer>()
+  const playersInfo = usePlayers<TowerColor>()
   const [focusedTile, setFocusedTile] = useState<number>()
+  const [towersPlaced, setTowersPlaced] = useState<number>(0)
+  useEffect(() => {
+    if (towersPlaced < countTowerPlaced(game)) {
+      ReactTooltip.rebuild()
+      setTowersPlaced(countTowerPlaced(game))
+    }
+  }, [towersPlaced, game] )
   return <div css={style} ref={ref}>
     {focusedTile !== undefined &&
     <>
@@ -102,7 +111,8 @@ const Forest: FunctionComponent<Props> = ({game}) => {
       }
       {
         game.players.filter(player => player.towerPosition).map(player =>
-          <div key={player.tower} css={towerStyle(player.tower, player.towerPosition!.x, player.towerPosition!.y)}/>
+          <div key={player.tower} css={towerStyle(player.tower, player.towerPosition!.x, player.towerPosition!.y)}
+               data-tip={ player.tower === playerId ? t('Votre Tour') : t('Tour de {playerName}',{playerName: ( playersInfo.find(p => p.id === player.tower)!.name || getTowerName(t, player.tower) )} ) } />
         )
       }
       {
@@ -123,6 +133,10 @@ function getTowerChoicePosition(game: GameView) {
   const lastTile = game.forest[game.forest.length - 1]
   const clearingIndex = tiles[lastTile.tile].findIndex(space => space === Clearing)
   return getPlacedTileSpaceXY(lastTile, clearingIndex)
+}
+
+function countTowerPlaced(game:GameView){
+  return game.players.reduce((sum, player) => sum + (player.towerPosition ? 1 : 0), 0)
 }
 
 const style = css`
@@ -146,12 +160,12 @@ const lastTileStyle = css`
 const towerStyle = (tower: TowerColor, x: number, y: number) => css`
   position:absolute;
   left: ${forestCardX(x)}%;
-  top: ${forestCardY(y)}%;
+  top: ${forestCardY(y) - 2}%;
   width: ${forestSpaceWidth}%;
-  height: ${forestSpaceHeight}%;
+  height: ${forestSpaceHeight + 2}%;
   z-index:3;
   background-image: url(${towerImage[tower]});
-  filter: drop-shadow(0.1em 0.1em 0.4em black);
+  filter: drop-shadow(0.1em 0.1em 0.4em white);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;

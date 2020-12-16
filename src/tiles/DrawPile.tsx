@@ -2,7 +2,6 @@ import {css} from '@emotion/core'
 import React, {FunctionComponent} from 'react'
 import GameView from '../types/GameView'
 import {cardHeight, cardStyle, cardWidth, drawpileTop, riverLeft} from '../util/Styles'
-import ReactTooltip from 'react-tooltip'
 import {useTranslation} from 'react-i18next'
 import TileCard from './TileCard'
 
@@ -22,7 +21,6 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
           { game.deck && <div css={nbStyle} data-tip={t('Nombre de tuiles restantes : {nbDeck}', {nbDeck: game.deck})}>{game.deck}</div> }
       </>
     }
-    <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green' globalEventOff='mousedown' />
   </>
 }
 

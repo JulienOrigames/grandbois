@@ -11,6 +11,7 @@ import TowerColor from './clans/TowerColor'
 import PlayerPanel from './players/PlayerPanel'
 import Player from './types/Player'
 import ScorePanel from './players/ScorePanel'
+import ReactTooltip from 'react-tooltip'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
   const playerId = usePlayerId<TowerColor>()
@@ -27,6 +28,7 @@ const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
         <PlayerPanel game={game} key={player.tower} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}
       {game.over && <ScorePanel game={game} animation={gameWasLive.current}/>}
+      <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green' globalEventOff='mousedown' />
     </Letterbox>
   )
 }

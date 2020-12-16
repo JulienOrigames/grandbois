@@ -1,5 +1,5 @@
 import {css} from '@emotion/core'
-import React, {forwardRef, useState} from 'react'
+import React, {FC, useEffect, useRef, useState} from 'react'
 import Images from '../material/Images'
 import Clan from './Clan'
 import {useTranslation} from 'react-i18next'
@@ -9,14 +9,21 @@ import {isTroop, Space} from '../tiles/Tile'
 import VictoryPointsMultiplier from '../players/VictoryPointsMultiplier'
 import TowerColor from './TowerColor'
 import {fadeIn} from '../util/Styles'
+import ReactTooltip from 'react-tooltip'
 
 type Props = { game: GameView, clan?: Clan, showScore: boolean, tower: TowerColor } & React.HTMLAttributes<HTMLDivElement>
 
-const ClanCard = forwardRef<HTMLDivElement, Props>(({game, clan, showScore, tower, ...props}, ref) => {
+const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
     const {t} = useTranslation()
     const [showClanCard, setShowClanCard] = useState(showScore)
+    const ref = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+      if (ref.current) {
+        ReactTooltip.show(ref.current)
+      }
+    }, [ref])
     return (
-      <div ref={ref} {...props} data-tip={t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}
+      <div ref={ref} {...props} data-place='left' data-tip={t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}
            onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
            onMouseLeave={() => !showScore && setShowClanCard(false)}
            onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
@@ -96,7 +103,7 @@ const flipStyle = css`
 
 const headerStyle = css`
   position: absolute;
-  top: -13%;
+  bottom: 105%;
   right: 0;
   z-index: 3;
   font-weight: bold;
@@ -106,6 +113,8 @@ const headerStyle = css`
   margin: 0;
   opacity: 0;
   transition: opacity 0.7s ease-out;
+  height: auto;
+  width: auto;
 `
 
 const spaceCounterStyle = (index: number) => css`
@@ -138,7 +147,7 @@ const ruleStyle = css`
   left: -300%;
   padding: 1em;
   border-radius: 1em;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   border: 0.2em solid lightslategrey;
   box-shadow: 0.2em 0.2em 1em black;
   z-index: 1;
@@ -186,14 +195,6 @@ function getSpaceClanCount(game: GameView, number: number, clan: Clan) {
     for (let i = 0; i < 4; i++) {
       space = tiles[placedTile.tile][i]
       if (isTroop(space) && space.clan === clan && space.size === number) clanCounter--
-    }
-  }
-  for (const tile of game.river) {
-    if (tile) {
-      for (let i = 0; i < 4; i++) {
-        space = tiles[tile][i]
-        if (isTroop(space) && space.clan === clan && space.size === number) clanCounter--
-      }
     }
   }
   return clanCounter

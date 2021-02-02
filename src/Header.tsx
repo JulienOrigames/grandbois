@@ -6,20 +6,19 @@ import {useTheme} from 'emotion-theming'
 import {TFunction} from 'i18next'
 import React, {FunctionComponent, useEffect, useState} from 'react'
 import {Trans, useTranslation} from 'react-i18next'
-import MainMenu from './MainMenu'
 import TowerColor from './clans/TowerColor'
+import MainMenu from './MainMenu'
+import {changeActivePlayer} from './moves/ChangeActivePlayer'
 import Move from './moves/Move'
+import {placeTower} from './moves/PlaceTower'
+import Rules, {activePlayerCanPlaceTower, getForestView, getPlayerScores} from './Rules'
 import Theme, {LightTheme} from './Theme'
 import GameView from './types/GameView'
 import Player from './types/Player'
-import {isPlayer} from './types/typeguards'
-import {gameOverDelay, headerHeight, textColor} from './util/Styles'
-import {activePlayerCanPlaceTower, getForestView, getPlayerScores} from './Rules'
-import {getTowerName} from './clans/TowerInfo'
-import Button from './util/Button'
-import {placeTower} from './moves/PlaceTower'
-import {changeActivePlayer} from './moves/ChangeActivePlayer'
 import PlayerView from './types/PlayerView'
+import {isPlayer} from './types/typeguards'
+import Button from './util/Button'
+import {gameOverDelay, headerHeight, textColor} from './util/Styles'
 
 
 const headerStyle = (theme: Theme) => css`
@@ -91,7 +90,7 @@ function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerIn
       return tutorialText
     }
   }
-  if (game.over)  return getEndOfGameText(t, playersInfo, game, player)
+  if (!game.activePlayer)  return getEndOfGameText(t, playersInfo, game, player)
   if( tower === game.activePlayer){
     if (activePlayerCanPlaceTower(game))
       return <Trans defaults="Souhaitez-vous placer votre tour de garde ici ? <0>Oui</0> <1>Non</1>"
@@ -102,11 +101,11 @@ function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerIn
       return t('Vous devez choisir une tuile dans la rivière et la placer dans la forêt')
   }
   else {
-    const activePlayerName = (tower?: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, game.activePlayer)
+    const activePlayerName = playersInfo.find(p => p.id === game.activePlayer)?.name || Rules.getPlayerName(game.activePlayer, t)
     if (activePlayerCanPlaceTower(game))
-      return t('{player} peut placer sa tour de garde', {player: activePlayerName(game.activePlayer)})
+      return t('{player} peut placer sa tour de garde', {player: activePlayerName})
     else
-      return t('{player} doit placer une tuile dans la forêt', {player: activePlayerName(game.activePlayer)})
+      return t('{player} doit placer une tuile dans la forêt', {player: activePlayerName})
   }
 }
 
@@ -115,7 +114,7 @@ function getTutorialText(t: TFunction, game: GameView, player: Player): string |
 }
 
 function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], game: GameView, player?: Player | PlayerView) {
-  const getPlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getTowerName(t, tower)
+  const getPlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || Rules.getPlayerName(tower, t)
   let highestScore = -1
   let playersWithHighestScore = []
   const forestView = getForestView(game)

@@ -1,4 +1,5 @@
 import SequentialGame from '@gamepark/workshop/dist/Types/SequentialGame'
+import {TFunction} from 'i18next'
 import Game from './types/Game'
 import Move, {MoveView} from './moves/Move'
 import TowerColor from './clans/TowerColor'
@@ -57,6 +58,18 @@ const GrandBoisRules: GameType = {
   },
   getPlayerIds(game: Game) {
     return game.players.map(player => player.tower)
+  },
+  getPlayerName(tower: TowerColor, t: TFunction): string {
+    switch (tower) {
+      case TowerColor.BlackTower:
+        return t('Joueur noir')
+      case TowerColor.BlueTower:
+        return t('Joueur bleu')
+      case TowerColor.BrownTower:
+        return t('Joueur marron')
+      case TowerColor.WhiteTower:
+        return t('Joueur blanc')
+    }
   },
   getActivePlayer(game: Game) {
     return game.over?undefined:game.activePlayer

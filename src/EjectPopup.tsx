@@ -1,17 +1,17 @@
 import {css} from '@emotion/core'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {useEjection} from '@gamepark/workshop'
 import Player from '@gamepark/workshop/dist/Types/Player'
 import {useTheme} from 'emotion-theming'
 import moment from 'moment'
 import React, {FunctionComponent, useEffect} from 'react'
 import {useTranslation} from 'react-i18next'
+import TowerColor from './clans/TowerColor'
+import Rules from './Rules'
 import Theme, {LightTheme} from './Theme'
 import Button from './util/Button'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
-import TowerColor from './clans/TowerColor'
-import {getTowerName} from './clans/TowerInfo'
-import {useEjection} from '@gamepark/workshop'
 
 type Props = {
   playerId: TowerColor
@@ -36,7 +36,7 @@ const EjectPopup: FunctionComponent<Props> = ({playerId, players, now, onClose})
   const eject = useEjection()
   if (!awaitedPlayer)
     return null
-  const awaitedPlayerName = awaitedPlayer.name || getTowerName(t, awaitedPlayer.id)
+  const awaitedPlayerName = awaitedPlayer.name || Rules.getPlayerName(awaitedPlayer.id, t)
   return (
     <div css={popupFixedBackgroundStyle} onClick={onClose}>
       <div css={[popupStyle, popupPosition, css`width: 70%`, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}

@@ -1,9 +1,8 @@
-import {TFunction} from 'i18next'
 import React, {FunctionComponent} from 'react'
-import TowerColor from './TowerColor'
+import Images from '../material/Images'
 import Player from '../types/Player'
 import PlayerView from '../types/PlayerView'
-import Images from '../material/Images'
+import TowerColor from './TowerColor'
 
 type Props = {
   player: Player | PlayerView
@@ -13,21 +12,6 @@ type Props = {
 
 const TowerInfo: FunctionComponent<Props> = ({player, gameOver, withResourceDrop = false, ...props}) => {
   return <></>
-}
-
-export function getTowerName(t: TFunction, tower?: TowerColor) {
-  switch (tower) {
-    case TowerColor.BlackTower:
-      return t('Joueur noir')
-    case TowerColor.BlueTower:
-      return t('Joueur bleu')
-    case TowerColor.BrownTower:
-      return t('Joueur marron')
-    case TowerColor.WhiteTower:
-      return t('Joueur blanc')
-    default :
-      return t('Joueur')
-  }
 }
 
 export const towerImage = {

@@ -2,17 +2,18 @@ import {css} from '@emotion/core'
 import {GameSpeed, useOptions, usePlayer, usePlayerId} from '@gamepark/workshop'
 import React, {FunctionComponent, useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
+import ClanCard from '../clans/ClanCard'
+import TowerColor from '../clans/TowerColor'
+import {towerImage} from '../clans/TowerInfo'
+import {getPlayersStartingWith} from '../GameDisplay'
+import Rules from '../Rules'
+import GameView from '../types/GameView'
 import Player from '../types/Player'
 import PlayerView from '../types/PlayerView'
 import {
   endPlayerPanelHeight, endPlayerPanelY, fadeIn, playerPanelHeight, playerPanelRightMargin, playerPanelWidth, playerPanelY, screenRatio
 } from '../util/Styles'
 import Timer from './Timer'
-import TowerColor from '../clans/TowerColor'
-import {getTowerName, towerImage} from '../clans/TowerInfo'
-import GameView from '../types/GameView'
-import ClanCard from '../clans/ClanCard'
-import {getPlayersStartingWith} from '../GameDisplay'
 
 type Props = {
   game: GameView
@@ -31,9 +32,9 @@ const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highligh
   const currentPlayer = players.find(item => item.tower === player.tower) as Player | undefined
   return (
     <div css={[style(player.tower, position, highlight),showScore && endStyle(position)]} {...props}>
-      <img alt={getTowerName(t, player.tower)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined && !game.over)} draggable="false"/>
+      <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined && !game.over)} draggable="false"/>
       <h3 css={[titleStyle(showScore), player.eliminated && eliminatedStyle]}>
-        <span css={nameStyle}>{ player.tower === playerId ? t('Vous') : ( playerInfo?.name || getTowerName(t, player.tower) )}</span>
+        <span css={nameStyle}>{ player.tower === playerId ? t('Vous') : ( playerInfo?.name || Rules.getPlayerName(player.tower, t) )}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
       {game.over && <ClanCard css={clanStyle} game={game} clan={currentPlayer?.clan} showScore={game.over} tower={player.tower} /> }

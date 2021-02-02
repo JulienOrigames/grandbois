@@ -1,32 +1,32 @@
 import {css} from '@emotion/core'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {useDisplayState, usePlay, usePlayerId, usePlayers} from '@gamepark/workshop'
+import {DragDropManager} from 'dnd-core/lib/interfaces'
 import React, {FunctionComponent, useContext, useEffect, useRef, useState} from 'react'
+import {DndContext, DropTargetMonitor, useDrag, useDrop, XYCoord} from 'react-dnd'
+import {getEmptyImage} from 'react-dnd-html5-backend'
+import {useTranslation} from 'react-i18next'
+import ReactTooltip from 'react-tooltip'
+import TowerColor from '../clans/TowerColor'
+import {towerImage} from '../clans/TowerInfo'
+import DraggedTile from '../drag-objects/DraggedTile'
+import {forestArea} from '../drag-objects/ForestArea'
+import Images from '../material/Images'
+import ChangeActivePlayer, {changeActivePlayer} from '../moves/ChangeActivePlayer'
+import PlaceTower, {placeTower} from '../moves/PlaceTower'
+import Rules, {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, isAvailablePosition} from '../Rules'
+import GameView from '../types/GameView'
+import Button from '../util/Button'
 import {
   button, closeButton, forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestSpaceHeight, forestSpaceWidth, forestTop, forestWidth,
   getCardFocusTransform, popupBackgroundStyle, riverLeft, screenRatio, spaceHeight, spaceWidth
 } from '../util/Styles'
-import TileCard from './TileCard'
-import GameView from '../types/GameView'
-import {tiles} from './Tiles'
-import {DndContext, DropTargetMonitor, useDrag, useDrop, XYCoord} from 'react-dnd'
-import DraggedTile from '../drag-objects/DraggedTile'
-import {riverTileTop} from './River'
-import {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, isAvailablePosition} from '../Rules'
-import {forestArea} from '../drag-objects/ForestArea'
-import {getEmptyImage} from 'react-dnd-html5-backend'
-import {DragDropManager} from 'dnd-core/lib/interfaces'
-import {useDisplayState, usePlay, usePlayerId, usePlayers} from '@gamepark/workshop'
-import TowerColor from '../clans/TowerColor'
-import Button from '../util/Button'
-import {useTranslation} from 'react-i18next'
-import PlaceTower, {placeTower} from '../moves/PlaceTower'
-import ChangeActivePlayer, {changeActivePlayer} from '../moves/ChangeActivePlayer'
-import Images from '../material/Images'
-import {getTowerName, towerImage} from '../clans/TowerInfo'
-import {Clearing} from './Tile'
 import {isPlacedTile} from './PlacedTile'
-import ReactTooltip from 'react-tooltip'
+import {riverTileTop} from './River'
+import {Clearing} from './Tile'
+import TileCard from './TileCard'
+import {tiles} from './Tiles'
 
 type Props = {
   game: GameView
@@ -112,7 +112,7 @@ const Forest: FunctionComponent<Props> = ({game}) => {
       {
         game.players.filter(player => player.towerPosition).map(player =>
           <div key={player.tower} css={towerStyle(player.tower, player.towerPosition!.x, player.towerPosition!.y)}
-               data-tip={ player.tower === playerId ? t('Votre Tour') : t('Tour de {playerName}',{playerName: ( playersInfo.find(p => p.id === player.tower)!.name || getTowerName(t, player.tower) )} ) } />
+               data-tip={ player.tower === playerId ? t('Votre Tour') : t('Tour de {playerName}',{playerName: ( playersInfo.find(p => p.id === player.tower)!.name || Rules.getPlayerName(player.tower, t) )} ) } />
         )
       }
       {

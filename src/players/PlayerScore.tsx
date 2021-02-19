@@ -24,18 +24,19 @@ type Props = {
 const PlayerScore: FunctionComponent<Props> = ({game, player, position, displayScore, setDisplayScore, animation}) => {
   const {t} = useTranslation()
   const forestView = getForestView(game)
-  const clan = (player as Player).clan
-  const playerScores = useMemo(() => getPlayerScores(clan, player.towerPosition,forestView), [clan, player, forestView])
+  const clans = (player as Player).clans
+  const playerScores = useMemo(() => getPlayerScores(clans, player.towersPosition,forestView), [clans, player, forestView])
   const scoreLines = [playerScores.clanPoints,playerScores.greatestClanPoints,playerScores.towerClanPoints,playerScores.towerOtherClansPoints]
   const totalScore = scoreLines.reduce((a, b)=>a+b)
   const scoreMultipliers = [1,2,2,1]
   const theme = useTheme<Theme>()
+  const twoPlayersGame = game.players.length === 2
   return (
-    <div css={[style, topPosition(position), backgroundStyle(theme), animation && growAnimation, displayScore ? displayPlayerScore : hidePlayerScore]}>
+    <div css={[style, scoreHeight(twoPlayersGame) ,topPosition(position,twoPlayersGame), backgroundStyle(theme), animation && growAnimation, displayScore ? displayPlayerScore : hidePlayerScore]}>
       <button css={[arrowStyle(theme), animation && fadeInAnimation, displayScore ? arrowStandardStyle : arrowReverseStyle]} onClick={() => setDisplayScore(!displayScore)}
               title={displayScore ? t('Réduire les Scores') : t('Afficher les Scores')}/>
       <div css={scorePartStyle}>
-        { scoreLines.map( (score, index) => <ScorePart key={index} player={player} item={index} multiplier={scoreMultipliers[index]} score={score}/> ) }
+        { scoreLines.map( (score, index) => <ScorePart key={index} game={game} player={player} item={index} multiplier={scoreMultipliers[index]} score={score}/> ) }
       </div>
       <div css={[scoreStyle, animation && fadeInAnimation, displayScore ? displayScoreStyle : hideScoreStyle, totalScore !== 0 && displayScore && equalSign]}>{totalScore}</div>
     </div>
@@ -56,8 +57,12 @@ const style = css`
   pointer-events: auto;
 `
 
-const topPosition = (index: number) => css`
-  top: ${(3.5 + index * 25)}%;
+const scoreHeight = (twoPlayersGame: boolean) => css`
+  height: ${twoPlayersGame?21.7:16.7}%;
+`
+
+const topPosition = (index: number,twoPlayersGame: boolean) => css`
+  top: ${twoPlayersGame?(1 + index * 25):(3.5 + index * 25)}%;
 `
 
 const backgroundStyle = (theme: Theme) => css`
@@ -78,7 +83,7 @@ const displayPlayerScore = css`
 `
 
 const hidePlayerScore = css`
-  max-width: 22em;
+  max-width: 24em;
 `
 
 const arrowStyle = (theme: Theme) => css`
@@ -123,7 +128,7 @@ const scoreStyle = css`
   line-height: 1.5em;
   color: white;
   text-shadow: 0 0 0.1em black;
-  width: 2.5em;
+  width: 2.9em;
   height: 1.67em;
   text-align: center;
   transition: margin 0.5s linear;

@@ -3,25 +3,29 @@ import React, {FunctionComponent} from 'react'
 import Player from '../types/Player'
 import PlayerView from '../types/PlayerView'
 import VictoryPointsMultiplier from './VictoryPointsMultiplier'
+import Game from '../types/Game'
+import GameView from '../types/GameView'
 
 type Props = {
+  game: Game|GameView
   player: Player | PlayerView
   item: number
   multiplier:number
   score:number
 } & React.HTMLAttributes<HTMLDivElement>
 
-const ScorePart: FunctionComponent<Props> = ({player, item,multiplier,score}) => {
-  const clan = (player as Player).clan
+const ScorePart: FunctionComponent<Props> = ({game, player, item,multiplier,score}) => {
+  const clans = (player as Player).clans
+  const twoPlayersGame = game.players.length === 2
   return (
-    <div css={style}>
+    <div css={style(twoPlayersGame)}>
       <div css={scoreStyle}>{score}</div>
-      <VictoryPointsMultiplier css={multiplierStyle} item={item} clan={clan} tower={player.tower} multiplier={multiplier} />
+      <VictoryPointsMultiplier css={multiplierStyle(twoPlayersGame)} item={item} clans={clans} tower={player.tower} multiplier={multiplier} />
     </div>
   )
 }
 
-const style = css`
+const style = (twoPlayersGame:boolean) => css`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,7 +39,7 @@ const style = css`
     display: block;
     position: absolute;
     right: 85%;
-    top: 30%;
+    top: ${twoPlayersGame?10:30}%;
     font-size: 5em;
     color: white;
   }
@@ -52,8 +56,8 @@ const scoreStyle = css`
   margin-right: 0.3em;
 `
 
-const multiplierStyle = css`
-  height: 40%;
+const multiplierStyle = (twoPlayersGame:boolean) => css`
+  height: ${twoPlayersGame?25:40}%;
   width: 0;
   margin-right: 15%;
 `

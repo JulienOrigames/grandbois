@@ -119,8 +119,8 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   let playersWithHighestScore = []
   const forestView = getForestView(game)
   for (const player of game.players) {
-    const clan = (player as Player).clan
-    const scores = getPlayerScores(clan, player.towerPosition,forestView)
+    const clans = (player as Player).clans
+    const scores = getPlayerScores(clans, player.towersPosition,forestView)
     const score = scores.clanPoints + scores.greatestClanPoints + scores.towerClanPoints + scores.towerOtherClansPoints
     if (score >= highestScore) {
       if (score > highestScore) {
@@ -140,8 +140,8 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   let highestClans = -1
   let playersWithHighestClans = []
   for (const player of playersWithHighestScore) {
-    const clan = (player as Player).clan
-    const scores = getPlayerScores(clan, player.towerPosition,forestView)
+    const clans = (player as Player).clans
+    const scores = getPlayerScores(clans, player.towersPosition,forestView)
     if (scores.clanPoints >= highestClans) {
       if (scores.clanPoints > highestClans) {
         playersWithHighestClans = []
@@ -162,8 +162,8 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   let greatestClans = -1
   let playersWithGreatestClans = []
   for (const player of playersWithHighestClans) {
-    const clan = (player as Player).clan
-    const scores = getPlayerScores(clan, player.towerPosition,forestView)
+    const clans = (player as Player).clans
+    const scores = getPlayerScores(clans, player.towersPosition,forestView)
     if (scores.greatestClanPoints >= greatestClans) {
       if (scores.greatestClanPoints > greatestClans) {
         playersWithGreatestClans = []
@@ -184,8 +184,8 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   let towerClans = -1
   let playersWithTowerClans = []
   for (const player of playersWithGreatestClans) {
-    const clan = (player as Player).clan
-    const scores = getPlayerScores(clan, player.towerPosition,forestView)
+    const clans = (player as Player).clans
+    const scores = getPlayerScores(clans, player.towersPosition,forestView)
     if (scores.towerClanPoints >= towerClans) {
       if (scores.towerClanPoints > towerClans) {
         playersWithTowerClans = []
@@ -206,8 +206,8 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   let towerOtherClans = -1
   let playersWithTowerOtherClans = []
   for (const player of playersWithTowerClans) {
-    const clan = (player as Player).clan
-    const scores = getPlayerScores(clan, player.towerPosition,forestView)
+    const clans = (player as Player).clans
+    const scores = getPlayerScores(clans, player.towersPosition,forestView)
     if (scores.towerOtherClansPoints >= towerOtherClans) {
       if (scores.towerOtherClansPoints > towerOtherClans) {
         playersWithTowerOtherClans = []

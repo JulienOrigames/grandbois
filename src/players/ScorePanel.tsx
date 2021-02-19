@@ -36,7 +36,7 @@ const scorePanelStyle = css`
 `
 
 const shortPanelWidth = css`
-  min-width: 13%;
+  min-width: 14%;
 `
 
 export default ScorePanel

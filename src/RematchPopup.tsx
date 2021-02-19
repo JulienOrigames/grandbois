@@ -22,7 +22,7 @@ const RematchPopup: FunctionComponent<Props> = ({rematchOffer, onClose}) => {
   const theme = useTheme<Theme>()
   const playerId = usePlayerId<TowerColor>()
   const players = usePlayers<TowerColor>()
-  const getPlayerName = (empire: TowerColor) => players.find(p => p.id === empire)?.name || Rules.getPlayerName(empire, t)
+  const getPlayerName = (tower: TowerColor) => players.find(p => p.id === tower)?.name || Rules.getPlayerName(tower, t)
   return (
     <div css={[popupFixedBackgroundStyle, !rematchOffer && css`display: none`]} onClick={onClose}>
       <div css={[popupStyle, popupPosition, css`width: 60%`, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}

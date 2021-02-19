@@ -110,9 +110,11 @@ const Forest: FunctionComponent<Props> = ({game}) => {
           />)
       }
       {
-        game.players.filter(player => player.towerPosition).map(player =>
-          <div key={player.tower} css={towerStyle(player.tower, player.towerPosition!.x, player.towerPosition!.y)}
-               data-tip={ player.tower === playerId ? t('Votre Tour') : t('Tour de {playerName}',{playerName: ( playersInfo.find(p => p.id === player.tower)!.name || Rules.getPlayerName(player.tower, t) )} ) } />
+        game.players.map(player =>
+          player.towersPosition.map((towerPosition, index) =>
+            <div key={player.tower+index} css={towerStyle(player.tower, towerPosition.x, towerPosition.y)}
+                 data-tip={player.tower === playerId ? t('Votre Tour') : t('Tour de {playerName}', {playerName: (playersInfo.find(p => p.id === player.tower)!.name || Rules.getPlayerName(player.tower, t))})}/>
+          )
         )
       }
       {
@@ -136,7 +138,7 @@ function getTowerChoicePosition(game: GameView) {
 }
 
 function countTowerPlaced(game:GameView){
-  return game.players.reduce((sum, player) => sum + (player.towerPosition ? 1 : 0), 0)
+  return game.players.reduce((sum, player) => sum + player.towersPosition.length, 0)
 }
 
 const style = css`

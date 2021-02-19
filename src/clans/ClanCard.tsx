@@ -23,7 +23,7 @@ const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
       }
     }, [ref])
     return (
-      <div ref={ref} {...props} data-place='left' data-tip={t('Cliquez longtemps sur la tuile pour afficher votre Clan secret')}
+      <div ref={ref} {...props} data-place='left' data-tip={ game.over ? clan : t('Cliquez longtemps sur la tuile pour afficher votre Clan secret') }
            onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
            onMouseLeave={() => !showScore && setShowClanCard(false)}
            onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
@@ -38,10 +38,10 @@ const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
         {clan && !game.over && showClanCard &&
         <div css={ruleStyle}>
             <h3>{t('Rappel des points de victoire')}</h3>
-            <VictoryPointsMultiplier css={multiplierStyle} item={0} clan={clan} tower={tower} multiplier={1} legend={true}/>
-            <VictoryPointsMultiplier css={multiplierStyle} item={1} clan={clan} tower={tower} multiplier={2} legend={true}/>
-            <VictoryPointsMultiplier css={multiplierStyle} item={2} clan={clan} tower={tower} multiplier={2} legend={true}/>
-            <VictoryPointsMultiplier css={multiplierStyle} item={3} clan={clan} tower={tower} multiplier={1} legend={true}/>
+            <VictoryPointsMultiplier css={multiplierStyle} item={0} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
+            <VictoryPointsMultiplier css={multiplierStyle} item={1} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
+            <VictoryPointsMultiplier css={multiplierStyle} item={2} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
+            <VictoryPointsMultiplier css={multiplierStyle} item={3} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
         </div>
         }
       </div>

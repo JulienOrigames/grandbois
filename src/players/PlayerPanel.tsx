@@ -30,14 +30,30 @@ const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highligh
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const currentPlayer = players.find(item => item.tower === player.tower) as Player | undefined
+  const twoPlayersGame = game.players.length === 2
   return (
-    <div css={[style(player.tower, position, highlight),showScore && endStyle(position)]} {...props}>
-      <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]} css={towerStyle(player.towerPosition!==undefined && !game.over)} draggable="false"/>
-      <h3 css={[titleStyle(showScore), player.eliminated && eliminatedStyle]}>
-        <span css={nameStyle}>{ player.tower === playerId ? t('Vous') : ( playerInfo?.name || Rules.getPlayerName(player.tower, t) )}</span>
+    <div css={[style(player.tower, position, highlight), (showScore || twoPlayersGame) && endStyle(position)]} {...props}>
+      <div css={towersStyle(twoPlayersGame || game.over)}>
+      {
+        ( twoPlayersGame && !game.over ) ?
+            <>
+            <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]}
+                 css={towerStyle(player.towersPosition[0] !== undefined && !game.over)} draggable="false"/>
+            <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]}
+                 css={towerStyle(player.towersPosition[1] !== undefined && !game.over)} draggable="false"/>
+            </>
+          :
+            <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]} css={towerStyle(player.towersPosition[0] !== undefined && !game.over)}
+               draggable="false"/>
+      }
+      </div>
+      <h3 css={[titleStyle(showScore || twoPlayersGame), player.eliminated && eliminatedStyle]}>
+        <span css={nameStyle}>{player.tower === playerId ? t('Vous') : (playerInfo?.name || Rules.getPlayerName(player.tower, t))}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
-      {game.over && <ClanCard css={clanStyle} game={game} clan={currentPlayer?.clan} showScore={game.over} tower={player.tower} /> }
+      {game.over && currentPlayer?.clans.map((clan, index) =>
+        <ClanCard key={clan} css={clanStyle(index,twoPlayersGame)} game={game} clan={clan} showScore={game.over} tower={player.tower}/>
+      )}
     </div>
   )
 }
@@ -52,6 +68,7 @@ const style = (tower: TowerColor, position: number, highlight: boolean) => css`
   border-radius: 5px;
   ${borderStyle(highlight)};
   transition: height 1s ease-in, top 1s ease-in;
+
   &:before {
     content: '';
     display: block;
@@ -78,21 +95,28 @@ const borderStyle = (highlight: boolean) => highlight ? css`
   box-shadow: 0.2em 0.2em 1em black;
 `
 
-const towerStyle = (towerPlayed:boolean) => css`
+const towersStyle = (notFullHeight:boolean) => css`
   position: absolute;
-  height: 90%;
+  height: ${notFullHeight?90:100}%;
+  width: auto;
   bottom: 1%;
   left: 1%;
-  opacity:${towerPlayed?'0.5':'1'};
 `
 
-const titleStyle = (showScore:boolean) => css`
+const towerStyle = (towerPlayed: boolean) => css`
+  opacity: ${towerPlayed ? '0.5' : '1'};
+  position: relative;
+  height: 100%;
+  width: auto;
+`
+
+const titleStyle = (showScore: boolean) => css`
   color: #333333;
   position: absolute;
-  top: ${showScore?'3':'5'}%;
-  left: ${showScore?'25':'20'}%;
+  top: ${showScore ? '3' : '5'}%;
+  left: ${showScore ? '25' : '20'}%;
   right: 2%;
-  height: ${showScore?'20':'90'}%;
+  height: ${showScore ? '18' : '90'}%;
   margin: 0;
   font-size: 2em;
   line-height: 3em;
@@ -112,13 +136,15 @@ const eliminatedStyle = css`
   text-decoration: line-through;
 `
 
-const clanStyle = css`
+const clanCardWidth = 70 * endPlayerPanelHeight / playerPanelWidth / screenRatio
+
+const clanStyle = (index: number,twoPlayersGame:boolean) => css`
   position: absolute;
-  height : 70%;
-  width : ${70 * endPlayerPanelHeight / playerPanelWidth / screenRatio }%;
+  height: 70%;
+  width: ${twoPlayersGame?clanCardWidth*0.7:clanCardWidth}%;
   top: 25%;
-  left: 50%;
-  z-index:2;
+  left: ${twoPlayersGame? index * clanCardWidth * 0.7  + 40 : 50}%;
+  z-index: 2;
   animation: ${fadeIn} 5s ease-in forwards;
 `
 

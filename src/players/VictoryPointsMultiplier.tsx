@@ -9,22 +9,24 @@ import {towerImage} from '../clans/TowerInfo'
 
 type Props = {
   item: number
-  clan: Clan
+  clans: Clan[]
   tower:TowerColor
   multiplier: number
   legend?:boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-const VictoryPointsMultiplier: FunctionComponent<Props> = ({item, clan, tower, multiplier, legend,...props}) => {
+const VictoryPointsMultiplier: FunctionComponent<Props> = ({item, clans, tower, multiplier, legend,...props}) => {
   const {t} = useTranslation()
-  return (
-    <div {...props} css={style} data-tip={getScoreTypeDescription(t, item)}>
-      <span css={numberStyle}>{multiplier}</span><span css={multiplierStyle}>x</span>
-      <img src={scoreIcons[item][clan]} css={clanIconStyle} alt={getScoreTypeDescription(t, item)}/>
-      { item > 1 && <img src={towerImage[tower]} css={towerIconStyle} alt={getScoreTypeDescription(t, item)} />}
-      { legend && <span css={legendStyle}>{getScoreTypeDescription(t, item)}</span>}
-    </div>
-  )
+  return <>
+    { clans.map( (clan,index) =>
+      <div {...props} key={index} css={style} data-tip={getScoreTypeDescription(t, item)}>
+        <span css={numberStyle}>{multiplier}</span><span css={multiplierStyle}>x</span>
+        <img src={scoreIcons[item][clan]} css={clanIconStyle} alt={getScoreTypeDescription(t, item)}/>
+        { item > 1 && <img src={towerImage[tower]} css={towerIconStyle} alt={getScoreTypeDescription(t, item)} />}
+        { legend && <span css={legendStyle}>{getScoreTypeDescription(t, item)}</span>}
+      </div>
+    )}
+  </>
 }
 
 const style = css`

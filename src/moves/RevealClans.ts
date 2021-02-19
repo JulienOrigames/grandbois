@@ -7,7 +7,7 @@ type RevealClans = { type: typeof MoveType.RevealClans }
 export default RevealClans
 
 export type RevealClansView = RevealClans
-  & { clans: { [key in TowerColor]?: Clan } }
+  & { clans: { [key in TowerColor]?: Clan[] } }
 
 export function revealClans(): RevealClans {
   return {type: MoveType.RevealClans}

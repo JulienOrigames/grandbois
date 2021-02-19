@@ -13,7 +13,7 @@ import EjectPopup from './EjectPopup'
 import Images from './material/Images'
 import RematchPopup from './RematchPopup'
 // @ts-ignore
-import toggleSound from './sounds/toggle.ogg'
+import toggleSound from './sounds/toggle.mp3'
 import Theme, {LightTheme} from './Theme'
 import TimePopup from './TimePopup'
 import {resetTutorial} from './Tutorial'

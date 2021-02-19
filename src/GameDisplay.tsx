@@ -1,7 +1,7 @@
 import {Letterbox, usePlayerId} from '@gamepark/workshop'
 import React, {FunctionComponent, useMemo, useRef} from 'react'
 import GameView from './types/GameView'
-import {cardStyle, fadeIn} from './util/Styles'
+import {cardStyle, cardWidth, fadeIn} from './util/Styles'
 import {css} from '@emotion/core'
 import DrawPile from './tiles/DrawPile'
 import River from './tiles/River'
@@ -12,20 +12,24 @@ import PlayerPanel from './players/PlayerPanel'
 import Player from './types/Player'
 import ScorePanel from './players/ScorePanel'
 import ReactTooltip from 'react-tooltip'
+import {useBellAlert} from './util/useBellAlert'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const player = players.find(player => player.tower === playerId) as Player | undefined
   const gameWasLive = useRef(!game.over)
+  useBellAlert(game)
   return (
     <Letterbox css={letterBoxStyle}>
       <DrawPile game={game}/>
       { !game.over && <River game={game} />}
       <Forest game={game}/>
-      { !game.over && <ClanCard css={[cardStyle,clanStyle]} game={game} clan={player?.clan} showScore={game.over} tower={player!.tower} />}
+      { !game.over &&  player?.clans.map( (clan,index) =>
+        <ClanCard css={[cardStyle,clanStyle(index)]} game={game} key={index} clan={clan} showScore={game.over} tower={player!.tower} />
+      )}
       {players.map((player, index) =>
-        <PlayerPanel game={game} key={player.tower} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
+        <PlayerPanel game={game} key={index} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}
       {game.over && <ScorePanel game={game} animation={gameWasLive.current}/>}
       <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green' globalEventOff='mousedown' />
@@ -45,10 +49,10 @@ export const getPlayersStartingWith = (game: GameView, playerId?: TowerColor) =>
 const letterBoxStyle = css`
   animation: ${fadeIn} 3s ease-in forwards;
 `
-const clanStyle = css`
+const clanStyle = (index:number) => css`
   bottom: 1%;
-  right: 1%;
-  z-index:2;
+  right: ${1 + index * ( 1 + cardWidth )}%;
+  z-index: ${3 - index} ;
 `
 
 export default GameDisplay

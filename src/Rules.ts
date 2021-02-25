@@ -4,7 +4,7 @@ import Game from './types/Game'
 import Move, {MoveView} from './moves/Move'
 import TowerColor from './clans/TowerColor'
 import GameView from './types/GameView'
-import {shuffle, WithEliminations, WithTimeLimit} from '@gamepark/workshop'
+import {shuffle, WithEliminations, WithTimeLimit, WithTutorial} from '@gamepark/workshop'
 import Player from './types/Player'
 import GameOptions from './types/GameOptions'
 import {tiles} from './tiles/Tiles'
@@ -24,17 +24,19 @@ import {changeActivePlayer} from './moves/ChangeActivePlayer'
 import {isRevealClansView} from './moves/RevealClans'
 import {XYCoord} from 'react-dnd'
 import {concede} from './moves/Concede'
+import {setupTutorial, tutorialMoves} from './Tutorial'
 
 
 const playersMin = 2
 const playersMax = 5
-export const defaultNumberOfPlayers = 4
+export const defaultNumberOfPlayers = 3
 
 type GameType = SequentialGame<Game, Move, TowerColor>
   & GameWithIncompleteInformation<Game, Move, TowerColor, GameView, Move>
   & WithAutomaticMoves<Game, Move>
   & WithTimeLimit<Game, TowerColor>
   & WithEliminations<Game, Move, TowerColor>
+  & WithTutorial<Game, Move>
 /*& CompetitiveGame<Game, Move, EmpireName>
 & GameWithIncompleteInformation<Game, Move, EmpireName, GameView, MoveView>
 & WithOptions<Game, GameOptions>
@@ -209,6 +211,14 @@ const GrandBoisRules: GameType = {
     }
   },
 
+  setupTutorial(): Game {
+    return setupTutorial()
+  },
+
+  expectedMoves(): Move[] {
+    return tutorialMoves
+  }
+
 }
 
 export function isOver(game: Game | GameView): boolean {
@@ -216,7 +226,7 @@ export function isOver(game: Game | GameView): boolean {
   return deckLength === 0 && !game.river.some(tile => tile)
 }
 
-function setupPlayers(players?: number | { tower?: TowerColor }[]) {
+export function setupPlayers(players?: number | { tower?: TowerColor }[]) {
   let playersList
   let shuffledClans:Clan[] = []
   // give towerColors

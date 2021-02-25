@@ -17,8 +17,8 @@ const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
                                                   left: ${drawPileCardX(index)}%;
                                                   z-index:2;
                                                 `]}/>)}
-          <div css={drawPileTooltip} data-tip={t('Nombre de tuiles restantes : {nbDeck}', {nbDeck: game.deck})}/>
-          { game.deck && <div css={nbStyle} data-tip={t('Nombre de tuiles restantes : {nbDeck}', {nbDeck: game.deck})}>{game.deck}</div> }
+          <div css={drawPileTooltip} data-tip={t('Number of remaining tiles: {nbDeck}', {nbDeck: game.deck})}/>
+          { game.deck && <div css={nbStyle} data-tip={t('Number of remaining tiles: {nbDeck}', {nbDeck: game.deck})}>{game.deck}</div> }
       </>
     }
   </>

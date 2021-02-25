@@ -303,14 +303,14 @@ const tutorialDescription: TutorialStepDescription[][] = [
     },
     {
       title: (t: TFunction) => t('+ 1 golden chestnut for each space belonging to another Clan'),
-      text: (t: TFunction) => t('Including Clans that nobody is playing, but excluding Bears) that is directly around your Watchtower.'),
+      text: (t: TFunction) => t('(including Clans that nobody is playing, but excluding Bears) that is directly around your Watchtower.'),
       boxTop: 50,
       boxLeft: 50,
       boxWidth: 60
     },
     {
       title: (t: TFunction) => t('The player with the most golden chestnuts wins'),
-      text: (t: TFunction) => t('If there is a tie, the sequence of tiebreakers is the scoring categories on the scoresheet, in that order (spaces, largest group, your clan surrounding your Watchtower, other clans surrounding your Watchtower).'),
+      text: (t: TFunction) => t('If there is a tie, the sequence of tiebreakers is the scoring categories, in that order (spaces, largest group, your clan surrounding your Watchtower, other clans surrounding your Watchtower).'),
       boxTop: 50,
       boxLeft: 50,
       boxWidth: 60

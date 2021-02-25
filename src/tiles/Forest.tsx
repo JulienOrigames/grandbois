@@ -88,7 +88,7 @@ const Forest: FunctionComponent<Props> = ({game}) => {
     {focusedTile !== undefined &&
     <>
         <div css={popupBackgroundStyle} onClick={() => setFocusedTile(undefined)}/>
-        <button css={[button, closeButton]} onClick={() => setFocusedTile(undefined)}><FontAwesomeIcon icon={faTimes}/>{t('Fermer')}</button>
+        <button css={[button, closeButton]} onClick={() => setFocusedTile(undefined)}><FontAwesomeIcon icon={faTimes}/>{t('Close')}</button>
         <TileCard tile={tiles[focusedTile]}
                   css={[forestCardStyle, getCardFocusTransform(game.forest.find(placedTile => placedTile.tile === focusedTile)!.rotation)]}/>
     </>
@@ -113,16 +113,16 @@ const Forest: FunctionComponent<Props> = ({game}) => {
         game.players.map(player =>
           player.towersPosition.map((towerPosition, index) =>
             <div key={player.tower+index} css={towerStyle(player.tower, towerPosition.x, towerPosition.y)}
-                 data-tip={player.tower === playerId ? t('Votre Tour') : t('Tour de {playerName}', {playerName: (playersInfo.find(p => p.id === player.tower)!.name || Rules.getPlayerName(player.tower, t))})}/>
+                 data-tip={player.tower === playerId ? t('Your Watchtower') : t('{playerName} Watchtower', {playerName: (playersInfo.find(p => p.id === player.tower)!.name || Rules.getPlayerName(player.tower, t))})}/>
           )
         )
       }
       {
         playerId && playerId === game.activePlayer && activePlayerCanPlaceTower(game) &&
         <div css={towerChoiceStyle(getTowerChoicePosition(game))}>
-          {t('Souhaitez-vous placer votre tour de garde ici ?')}
-            <Button css={css`margin:10px`} onClick={() => play(placeTower())}>{t('Oui')}</Button>
-            <Button css={css`margin:10px`} onClick={() => play(changeActivePlayer())}>{t('Non')}</Button>
+          {t('Would you like to place your Watchtower here?')}
+            <Button css={css`margin:10px`} onClick={() => play(placeTower())}>{t('Yes')}</Button>
+            <Button css={css`margin:10px`} onClick={() => play(changeActivePlayer())}>{t('No')}</Button>
         </div>
       }
     </div>

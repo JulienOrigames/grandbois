@@ -1,9 +1,9 @@
 import {css, keyframes} from '@emotion/core'
 import {
-  faChess, faChevronDown, faChevronUp, faClock, faCompress, faExpand, faFastBackward, faHome, faMoon, faSignOutAlt, faSun, faUserSlash, faVolumeMute, faVolumeUp
+  faChess, faChevronDown, faChevronUp, faClock, faCompress, faExpand, faFastBackward, faHome, faMoon, faSignOutAlt, faSun, faVolumeMute, faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {GameSpeed, useGame, useNow, useOptions, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/workshop'
+import {useGame, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/workshop'
 import {useTheme} from 'emotion-theming'
 import fscreen from 'fscreen'
 import NoSleep from 'nosleep.js'
@@ -22,6 +22,7 @@ import IconButton from './util/IconButton'
 import {platformUri} from './util/Styles'
 import TowerColor from './clans/TowerColor'
 import QuitPopup from './QuitPopup'
+import EjectButton from './EjectButton'
 
 const noSleep = new NoSleep()
 
@@ -34,9 +35,6 @@ const MainMenu = () => {
   const player = players.find(player => player.id === playerId)
   const quit = game?.players.find(player => player.tower === playerId)?.eliminated
   const isPlaying = players.find(player => player.id === playerId)?.time?.playing
-  const now = useNow()
-  const options = useOptions()
-  const playerTimeout = options?.speed === GameSpeed.RealTime && players.some(player => player.time?.playing && player.time.availableTime < now - Date.parse(player.time.lastChange))
   const [fullScreen, setFullScreen] = useState(!fscreen.fullscreenEnabled)
   const [ejectPopupOpen, setEjectPopupOpen] = useState(false)
   const [displayMenu, setDisplayMenu] = useState(false)
@@ -89,106 +87,98 @@ const MainMenu = () => {
   return (
     <>
       <div css={[menuStyle, displayMenu && hidden]}>
-        {playerTimeout && !!playerId && !isPlaying &&
-        <IconButton css={[menuButtonStyle, ejectButtonStyle]} title={t('Expulser un joueur')} aria-label={t('Expulser un joueur')}
-                    onClick={() => toggle.play() && setEjectPopupOpen(true)}>
-          <FontAwesomeIcon icon={faUserSlash}/>
-        </IconButton>
-        }
+        {game && !!playerId && !isPlaying && !game.over && <EjectButton openEjectPopup={() => setEjectPopupOpen(true)} css={menuButtonStyle}/>}
         {game && !!playerId && game.over && !game.tutorial &&
-            <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Proposer une revanche')} onClick={() => rematch()}>
+            <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Offer a rematch')} onClick={() => rematch()}>
               <FontAwesomeIcon icon={faChess}/>
-              {displayRematchTooltip && <span css={tooltipStyle}>{t('Proposer une revanche')}</span>}
+              {displayRematchTooltip && <span css={tooltipStyle}>{t('Offer a friendly rematch')}</span>}
             </IconButton>
         }
         {fscreen.fullscreenEnabled && (fullScreen ?
-            <IconButton css={[menuButtonStyle, fullScreenButtonStyle]} title={t('Sortir du plein écran')} aria-label={t('Sortir du plein écran')}
+            <IconButton css={[menuButtonStyle, fullScreenButtonStyle]} title={t('Leave full screen')} aria-label={t('Leave full screen')}
                         onClick={() => toggle.play() && fscreen.exitFullscreen()}>
               <FontAwesomeIcon icon={faCompress}/>
             </IconButton>
             :
-            <IconButton css={[menuButtonStyle, fullScreenButtonStyle]} title={t('Passer en plein écran')} aria-label={t('Passer en plein écran')}
+            <IconButton css={[menuButtonStyle, fullScreenButtonStyle]} title={t('Go to full screen')} aria-label={t('Go to full screen')}
                         onClick={() => toggle.play() && fscreen.requestFullscreen(document.getElementById('root')!)}>
               <FontAwesomeIcon icon={faExpand}/>
             </IconButton>
         )}
-        <IconButton css={[menuButtonStyle, mainMenuButtonStyle]} title={t('Menu principal')} aria-label={t('Menu principal')}
+        <IconButton css={[menuButtonStyle, mainMenuButtonStyle]} title={t('Menu')} aria-label={t('Menu')}
                     onClick={() => toggle.play() && setDisplayMenu(true)}>
           <FontAwesomeIcon icon={faChevronDown}/>
         </IconButton>
       </div>
       <div css={[menuStyle, openMenuStyle, !displayMenu && hidden]}>
         <IconButton css={[menuButtonStyle, mainMenuButtonStyle]} onClick={() => toggle.play() && setDisplayMenu(false)}>
-          <span css={subMenuTitle}>{t('Cacher le Menu')}</span>
+          <span css={subMenuTitle}>{t('Close')}</span>
           <FontAwesomeIcon icon={faChevronUp}/>
         </IconButton>
         {game && !!playerId && game.over && !game.tutorial &&
-        <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Proposer une revanche')}>
-            <span css={subMenuTitle}>{t('Proposer une revanche')}</span>
+        <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Offer a rematch')}>
+            <span css={subMenuTitle}>{t('Offer a rematch')}</span>
             <FontAwesomeIcon icon={faChess}/>
         </IconButton>
         }
         {fscreen.fullscreenEnabled && (fullScreen ?
             <IconButton css={[menuButtonStyle, fullScreenButtonStyle]}
                         onClick={() => toggle.play() && fscreen.exitFullscreen()}>
-              <span css={subMenuTitle}>{t('Quitter le plein écran')}</span>
+              <span css={subMenuTitle}>{t('Leave full screen')}</span>
               <FontAwesomeIcon icon={faCompress}/>
             </IconButton> :
             <IconButton css={[menuButtonStyle, fullScreenButtonStyle]}
                         onClick={() => toggle.play() && fscreen.requestFullscreen(document.getElementById('root')!)}>
-              <span css={subMenuTitle}>{t('Passer en plein écran')}</span>
+              <span css={subMenuTitle}>{t('Go to full screen')}</span>
               <FontAwesomeIcon icon={faExpand}/>
             </IconButton>
         )}
         <IconButton css={[menuButtonStyle, homeButtonStyle]} onClick={() => toggle.play().then(() => window.location.href = platformUri)}>
-          <span css={subMenuTitle}>{t('Retour à l’accueil')}</span>
+          <span css={subMenuTitle}>{t('Back to home page')}</span>
           <FontAwesomeIcon icon={faHome}/>
         </IconButton>
         <IconButton css={[menuButtonStyle, themeButtonStyle]} onClick={toggleSounds}>
-          <span css={subMenuTitle}>{muted ? t('Activer le son') : t('Couper le son')}</span>
+          <span css={subMenuTitle}>{muted ? t('Enable sound') : t('Mute sound')}</span>
           <FontAwesomeIcon icon={muted ? faVolumeMute : faVolumeUp}/>
         </IconButton>
         <IconButton css={[menuButtonStyle, themeButtonStyle]} onClick={() => toggle.play() && theme.switchThemeColor()}>
           {theme.color === LightTheme ?
             <>
-              <span css={subMenuTitle}>{t('Activer le mode nuit')}</span>
+              <span css={subMenuTitle}>{t('Enable dark mode')}</span>
               <FontAwesomeIcon icon={faMoon}/>
             </>
             :
             <>
-              <span css={subMenuTitle}>{t('Activer le mode jour')}</span>
+              <span css={subMenuTitle}>{t('Enable light mode')}</span>
               <FontAwesomeIcon icon={faSun}/>
             </>
           }
         </IconButton>
         {game && !game.tutorial &&
         <IconButton css={[menuButtonStyle, clockButtonStyle]} onClick={() => toggle.play() && setTimePopupOpen(true)}>
-          <span css={subMenuTitle}>{t('Temps de réflexion')}</span>
+          <span css={subMenuTitle}>{t('Thinking time')}</span>
           <FontAwesomeIcon icon={faClock}/>
         </IconButton>
         }
         {game && player && !quit && !game.over &&
         <IconButton css={[menuButtonStyle, redButtonStyle]} onClick={() => setQuitPopupOpen(true)}>
-            <span css={subMenuTitle}>{t('Quitter la partie')}</span>
+            <span css={subMenuTitle}>{t('Leave the game')}</span>
             <FontAwesomeIcon icon={faSignOutAlt}/>
         </IconButton>
         }
-        {playerTimeout && !!playerId && !isPlaying &&
-        <IconButton css={[menuButtonStyle, ejectButtonStyle]} onClick={() => toggle.play() && setEjectPopupOpen(true)}>
-          <span css={subMenuTitle}>{t('Expulser un joueur')}</span>
-          <FontAwesomeIcon icon={faUserSlash}/>
-        </IconButton>
+        {game && !!playerId && !isPlaying && !game.over &&
+        <EjectButton openEjectPopup={() => setEjectPopupOpen(true)} subMenu={true} css={menuButtonStyle}/>
         }
         {game && game.tutorial &&
         <IconButton css={[menuButtonStyle, tutorialButtonStyle]} onClick={() => resetTutorial()}>
-          <span css={subMenuTitle}>{t('Recommencer le Tutoriel')}</span>
+          <span css={subMenuTitle}>{t('Restart the tutorial')}</span>
           <FontAwesomeIcon icon={faFastBackward}/>
         </IconButton>
         }
       </div>
       <RematchPopup rematchOffer={rematchOffer} onClose={ignoreRematch}/>
       {timePopupOpen && <TimePopup onClose={() => setTimePopupOpen(false)}/>}
-      {ejectPopupOpen && <EjectPopup playerId={playerId!} players={players} now={now} onClose={() => setEjectPopupOpen(false)}/>}
+      {ejectPopupOpen && <EjectPopup playerId={playerId!} players={players} onClose={() => setEjectPopupOpen(false)}/>}
       {quitPopupOpen && <QuitPopup onClose={() => setQuitPopupOpen(false)}/>}
     </>
   )
@@ -277,11 +267,6 @@ const fullScreenButtonStyle = css`
 `
 const redButtonStyle = css`
   background-image: url(${Images.buttonRed});
-`
-const ejectButtonStyle = css`
-  background-image: url(${Images.buttonRed});
-  padding-left: 0.35em;
-  padding-right: 0.35em;
 `
 
 const tutorialButtonStyle = css`

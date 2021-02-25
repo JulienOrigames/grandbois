@@ -76,7 +76,7 @@ const River: FunctionComponent<Props> = ({game}) => {
     }
     {
       playingTile && isLegalTile
-      && <Button css={validStyle} onClick={() => play(placeForestTile(playingTile))}>{t('Valider')}</Button>
+      && <Button css={validStyle} onClick={() => play(placeForestTile(playingTile))}>{t('Validate')}</Button>
     }
     <div ref={ref} css={riverAreaStyle} />
   </>

@@ -23,12 +23,12 @@ const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
       }
     }, [ref])
     return (
-      <div ref={ref} {...props} data-place='left' data-tip={ game.over ? clan : t('Cliquez longtemps sur la tuile pour afficher votre Clan secret') }
+      <div ref={ref} {...props} data-place='left' data-tip={ game.over ? clan : t('Hold the click on this tile to look at your Secret Clan') }
            onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
            onMouseLeave={() => !showScore && setShowClanCard(false)}
            onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
       >
-        <h3 css={[headerStyle, !showClanCard && showStyle]}>{t('Tuile de Clan secret')}</h3>
+        <h3 css={[headerStyle, !showClanCard && showStyle]}>{t('Secret Clan tile')}</h3>
         <div css={[scaleClanStyle, showClanCard && !game.over && scaleStyle]}>
           <div css={[style(clan), (showClanCard || game.over) && flipStyle]}/>
         </div>
@@ -37,7 +37,7 @@ const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
         )}
         {clan && !game.over && showClanCard &&
         <div css={ruleStyle}>
-            <h3>{t('Rappel des points de victoire')}</h3>
+            <h3>{t('Victory points reminder')}</h3>
             <VictoryPointsMultiplier css={multiplierStyle} item={0} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
             <VictoryPointsMultiplier css={multiplierStyle} item={1} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
             <VictoryPointsMultiplier css={multiplierStyle} item={2} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
@@ -142,9 +142,9 @@ const showStyle = css`
 const ruleStyle = css`
   position: absolute;
   height: 200%;
-  width: 210%;
+  width: 240%;
   top: -100%;
-  left: -300%;
+  left: -330%;
   padding: 1em;
   border-radius: 1em;
   background-color: rgba(255, 255, 255, 0.8);

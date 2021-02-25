@@ -13,6 +13,7 @@ import Player from './types/Player'
 import ScorePanel from './players/ScorePanel'
 import ReactTooltip from 'react-tooltip'
 import {useBellAlert} from './util/useBellAlert'
+import TutorialPopup from './TutorialPopup'
 
 const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
   const playerId = usePlayerId<TowerColor>()
@@ -32,6 +33,7 @@ const GameDisplay: FunctionComponent<{ game: GameView }> = ({game}) => {
         <PlayerPanel game={game} key={index} player={player} position={index} highlight={player.tower === game.activePlayer}  showScore={game.over} />
       )}
       {game.over && <ScorePanel game={game} animation={gameWasLive.current}/>}
+      {game.tutorial && <TutorialPopup game={game}/>}
       <ReactTooltip css={css`font-size:2em;`} type='info' effect='solid' place='right' backgroundColor='green' globalEventOff='mousedown' />
     </Letterbox>
   )

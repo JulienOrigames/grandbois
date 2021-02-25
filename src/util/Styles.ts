@@ -186,15 +186,15 @@ export const popupPosition = css`
 `
 
 export const popupLightStyle = css`
-  background-color: #e9e9e9;
-  color: #082b2b;
-  border: solid 1em #082b2b;
+  background-color: #f3f2db;
+  color: #0e401c;
+  border: solid 1em #0e401c;
 `
 
 export const popupDarkStyle = css`
-  background-color: #082b2b;
-  color: #d4f7f7;
-  border: solid 1em #d4f7f7;
+  background-color: #0e401c;
+  color: #f3f2db;
+  border: solid 1em #f3f2db;
 `
 export const closePopupStyle = css`
   position: relative;

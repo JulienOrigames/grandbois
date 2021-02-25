@@ -48,7 +48,7 @@ const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highligh
       }
       </div>
       <h3 css={[titleStyle(showScore || twoPlayersGame), player.eliminated && eliminatedStyle]}>
-        <span css={nameStyle}>{player.tower === playerId ? t('Vous') : (playerInfo?.name || Rules.getPlayerName(player.tower, t))}</span>
+        <span css={nameStyle}>{player.tower === playerId ? t('You') : (playerInfo?.name || Rules.getPlayerName(player.tower, t))}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
       {game.over && currentPlayer?.clans.map((clan, index) =>

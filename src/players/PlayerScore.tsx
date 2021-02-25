@@ -34,7 +34,7 @@ const PlayerScore: FunctionComponent<Props> = ({game, player, position, displayS
   return (
     <div css={[style, scoreHeight(twoPlayersGame) ,topPosition(position,twoPlayersGame), backgroundStyle(theme), animation && growAnimation, displayScore ? displayPlayerScore : hidePlayerScore]}>
       <button css={[arrowStyle(theme), animation && fadeInAnimation, displayScore ? arrowStandardStyle : arrowReverseStyle]} onClick={() => setDisplayScore(!displayScore)}
-              title={displayScore ? t('Réduire les Scores') : t('Afficher les Scores')}/>
+              title={displayScore ? t('Hide Scores') : t('Display Scores')}/>
       <div css={scorePartStyle}>
         { scoreLines.map( (score, index) => <ScorePart key={index} game={game} player={player} item={index} multiplier={scoreMultipliers[index]} score={score}/> ) }
       </div>

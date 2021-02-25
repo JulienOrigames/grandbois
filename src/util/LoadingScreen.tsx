@@ -3,7 +3,7 @@ import {faLightbulb, faPaintBrush, faWrench} from '@fortawesome/free-solid-svg-i
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {useTheme} from 'emotion-theming'
 import React, {FunctionComponent} from 'react'
-import {useTranslation} from 'react-i18next'
+import {useTranslation, Trans} from 'react-i18next'
 import Images from '../material/Images'
 import GrandboisBox from '../material/grandbois3D.png'
 import Theme from '../Theme'
@@ -14,14 +14,18 @@ const LoadingScreen: FunctionComponent<{ display: boolean }> = ({display}) => {
   const theme = useTheme<Theme>()
   return (
     <div css={[loadingScreenStyle, textColor(theme), backgroundColor(theme), !display && css`opacity: 0`]}>
-      <img css={gameBox} src={GrandboisBox} alt={t('Grandbois')}/>
-      <h2 css={gameTitle}>{t('Grandbois')}</h2>
+      <img css={gameBox} src={GrandboisBox} alt={t('Name')}/>
+      <h2 css={gameTitle}>{t('Name')}</h2>
       <p css={gamePeople}>
-        <FontAwesomeIcon css={iconStyle} icon={faLightbulb}/>{t('Auteur : Frédéric Guérard')}
+        <FontAwesomeIcon css={iconStyle} icon={faLightbulb}/>
+        <Trans defaults="A game by <0>{author}</0>" values={{author: 'Frédéric Guérard'}} components={[<strong/>]}/>
         <br/>
-        <FontAwesomeIcon css={iconStyle} icon={faPaintBrush}/>{t('Artiste : Camille Chaussy')}
+        <FontAwesomeIcon css={iconStyle} icon={faPaintBrush}/>
+        <Trans defaults="Illustrated by <0>{artist}</0>" values={{artist: 'Camille Chaussy'}} components={[<strong/>]}/>
         <br/>
-        <FontAwesomeIcon css={iconStyle} icon={faWrench}/>{t('Éditeurs : The Flying Games, Origames')}</p>
+        <FontAwesomeIcon css={iconStyle} icon={faWrench}/>
+        <Trans defaults="Edited by <0>{editor1}</0> and <0>{editor2}</0>" values={{editor1: 'The Flying Games', editor2: 'Origames'}} components={[<strong/>]}/>
+      </p>
     </div>
   )
 }

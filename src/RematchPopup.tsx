@@ -6,11 +6,11 @@ import RematchOffer from '@gamepark/workshop/dist/Types/RematchOffer'
 import {useTheme} from 'emotion-theming'
 import React, {FunctionComponent} from 'react'
 import {useTranslation} from 'react-i18next'
-import TowerColor from './clans/TowerColor'
 import Rules from './Rules'
 import Theme, {LightTheme} from './Theme'
 import Button from './util/Button'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
+import TowerColor from './clans/TowerColor'
 
 type Props = {
   rematchOffer?: RematchOffer<TowerColor>
@@ -22,7 +22,7 @@ const RematchPopup: FunctionComponent<Props> = ({rematchOffer, onClose}) => {
   const theme = useTheme<Theme>()
   const playerId = usePlayerId<TowerColor>()
   const players = usePlayers<TowerColor>()
-  const getPlayerName = (tower: TowerColor) => players.find(p => p.id === tower)?.name || Rules.getPlayerName(tower, t)
+  const getPlayerName = (empire: TowerColor) => players.find(p => p.id === empire)?.name || Rules.getPlayerName(empire, t)
   return (
     <div css={[popupFixedBackgroundStyle, !rematchOffer && css`display: none`]} onClick={onClose}>
       <div css={[popupStyle, popupPosition, css`width: 60%`, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}
@@ -32,22 +32,22 @@ const RematchPopup: FunctionComponent<Props> = ({rematchOffer, onClose}) => {
           playerId === rematchOffer.playerId ? (
             rematchOffer.link ?
               <>
-                <h2>{t('Vous avez proposé une revanche')}</h2>
-                <p>{t('Votre proposition a été transmise aux autres joueurs')}</p>
-                <Button onClick={() => window.location.href = rematchOffer.link!}>{t('Voir la nouvelle partie')}</Button>
+                <h2>{t('You offered a friendly rematch')}</h2>
+                <p>{t('You offer was sent to the other players')}</p>
+                <Button onClick={() => window.location.href = rematchOffer.link!}>{t('See the new game')}</Button>
               </>
               :
               <>
-                <h2>{t('Proposition de revanche')}</h2>
-                <p>{t('Veuillez patienter...')}</p>
+                <h2>{t('Rematch offer')}</h2>
+                <p>{t('Please stand by…')}</p>
                 <FontAwesomeIcon css={spinnerStyle} icon={faHourglassEnd}/>
               </>
           ) : (
             rematchOffer.link &&
             <>
-              <h2>{t('{player} vous propose une revanche !', {player: getPlayerName(rematchOffer.playerId)})}</h2>
-              <p>{t('Cliquez sur le lien ci-dessous pour accéder à la nouvelle partie :')}</p>
-              <Button onClick={() => window.location.href = rematchOffer.link!}>{t('Voir la nouvelle partie')}</Button>
+                <h2>{t('{player} offers a friendly rematch!', {player: getPlayerName(rematchOffer.playerId)})}</h2>
+                <p>{t('Click the following link to go to the new game:')}</p>
+                <Button onClick={() => window.location.href = rematchOffer.link!}>{t('See the new game')}</Button>
             </>
           )
         )}

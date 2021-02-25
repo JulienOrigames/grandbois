@@ -5,11 +5,11 @@ import {usePlayers} from '@gamepark/workshop'
 import {useTheme} from 'emotion-theming'
 import React, {FunctionComponent} from 'react'
 import {useTranslation} from 'react-i18next'
-import TowerColor from './clans/TowerColor'
 import Rules from './Rules'
 import Theme, {LightTheme} from './Theme'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
 import {humanize} from './util/TimeUtil'
+import TowerColor from './clans/TowerColor'
 
 type Props = {
   onClose: () => void
@@ -26,36 +26,36 @@ const TimePopup: FunctionComponent<Props> = ({onClose}) => {
         <div css={closePopupStyle} onClick={onClose}><FontAwesomeIcon icon={faTimes}/></div>
         <table css={tableStyle}>
           <thead>
-            <tr>
-              <th>{t('Joueur')}</th>
-              <th>{t('Temps d’attente maximum')}</th>
-              <th>{t('Temps d’attente total')}</th>
-              <th>{t('Temps de réflexion maximum')}</th>
-              <th>{t('Temps de réflexion total')}</th>
+          <tr>
+            <th>{t('Player')}</th>
+            <th>{t('Maximum down time')}</th>
+            <th>{t('Total down time')}</th>
+            <th>{t('Maximum thinking time')}</th>
+            <th>{t('Total thinking time')}</th>
+            {players.length > 2 &&
+            <>
+                <th>{t('Made other players wait')}</th>
+                <th>{t('Made others wait (weighted by the number of awaited players)')}</th>
+            </>
+            }
+          </tr>
+          </thead>
+          <tbody>
+          {players.map(player => (
+            <tr key={player.id}>
+              <td>{player.name || Rules.getPlayerName(player.id, t)}</td>
+              <td>{player.time && humanize(player.time.highestDownTime)}</td>
+              <td>{player.time && humanize(player.time.cumulatedDownTime)}</td>
+              <td>{player.time && humanize(player.time.highestPlayTime)}</td>
+              <td>{player.time && humanize(player.time.cumulatedPlayTime)}</td>
               {players.length > 2 &&
               <>
-                <th>{t('A fait attendre les autres joueurs')}</th>
-                <th>{t('A fait attendre les autres (pondéré par le nombre de joueurs attendus)')}</th>
+                  <td>{player.time && humanize(player.time.cumulatedWaitForMeTime)}</td>
+                  <td>{player.time && humanize(player.time.weightedWaitForMeTime)}</td>
               </>
               }
             </tr>
-          </thead>
-          <tbody>
-            {players.map(player => (
-              <tr key={player.id}>
-                <td>{player.name || Rules.getPlayerName(player.id, t)}</td>
-                <td>{player.time && humanize(player.time.highestDownTime)}</td>
-                <td>{player.time && humanize(player.time.cumulatedDownTime)}</td>
-                <td>{player.time && humanize(player.time.highestPlayTime)}</td>
-                <td>{player.time && humanize(player.time.cumulatedPlayTime)}</td>
-                {players.length > 2 &&
-                <>
-                  <td>{player.time && humanize(player.time.cumulatedWaitForMeTime)}</td>
-                  <td>{player.time && humanize(player.time.weightedWaitForMeTime)}</td>
-                </>
-                }
-              </tr>
-            ))}
+          ))}
           </tbody>
         </table>
       </div>

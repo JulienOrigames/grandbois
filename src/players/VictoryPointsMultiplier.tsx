@@ -107,13 +107,13 @@ const towerIconStyle = css`
 const getScoreTypeDescription = (t: TFunction, item: number) => {
   switch (item) {
     case 0:
-      return t('1 point par case de son clan')
+      return t('1 point for each of your Clan’s spaces')
     case 1:
-      return t('2 points par case de la plus grande zone de son clan')
+      return t('2 points per space for the largest group of your Clan’s spaces')
     case 2:
-      return t('2 points par case de son clan autour de sa tour de garde')
+      return t('2 points for each of your Clan’s spaces around your Watchtower')
     default:
-      return t('1 point par case d’autres clans autour de sa tour de garde')
+      return t('1 point for each of another Clan’s spaces around your Watchtower')
   }
 }
 

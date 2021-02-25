@@ -64,13 +64,13 @@ const GrandBoisRules: GameType = {
   getPlayerName(tower: TowerColor, t: TFunction): string {
     switch (tower) {
       case TowerColor.BlackTower:
-        return t('Joueur noir')
+        return t('Black player')
       case TowerColor.BlueTower:
-        return t('Joueur bleu')
+        return t('Blue player')
       case TowerColor.BrownTower:
-        return t('Joueur marron')
+        return t('Brown player')
       case TowerColor.WhiteTower:
-        return t('Joueur blanc')
+        return t('White player')
     }
   },
   getActivePlayer(game: Game) {

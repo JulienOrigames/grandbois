@@ -1,0 +1,27 @@
+{
+  "name": "@gamepark/grandbois",
+  "version": "0.2.0",
+  "description": "Grandbois rules for Game Park",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Julien Bes <julien@origames.fr> (https://game-park.com/)",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@gamepark/rules-api": "^3.0.3",
+    "@types/lodash.shuffle": "^4.2.6",
+    "lodash.shuffle": "^4.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  },
+  "peerDependencies": {},
+  "scripts": {
+    "build": "tsc"
+  }
+}

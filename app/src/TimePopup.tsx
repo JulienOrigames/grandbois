@@ -2,7 +2,7 @@ import {css} from '@emotion/core'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import Rules from '@gamepark/grandbois/Rules'
+import {getPlayerName} from '@gamepark/grandbois/Rules'
 import {usePlayers} from '@gamepark/react-client'
 import {useTheme} from 'emotion-theming'
 import React, {FunctionComponent} from 'react'
@@ -43,7 +43,7 @@ const TimePopup: FunctionComponent<Props> = ({onClose}) => {
           <tbody>
           {players.map(player => (
             <tr key={player.id}>
-              <td>{player.name || Rules.getPlayerName(player.id, t)}</td>
+              <td>{player.name || getPlayerName(player.id, t)}</td>
               <td>{player.time && humanize(player.time.highestDownTime)}</td>
               <td>{player.time && humanize(player.time.cumulatedDownTime)}</td>
               <td>{player.time && humanize(player.time.highestPlayTime)}</td>

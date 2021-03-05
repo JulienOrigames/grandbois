@@ -3,7 +3,7 @@ import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView from '@gamepark/grandbois/PlayerView'
-import Rules from '@gamepark/grandbois/Rules'
+import {getPlayerName} from '@gamepark/grandbois/Rules'
 import {GameSpeed, useOptions, usePlayer, usePlayerId} from '@gamepark/react-client'
 import React, {FunctionComponent, useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
@@ -37,18 +37,18 @@ const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highligh
       {
         ( twoPlayersGame && !game.over ) ?
             <>
-            <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]}
+            <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]}
                  css={towerStyle(player.towersPosition[0] !== undefined && !game.over)} draggable="false"/>
-            <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]}
+            <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]}
                  css={towerStyle(player.towersPosition[1] !== undefined && !game.over)} draggable="false"/>
             </>
           :
-            <img alt={Rules.getPlayerName(player.tower, t)} src={towerImage[player.tower]} css={towerStyle(player.towersPosition[0] !== undefined && !game.over)}
+            <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]} css={towerStyle(player.towersPosition[0] !== undefined && !game.over)}
                draggable="false"/>
       }
       </div>
       <h3 css={[titleStyle(showScore || twoPlayersGame), player.eliminated && eliminatedStyle]}>
-        <span css={nameStyle}>{player.tower === playerId ? t('You') : (playerInfo?.name || Rules.getPlayerName(player.tower, t))}</span>
+        <span css={nameStyle}>{player.tower === playerId ? t('You') : (playerInfo?.name || getPlayerName(player.tower, t))}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
       {game.over && currentPlayer?.clans.map((clan, index) =>

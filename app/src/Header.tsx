@@ -3,7 +3,7 @@ import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView from '@gamepark/grandbois/PlayerView'
-import Rules, {activePlayerCanPlaceTower, getForestView, getPlayerScores} from '@gamepark/grandbois/Rules'
+import {activePlayerCanPlaceTower, getForestView, getPlayerName, getPlayerScores} from '@gamepark/grandbois/Rules'
 import {isPlayer} from '@gamepark/grandbois/typeguards'
 import {usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
 import Animation from '@gamepark/react-client/dist/animations/Animation'
@@ -101,7 +101,7 @@ function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerIn
       return t('You must choose a tile in the river and place it in the forest')
   }
   else {
-    const activePlayerName = playersInfo.find(p => p.id === game.activePlayer)?.name || Rules.getPlayerName(game.activePlayer, t)
+    const activePlayerName = playersInfo.find(p => p.id === game.activePlayer)?.name || getPlayerName(game.activePlayer, t)
     if (activePlayerCanPlaceTower(game))
       return t('{player} can place  his Watchtower', {player: activePlayerName})
     else
@@ -114,7 +114,7 @@ function getTutorialText(t: TFunction, game: GameView, player: Player): string |
 }
 
 function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], game: GameView, player?: Player | PlayerView) {
-  const getPlayerName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || Rules.getPlayerName(tower, t)
+  const getName = (tower: TowerColor) => playersInfo.find(p => p.id === tower)?.name || getPlayerName(tower, t)
   let highestScore = -1
   let playersWithHighestScore = []
   const forestView = getForestView(game)
@@ -134,7 +134,7 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
     if (player === playersWithHighestScore[0]) {
       return t('Victory! You win the game with {score} points', {score: highestScore})
     } else {
-      return t('{player} wins the game with {score} points', {player: getPlayerName(playersWithHighestScore[0].tower), score: highestScore})
+      return t('{player} wins the game with {score} points', {player: getName(playersWithHighestScore[0].tower), score: highestScore})
     }
   }
   let highestClans = -1
@@ -156,7 +156,7 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
         {score: highestScore, spaces: highestClans})
     } else {
       return t('{player} wins the game with {score} points and {spaces} Clan spaces',
-        {player: getPlayerName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans})
+        {player: getName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans})
     }
   }
   let greatestClans = -1
@@ -178,7 +178,7 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
         {score: highestScore, spaces: highestClans, zone: greatestClans})
     } else {
       return t('{player} wins the game with {score} points, {spaces} Clan spaces and a largest group of {zone} spaces',
-        {player: getPlayerName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans, zone: greatestClans})
+        {player: getName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans, zone: greatestClans})
     }
   }
   let towerClans = -1
@@ -200,7 +200,7 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
         {score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans })
     } else {
       return t('{player} wins the game with {score} points, {spaces} Clan spaces and a largest group of {zone} spaces and {tower} spaces near your Watchtower',
-        {player: getPlayerName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans})
+        {player: getName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans})
     }
   }
   let towerOtherClans = -1
@@ -222,7 +222,7 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
         {score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans })
     } else {
       return t('{player} wins the game with {score} points, {spaces} Clan spaces and a largest group of {zone} spaces, {tower} spaces near your Watchtower and {otherTower} other clans near your Watchtower',
-        {player: getPlayerName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans})
+        {player: getName(playersWithHighestClans[0].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans})
     }
   }
   if (playersWithTowerOtherClans.length === game.players.length) {
@@ -231,20 +231,20 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   } else if (playersWithTowerOtherClans.length === 2) {
     return t('Perfect tie! {player1} and {player2} each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {
-        player1: getPlayerName(playersWithTowerOtherClans[0].tower), player2: getPlayerName(playersWithTowerOtherClans[1].tower),
+        player1: getName(playersWithTowerOtherClans[0].tower), player2: getName(playersWithTowerOtherClans[1].tower),
         score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans
       })
   } else if (playersWithTowerOtherClans.length === 3) {
     return t('Perfect tie! {player1}, {player2} and {player3} each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {
-        player1: getPlayerName(playersWithTowerOtherClans[0].tower), player2: getPlayerName(playersWithTowerOtherClans[1].tower),
-        player3: getPlayerName(playersWithTowerOtherClans[2].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans
+        player1: getName(playersWithTowerOtherClans[0].tower), player2: getName(playersWithTowerOtherClans[1].tower),
+        player3: getName(playersWithTowerOtherClans[2].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans
       })
   } else {
     return t('Perfect tie! {player1}, {player2}, {player3} and {player4} each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {
-        player1: getPlayerName(playersWithTowerOtherClans[0].tower), player2: getPlayerName(playersWithTowerOtherClans[1].tower),
-        player3: getPlayerName(playersWithTowerOtherClans[2].tower), player4: getPlayerName(playersWithTowerOtherClans[3].tower),
+        player1: getName(playersWithTowerOtherClans[0].tower), player2: getName(playersWithTowerOtherClans[1].tower),
+        player3: getName(playersWithTowerOtherClans[2].tower), player4: getName(playersWithTowerOtherClans[3].tower),
         score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans
       })
   }

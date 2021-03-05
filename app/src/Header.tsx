@@ -226,22 +226,22 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
     }
   }
   if (playersWithTowerOtherClans.length === game.players.length) {
-    return t('Perfect tie! All players each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
+    return t('Perfect tie! All players each have {score} points, {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans })
   } else if (playersWithTowerOtherClans.length === 2) {
-    return t('Perfect tie! {player1} and {player2} each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
+    return t('Perfect tie! {player1} and {player2} each have {score} points, {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {
         player1: getName(playersWithTowerOtherClans[0].tower), player2: getName(playersWithTowerOtherClans[1].tower),
         score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans
       })
   } else if (playersWithTowerOtherClans.length === 3) {
-    return t('Perfect tie! {player1}, {player2} and {player3} each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
+    return t('Perfect tie! {player1}, {player2} and {player3} each have {score} points, {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {
         player1: getName(playersWithTowerOtherClans[0].tower), player2: getName(playersWithTowerOtherClans[1].tower),
         player3: getName(playersWithTowerOtherClans[2].tower), score: highestScore, spaces: highestClans, zone: greatestClans, tower: towerClans, otherTower: towerOtherClans
       })
   } else {
-    return t('Perfect tie! {player1}, {player2}, {player3} and {player4} each have {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
+    return t('Perfect tie! {player1}, {player2}, {player3} and {player4} each have {score} points, {spaces} Clan spaces, a largest group of {zone} spaces, {tower} spaces near their Watchtower and {otherTower} other clans near their Watchtower',
       {
         player1: getName(playersWithTowerOtherClans[0].tower), player2: getName(playersWithTowerOtherClans[1].tower),
         player3: getName(playersWithTowerOtherClans[2].tower), player4: getName(playersWithTowerOtherClans[3].tower),

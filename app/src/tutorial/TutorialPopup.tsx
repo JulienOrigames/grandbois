@@ -88,7 +88,7 @@ const TutorialPopup: FunctionComponent<{ game: GameView }> = ({game}) => {
              css={[arrowStyle(currentMessage.arrow.angle), displayPopup ? showArrowStyle(currentMessage.arrow.top, currentMessage.arrow.left) : hideArrowStyle]}/>
       }
       {
-        game.deck === 0 && !hideLastTurnInfo &&
+        game.deck === 0 && game.forest.length < 36 && !hideLastTurnInfo &&
         <div css={[popupStyle, popupPosition(lastTurnInfo), theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}>
           <div css={closePopupStyle} onClick={() => setHideLastTurnInfo(true)}><FontAwesomeIcon icon={faTimes}/></div>
           <h2>{lastTurnInfo.title(t)}</h2>
@@ -107,8 +107,8 @@ const TutorialPopup: FunctionComponent<{ game: GameView }> = ({game}) => {
           </>
           }
           <Button css={buttonStyle} onClick={() => resetTutorial()}>{t('Restart the tutorial')}</Button>
-          <Button css={buttonStyle} onClick={() => window.location.href = platformUri}>{t('Play with friends')}</Button>
-          <Button onClick={() => window.location.href = discordUri}>{t('Find players')}</Button>
+          <Button css={buttonStyle} onClick={() => window.location.href = platformUri}>{t('Play on Game Park')}</Button>
+          <Button onClick={() => window.location.href = discordUri}>{t('Chat on Discord')}</Button>
         </div>
       }
     </>
@@ -488,8 +488,8 @@ const lastTurnInfo = {
 
 const tutorialEndGame = {
   title: (t: TFunction) => t('Congratulations!'),
-  text: (t: TFunction) => t('You have finished your first game! You can now play with your friends, or meet other players via our chat room on Discord.'),
-  boxTop: 81,
+  text: (t: TFunction) => t('You have finished your first game! You can now play with the community on Game Park and join our Discord server to chat.'),
+  boxTop: 75,
   boxLeft: 53,
   boxWidth: 87
 }

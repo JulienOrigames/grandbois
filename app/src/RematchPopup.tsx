@@ -2,7 +2,7 @@ import {css, keyframes} from '@emotion/core'
 import {faHourglassEnd, faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import Rules from '@gamepark/grandbois/Rules'
+import {getPlayerName} from '@gamepark/grandbois/Rules'
 import {usePlayerId, usePlayers} from '@gamepark/react-client'
 import RematchOffer from '@gamepark/react-client/dist/Types/RematchOffer'
 import {useTheme} from 'emotion-theming'
@@ -22,7 +22,7 @@ const RematchPopup: FunctionComponent<Props> = ({rematchOffer, onClose}) => {
   const theme = useTheme<Theme>()
   const playerId = usePlayerId<TowerColor>()
   const players = usePlayers<TowerColor>()
-  const getPlayerName = (empire: TowerColor) => players.find(p => p.id === empire)?.name || Rules.getPlayerName(empire, t)
+  const getName = (empire: TowerColor) => players.find(p => p.id === empire)?.name || getPlayerName(empire, t)
   return (
     <div css={[popupFixedBackgroundStyle, !rematchOffer && css`display: none`]} onClick={onClose}>
       <div css={[popupStyle, popupPosition, css`width: 60%`, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}
@@ -45,7 +45,7 @@ const RematchPopup: FunctionComponent<Props> = ({rematchOffer, onClose}) => {
           ) : (
             rematchOffer.link &&
             <>
-                <h2>{t('{player} offers a friendly rematch!', {player: getPlayerName(rematchOffer.playerId)})}</h2>
+                <h2>{t('{player} offers a friendly rematch!', {player: getName(rematchOffer.playerId)})}</h2>
                 <p>{t('Click the following link to go to the new game:')}</p>
                 <Button onClick={() => window.location.href = rematchOffer.link!}>{t('See the new game')}</Button>
             </>

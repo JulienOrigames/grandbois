@@ -6,7 +6,7 @@ import {isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
 import {Clearing} from '@gamepark/grandbois/material/Tile'
 import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import Rules, {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, isAvailablePosition} from '@gamepark/grandbois/Rules'
+import {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, getPlayerName, isAvailablePosition} from '@gamepark/grandbois/Rules'
 import {useDisplayState, usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
 import React, {FunctionComponent, useContext, useEffect, useRef, useState} from 'react'
@@ -113,7 +113,7 @@ const Forest: FunctionComponent<Props> = ({game}) => {
         game.players.map(player =>
           player.towersPosition.map((towerPosition, index) =>
             <div key={player.tower+index} css={towerStyle(player.tower, towerPosition.x, towerPosition.y)}
-                 data-tip={player.tower === playerId ? t('Your Watchtower') : t('{playerName} Watchtower', {playerName: (playersInfo.find(p => p.id === player.tower)!.name || Rules.getPlayerName(player.tower, t))})}/>
+                 data-tip={player.tower === playerId ? t('Your Watchtower') : t('{playerName} Watchtower', {playerName: (playersInfo.find(p => p.id === player.tower)!.name || getPlayerName(player.tower, t))})}/>
           )
         )
       }

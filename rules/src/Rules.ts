@@ -55,16 +55,7 @@ export default class Grandbois extends SequentialGame<Game | GameView, Move, Tow
   }
 
   getPlayerName(tower: TowerColor, t: (name: string) => string): string {
-    switch (tower) {
-      case TowerColor.BlackTower:
-        return t('Black player')
-      case TowerColor.BlueTower:
-        return t('Blue player')
-      case TowerColor.BrownTower:
-        return t('Brown player')
-      case TowerColor.WhiteTower:
-        return t('White player')
-    }
+    return getPlayerName(tower, t)
   }
 
   getActivePlayer() {
@@ -219,23 +210,22 @@ export function isOver(game: Game | GameView): boolean {
 
 export function setupPlayers(players?: number | { tower?: TowerColor }[]) {
   let playersList
-  let shuffledClans:Clan[] = []
+  let shuffledClans: Clan[] = []
   // give towerColors
   if (Array.isArray(players) && players.length >= playersMin && players.length <= playersMax) {
     const towerLeft = shuffle(Object.values(TowerColor).filter(tower => players.some(player => player.tower === tower)))
     playersList = players.map<Player>(player => setupPlayer(player.tower || towerLeft.pop()!, shuffledClans))
   } else if (typeof players === 'number' && Number.isInteger(players) && players >= playersMin && players <= playersMax) {
-    playersList = shuffle(Object.values(TowerColor)).slice(0, players).map<Player>(tower => setupPlayer(tower,shuffledClans))
+    playersList = shuffle(Object.values(TowerColor)).slice(0, players).map<Player>(tower => setupPlayer(tower, shuffledClans))
   } else {
-    playersList = shuffle(Object.values(TowerColor)).slice(0, defaultNumberOfPlayers).map<Player>(tower => setupPlayer(tower,shuffledClans))
+    playersList = shuffle(Object.values(TowerColor)).slice(0, defaultNumberOfPlayers).map<Player>(tower => setupPlayer(tower, shuffledClans))
   }
   // give clans
   shuffledClans = shuffle(clans)
-  if( playersList.length === 2 ){
-    return playersList.map<Player>(player => setupPlayer(player.tower, [shuffledClans.pop()!,shuffledClans.pop()!] ))
-  }
-  else{
-    return playersList.map<Player>(player => setupPlayer(player.tower, [shuffledClans.pop()!] ))
+  if (playersList.length === 2) {
+    return playersList.map<Player>(player => setupPlayer(player.tower, [shuffledClans.pop()!, shuffledClans.pop()!]))
+  } else {
+    return playersList.map<Player>(player => setupPlayer(player.tower, [shuffledClans.pop()!]))
   }
 }
 
@@ -264,7 +254,7 @@ export function getForestView(game: Game | GameView) {
     forestView.get(placedTile.x)!.set(placedTile.y + 1, tiles[placedTile.tile][mod((3 - placedTile.rotation), 4)])
   }
   game.players.forEach(player =>
-    player.towersPosition.forEach( towerPosition => forestView.get(towerPosition.x)!.set(towerPosition.y, Tower) )
+    player.towersPosition.forEach(towerPosition => forestView.get(towerPosition.x)!.set(towerPosition.y, Tower))
   )
   return forestView
 }
@@ -334,9 +324,9 @@ export function activePlayerCanPlaceTower(game: Game | GameView) {
   const activePlayer = getPlayer(game, game.activePlayer)
   const twoPlayersGame = game.players.length === 2
   return game.tilePlayed !== undefined
-    && ( twoPlayersGame ? activePlayer.towersPosition.length < 2 : activePlayer.towersPosition.length === 0 )
+    && (twoPlayersGame ? activePlayer.towersPosition.length < 2 : activePlayer.towersPosition.length === 0)
     && tiles[game.tilePlayed].find(space => space === Clearing)
-    && !( twoPlayersGame && activePlayer.towersPosition.length === 1 && isTowerJustPlayed(game, activePlayer.towersPosition[0]) )
+    && !(twoPlayersGame && activePlayer.towersPosition.length === 1 && isTowerJustPlayed(game, activePlayer.towersPosition[0]))
 }
 
 export function automaticEndOfTurn(game: Game | GameView) {
@@ -344,24 +334,24 @@ export function automaticEndOfTurn(game: Game | GameView) {
   const twoPlayersGame = game.players.length === 2
   return game.tilePlayed !== undefined
     && (
-         ( twoPlayersGame ? activePlayer.towersPosition.length === 2 : activePlayer.towersPosition.length === 1 )
-      || ( twoPlayersGame && activePlayer.towersPosition.length === 1 && isTowerJustPlayed(game, activePlayer.towersPosition[0]) )
+      (twoPlayersGame ? activePlayer.towersPosition.length === 2 : activePlayer.towersPosition.length === 1)
+      || (twoPlayersGame && activePlayer.towersPosition.length === 1 && isTowerJustPlayed(game, activePlayer.towersPosition[0]))
       || !tiles[game.tilePlayed].find(space => space === Clearing)
     )
 }
 
-function isTowerJustPlayed(game: Game | GameView, towerPosition: XYCoord){
+function isTowerJustPlayed(game: Game | GameView, towerPosition: XYCoord) {
   const lastTile = game.forest[game.forest.length - 1]
-  return    ( towerPosition.x === lastTile.x || (towerPosition.x - lastTile.x) === 1 )
-         && ( towerPosition.y === lastTile.y || (towerPosition.y - lastTile.y) === 1 )
+  return (towerPosition.x === lastTile.x || (towerPosition.x - lastTile.x) === 1)
+    && (towerPosition.y === lastTile.y || (towerPosition.y - lastTile.y) === 1)
 }
 
-type playerScores = { clanPoints:number, greatestClanPoints:number, towerClanPoints:number, towerOtherClansPoints:number }
+type playerScores = { clanPoints: number, greatestClanPoints: number, towerClanPoints: number, towerOtherClansPoints: number }
 
 export function getPlayerScores(clans: Clan[], towersPosition: XYCoord[], forestView: ForestView): playerScores {
   return {
     clanPoints: clans.reduce((score, clan) => score + getClanPoints(clan, forestView), 0),
-    greatestClanPoints: clans.reduce((score, clan) => score + getGreatestClanPoints(clan, forestView),0),
+    greatestClanPoints: clans.reduce((score, clan) => score + getGreatestClanPoints(clan, forestView), 0),
     towerClanPoints: towersPosition.reduce((score, towerPosition) => score + getTowerClanPoints(clans, towerPosition, forestView), 0),
     towerOtherClansPoints: towersPosition.reduce((score, towerPosition) => score + getTowerOtherClansPoints(clans, towerPosition, forestView), 0)
   }
@@ -426,4 +416,17 @@ export function getTowerOtherClansPoints(clans: Clan[], towerPosition: XYCoord |
 export function isActive(game: Game | GameView, playerId: TowerColor) {
   const player = game.players.find(player => player.tower === playerId)!
   return player.tower === game.activePlayer
+}
+
+export function getPlayerName(tower: TowerColor, t: (name: string) => string) {
+  switch (tower) {
+    case TowerColor.BlackTower:
+      return t('Black player')
+    case TowerColor.BlueTower:
+      return t('Blue player')
+    case TowerColor.BrownTower:
+      return t('Brown player')
+    case TowerColor.WhiteTower:
+      return t('White player')
+  }
 }

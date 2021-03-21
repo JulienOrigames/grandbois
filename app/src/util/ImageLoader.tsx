@@ -1,11 +1,11 @@
-import React, {FunctionComponent, useRef} from 'react'
+import {FC, useRef} from 'react'
 
 type Props = {
   images: string[]
   onImagesLoad?: () => void
 }
 
-const ImagesLoader: FunctionComponent<Props> = ({images, onImagesLoad}) => {
+const ImagesLoader: FC<Props> = ({images, onImagesLoad}) => {
   const loadCount = useRef(0)
   const onLoad = () => {
     loadCount.current++

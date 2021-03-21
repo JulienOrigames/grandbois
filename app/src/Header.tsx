@@ -1,22 +1,22 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, Theme, useTheme} from '@emotion/react'
+import {getForestView} from '@gamepark/grandbois/ForestView'
 import GameView from '@gamepark/grandbois/GameView'
+import {activePlayerCanPlaceTower, getPlayerScores} from '@gamepark/grandbois/Grandbois'
+import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
+import MoveType from '@gamepark/grandbois/moves/MoveType'
 import Player from '@gamepark/grandbois/Player'
-import PlayerView from '@gamepark/grandbois/PlayerView'
-import {activePlayerCanPlaceTower, getForestView, getPlayerName, getPlayerScores} from '@gamepark/grandbois/Rules'
-import {isPlayer} from '@gamepark/grandbois/typeguards'
+import PlayerView, {isPlayer} from '@gamepark/grandbois/PlayerView'
 import {usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
 import Animation from '@gamepark/react-client/dist/animations/Animation'
 import PlayerInfo from '@gamepark/react-client/dist/Types/Player'
-import {useTheme} from 'emotion-theming'
 import {TFunction} from 'i18next'
-import React, {FunctionComponent, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 import {Trans, useTranslation} from 'react-i18next'
-import {changeActivePlayer} from '../../rules/src/moves/ChangeActivePlayer'
 import Move from '../../rules/src/moves/Move'
-import {placeTower} from '../../rules/src/moves/PlaceTower'
 import MainMenu from './MainMenu'
-import Theme, {LightTheme} from './Theme'
+import {LightTheme} from './Theme'
 import Button from './util/Button'
 import {gameOverDelay, headerHeight, textColor} from './util/Styles'
 
@@ -55,12 +55,12 @@ type Props = {
   loading: boolean
 }
 
-const Header: FunctionComponent<Props> = ({game, loading}) => {
+const Header: FC<Props> = ({game, loading}) => {
   const tower = usePlayerId<TowerColor>()
   const play = usePlay<Move>()
   const players = usePlayers<TowerColor>()
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const gameOver = game !== undefined && game.over
   const [scoreSuspense, setScoreSuspense] = useState(false)
   useEffect(() => {
@@ -94,8 +94,8 @@ function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerIn
   if( tower === game.activePlayer){
     if (activePlayerCanPlaceTower(game))
       return <Trans defaults="Would you like to place your Watchtower here? <0>Yes</0> <1>No</1>"
-        components={[<Button onClick={() => play(placeTower())}>{t('Yes')}</Button>,
-                      <Button onClick={() => play(changeActivePlayer())}>{t('No')}</Button>]}
+        components={[<Button onClick={() => play({type: MoveType.PlaceTower})}>{t('Yes')}</Button>,
+                      <Button onClick={() => play({type: MoveType.ChangeActivePlayer})}>{t('No')}</Button>]}
               />
     else
       return t('You must choose a tile in the river and place it in the forest')

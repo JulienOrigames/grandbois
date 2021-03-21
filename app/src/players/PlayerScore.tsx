@@ -1,27 +1,28 @@
-import {css, keyframes} from '@emotion/core'
-import {useTheme} from 'emotion-theming'
-import React, {FunctionComponent, useMemo} from 'react'
-import {useTranslation} from 'react-i18next'
-import Images from '../material/Images'
-import {getForestView, getPlayerScores} from '@gamepark/grandbois/Rules'
-import Theme, {LightTheme} from '../Theme'
+/** @jsxImportSource @emotion/react */
+import {css, keyframes, Theme, useTheme} from '@emotion/react'
+import {getForestView} from '@gamepark/grandbois/ForestView'
+import GameState from '@gamepark/grandbois/GameState'
+import GameView from '@gamepark/grandbois/GameView'
+import {getPlayerScores} from '@gamepark/grandbois/Grandbois'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView from '@gamepark/grandbois/PlayerView'
+import {FC, HTMLAttributes, useMemo} from 'react'
+import {useTranslation} from 'react-i18next'
+import Images from '../material/Images'
+import {LightTheme} from '../Theme'
 import {fadeIn, gameOverDelay} from '../util/Styles'
 import ScorePart from './ScorePart'
-import GameView from '@gamepark/grandbois/GameView'
-import Game from '@gamepark/grandbois/Game'
 
 type Props = {
-  game: Game|GameView
+  game: GameState|GameView
   player: Player | PlayerView
   position: number
   displayScore: boolean
   setDisplayScore: (displayScore: boolean) => void
   animation: boolean
-} & React.HTMLAttributes<HTMLDivElement>
+} & HTMLAttributes<HTMLDivElement>
 
-const PlayerScore: FunctionComponent<Props> = ({game, player, position, displayScore, setDisplayScore, animation}) => {
+const PlayerScore: FC<Props> = ({game, player, position, displayScore, setDisplayScore, animation}) => {
   const {t} = useTranslation()
   const forestView = getForestView(game)
   const clans = (player as Player).clans
@@ -29,7 +30,7 @@ const PlayerScore: FunctionComponent<Props> = ({game, player, position, displayS
   const scoreLines = [playerScores.clanPoints,playerScores.greatestClanPoints,playerScores.towerClanPoints,playerScores.towerOtherClansPoints]
   const totalScore = scoreLines.reduce((a, b)=>a+b)
   const scoreMultipliers = [1,2,2,1]
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const twoPlayersGame = game.players.length === 2
   return (
     <div css={[style, scoreHeight(twoPlayersGame) ,topPosition(position,twoPlayersGame), backgroundStyle(theme), animation && growAnimation, displayScore ? displayPlayerScore : hidePlayerScore]}>

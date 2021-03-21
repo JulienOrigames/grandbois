@@ -1,20 +1,21 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, Theme, useTheme} from '@emotion/react'
+import {getForestView, isLegalTilePosition} from '@gamepark/grandbois/ForestView'
 import GameView from '@gamepark/grandbois/GameView'
 import PlacedTile, {isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
 import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {getForestView, isLegalTilePosition} from '@gamepark/grandbois/Rules'
+import MoveType from '@gamepark/grandbois/moves/MoveType'
 import {useDisplayState, usePlay, usePlayerId} from '@gamepark/react-client'
 import {Draggable} from '@gamepark/react-components'
-import {useTheme} from 'emotion-theming'
 import equal from 'fast-deep-equal'
-import React, {FunctionComponent, useEffect, useState} from 'react'
+import {FC, MouseEvent, useEffect, useState} from 'react'
 import {useDrop, XYCoord} from 'react-dnd'
 import {useTranslation} from 'react-i18next'
-import PlaceForestTile, {placeForestTile} from '../../../rules/src/moves/PlaceForestTile'
+import PlaceForestTile from '../../../rules/src/moves/PlaceForestTile'
 import DraggedTile, {draggedTile} from '../drag-objects/DraggedTile'
 import Images from '../material/Images'
-import Theme, {LightTheme} from '../Theme'
+import {LightTheme} from '../Theme'
 import Button from '../util/Button'
 import {
   cardHeight, cardStyle, placedCardX, placedCardY, riverAreaHeight, riverAreaLeft, riverAreaTop, riverAreaWidth, riverLeft, riverTop, topMargin
@@ -27,9 +28,9 @@ type Props = {
   game: GameView
 }
 
-const River: FunctionComponent<Props> = ({game}) => {
+const River: FC<Props> = ({game}) => {
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const playerId = usePlayerId<TowerColor>()
   const play = usePlay<PlaceForestTile>()
   const [playingTile, setPlayingTile] = useState<PlacedTile>()
@@ -38,7 +39,7 @@ const River: FunctionComponent<Props> = ({game}) => {
     if (playingTile && !game.river.some(tile => tile === playingTile.tile))
       setPlayingTile(undefined)
   }, [game, playingTile])
-  const rotate = (event: React.MouseEvent<HTMLDivElement>, tile: number) => {
+  const rotate = (event: MouseEvent<HTMLDivElement>, tile: number) => {
     event.stopPropagation()
     if (playingTile && playingTile.tile === tile) {
        setPlayingTile({...playingTile, rotation: (playingTile.rotation + 1) % 4})
@@ -63,7 +64,7 @@ const River: FunctionComponent<Props> = ({game}) => {
           if (!rotatedTile) return null
           const item = playingTile && playingTile.tile === rotatedTile.tile ? {type: draggedTile, ...playingTile} : {type: draggedTile, ...rotatedTile}
           return <Draggable key={rotatedTile.tile} item={item}
-                            onDrop={setPlayingTile}
+                            drop={setPlayingTile}
                             disabled={game.activePlayer !== playerId}
                             animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
                             css={[cardStyle,
@@ -77,7 +78,7 @@ const River: FunctionComponent<Props> = ({game}) => {
     }
     {
       playingTile && isLegalTile
-      && <Button css={validStyle} onClick={() => play(placeForestTile(playingTile))}>{t('Validate')}</Button>
+      && <Button css={validStyle} onClick={() => play({type: MoveType.PlaceForestTile, placedTile: playingTile})}>{t('Validate')}</Button>
     }
     <div ref={ref} css={riverAreaStyle} />
   </>

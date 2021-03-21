@@ -1,16 +1,15 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, useTheme} from '@emotion/react'
 import {faMinusSquare, faPlusSquare, faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import Move from '@gamepark/grandbois/moves/Move'
-import {isOver} from '@gamepark/grandbois/Rules'
 import {useActions, useFailures, usePlayerId} from '@gamepark/react-client'
-import {useTheme} from 'emotion-theming'
 import {TFunction} from 'i18next'
-import React, {FunctionComponent, useEffect, useRef, useState} from 'react'
+import {FC, useEffect, useRef, useState} from 'react'
 import {useTranslation} from 'react-i18next'
-import Theme, {LightTheme} from '../Theme'
+import {LightTheme} from '../Theme'
 import Button from '../util/Button'
 import {
   closePopupStyle, discordUri, hidePopupOverlayStyle, platformUri, popupDarkStyle, popupLightStyle, popupOverlayStyle, popupStyle, showPopupOverlayStyle
@@ -19,9 +18,9 @@ import tutorialArrowDark from '../util/tutorial-arrow-dark.png'
 import tutorialArrowLight from '../util/tutorial-arrow-light.png'
 import {resetTutorial} from './Tutorial'
 
-const TutorialPopup: FunctionComponent<{ game: GameView }> = ({game}) => {
+const TutorialPopup: FC<{ game: GameView }> = ({game}) => {
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const [failures] = useFailures()
   const playerId = usePlayerId<TowerColor>()
   const actions = useActions<Move, TowerColor>()
@@ -97,7 +96,7 @@ const TutorialPopup: FunctionComponent<{ game: GameView }> = ({game}) => {
         </div>
       }
       {
-        isOver(game) &&
+        game.over &&
         <div css={[popupStyle, popupPosition(tutorialEndGame), tutorialEnd && buttonsPosition, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}>
           <div css={closePopupStyle} onClick={() => toggleTutorialEnd()}><FontAwesomeIcon icon={tutorialEnd ? faPlusSquare : faMinusSquare}/></div>
           {!tutorialEnd &&

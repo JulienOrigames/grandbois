@@ -1,6 +1,5 @@
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {isActive} from '@gamepark/grandbois/Rules'
 import {useOptions, usePlayerId, usePlayers, useSound} from '@gamepark/react-client'
 import {useEffect, useState} from 'react'
 import bellSound from '../sounds/bell.mp3'
@@ -17,7 +16,7 @@ export function useBellAlert(game: GameView) {
 
   useEffect(() => {
     if (!playerId) return
-    const active = isActive(game, playerId)
+    const active = game.activePlayer === playerId
     if (!active) {
       //reminders.forEach(timeout => clearTimeout(timeout))
       //setReminders([])

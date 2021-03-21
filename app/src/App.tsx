@@ -1,55 +1,37 @@
-import {css, Global} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, Global, Theme, ThemeProvider} from '@emotion/react'
 import GameView from '@gamepark/grandbois/GameView'
 import {useFailures, useGame} from '@gamepark/react-client'
 import normalize from 'emotion-normalize'
-import {ThemeProvider} from 'emotion-theming'
 import fscreen from 'fscreen'
-import i18next from 'i18next'
-import ICU from 'i18next-icu'
-import moment from 'moment'
 import 'moment/locale/fr'
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {DndProvider} from 'react-dnd-multi-backend'
 import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
-import {initReactI18next, useTranslation} from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 import Move from '../../rules/src/moves/Move'
 import FailurePopup from './FailurePopup'
 import GameDisplay from './GameDisplay'
 import Header from './Header'
 import Images from './material/Images'
-import Theme, {DarkTheme, LightTheme} from './Theme'
-import translations from './translations.json'
+import {Color, DarkTheme, LightTheme} from './Theme'
 import Button from './util/Button'
 import ImagesLoader from './util/ImageLoader'
 import LoadingScreen from './util/LoadingScreen'
 import {backgroundColor, textColor} from './util/Styles'
 
-i18next.use(initReactI18next).use(ICU)
-
-const query = new URLSearchParams(window.location.search)
-const locale = query.get('locale') || 'en'
 const userTheme = 'userTheme'
-
-i18next.init({
-  lng: locale,
-  fallbackLng: 'en',
-  keySeparator: false,
-  nsSeparator: false,
-  resources: translations
-})
-
-moment().locale(locale)
 
 function App() {
   const {t} = useTranslation()
-  const [themeColor, setThemeColor] = useState(() => localStorage.getItem(userTheme) || DarkTheme)
+  const [themeColor, setThemeColor] = useState<Color>(() => (localStorage.getItem(userTheme) || DarkTheme) as Color)
   const game = useGame<GameView>()
   const [failures, clearFailures] = useFailures<Move>()
   const [imagesLoading, setImagesLoading] = useState(true)
   const theme = {
     color: themeColor,
     switchThemeColor: () => {
-      let newThemeColor = themeColor === LightTheme ? DarkTheme : LightTheme
+      const newThemeColor: Color = themeColor === LightTheme ? DarkTheme : LightTheme
       setThemeColor(newThemeColor)
       localStorage.setItem(userTheme, newThemeColor)
     }
@@ -62,7 +44,7 @@ function App() {
   return (
     <DndProvider options={HTML5ToTouch}>
       <ThemeProvider theme={theme}>
-        <Global styles={(theme: Theme) => [globalStyle, themeStyle(theme) ]}/>
+        <Global styles={(theme: Theme) => [globalStyle, themeStyle(theme)]}/>
         <LoadingScreen display={loading}/>
         {!loading && <GameDisplay game={game!}/>}
         <p css={(theme: Theme) => [portraitInfo, textColor(theme)]}>
@@ -75,23 +57,26 @@ function App() {
       </ThemeProvider>
       <ImagesLoader images={Object.values(Images)} onImagesLoad={() => setImagesLoading(false)}/>
     </DndProvider>
-  );
+  )
 }
 
-export default App;
+export default App
 
 const globalStyle = css`
   ${normalize};
+
   html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
-    *, *::before, *::after {
+
+  *, *::before, *::after {
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
     box-sizing: inherit;
   }
+
   body {
     margin: 0;
     font-family: 'Merienda One', serif;
@@ -100,6 +85,7 @@ const globalStyle = css`
       font-size: calc(9vw / 16);
     }
   }
+
   #root {
     position: absolute;
     height: 100vh;
@@ -110,6 +96,7 @@ const globalStyle = css`
     background-size: cover;
     background-position: center;
     background-image: url(${Images.coverArtwork169});
+
     &:before {
       content: '';
       display: block;
@@ -129,7 +116,7 @@ const themeStyle = (theme: Theme) => css`
 `
 
 const portraitInfo = css`
-    @media (min-aspect-ratio: 4/3) {
+  @media (min-aspect-ratio: 4/3) {
     display: none;
   }
   text-align: center;
@@ -139,6 +126,7 @@ const portraitInfo = css`
   top: 55vw;
   left: 10%;
   right: 10%;
+
   & > svg {
     width: 30%;
     margin-top: 1em;

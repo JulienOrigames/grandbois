@@ -1,8 +1,8 @@
-import Player from './Player'
-import TowerColor from './material/TowerColor'
 import PlacedTile from './material/PlacedTile'
+import TowerColor from './material/TowerColor'
+import Player from './Player'
 
-type Game = {
+type GameState = {
   players: Player[]
   deck: number[]
   river: (number | null)[]
@@ -13,4 +13,4 @@ type Game = {
   over: boolean
 }
 
-export default Game
+export default GameState

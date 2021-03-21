@@ -1,11 +1,12 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import GameView from '@gamepark/grandbois/GameView'
+import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView from '@gamepark/grandbois/PlayerView'
-import {getPlayerName} from '@gamepark/grandbois/Rules'
 import {GameSpeed, useOptions, usePlayer, usePlayerId} from '@gamepark/react-client'
-import React, {FunctionComponent, useMemo} from 'react'
+import {FC, HTMLAttributes, useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
 import ClanCard from '../clans/ClanCard'
 import {towerImage} from '../clans/TowerInfo'
@@ -21,9 +22,9 @@ type Props = {
   position: number
   highlight: boolean
   showScore: boolean
-} & React.HTMLAttributes<HTMLDivElement>
+} & HTMLAttributes<HTMLDivElement>
 
-const PlayerPanel: FunctionComponent<Props> = ({game, player, position, highlight, showScore, ...props}) => {
+const PlayerPanel: FC<Props> = ({game, player, position, highlight, showScore, ...props}) => {
   const {t} = useTranslation()
   const options = useOptions()
   const playerInfo = usePlayer<TowerColor>(player.tower)

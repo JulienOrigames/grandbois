@@ -1,11 +1,12 @@
-import {css} from '@emotion/core'
-import React, {FunctionComponent} from 'react'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import GameView from '@gamepark/grandbois/GameView'
-import {cardHeight, cardStyle, cardWidth, drawpileTop, riverLeft} from '../util/Styles'
+import {FC} from 'react'
 import {useTranslation} from 'react-i18next'
+import {cardHeight, cardStyle, cardWidth, drawpileTop, riverLeft} from '../util/Styles'
 import TileCard from './TileCard'
 
-const DrawPile: FunctionComponent<{ game: GameView }> = ({game}) => {
+const DrawPile: FC<{ game: GameView }> = ({game}) => {
   const {t} = useTranslation()
   return <>
     {

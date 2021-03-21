@@ -1,20 +1,21 @@
-import {css} from '@emotion/core'
-import React, {FunctionComponent} from 'react'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
+import GameState from '@gamepark/grandbois/GameState'
+import GameView from '@gamepark/grandbois/GameView'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView from '@gamepark/grandbois/PlayerView'
+import {FC, HTMLAttributes} from 'react'
 import VictoryPointsMultiplier from './VictoryPointsMultiplier'
-import Game from '@gamepark/grandbois/Game'
-import GameView from '@gamepark/grandbois/GameView'
 
 type Props = {
-  game: Game|GameView
+  game: GameState|GameView
   player: Player | PlayerView
   item: number
   multiplier:number
   score:number
-} & React.HTMLAttributes<HTMLDivElement>
+} & HTMLAttributes<HTMLDivElement>
 
-const ScorePart: FunctionComponent<Props> = ({game, player, item,multiplier,score}) => {
+const ScorePart: FC<Props> = ({game, player, item,multiplier,score}) => {
   const clans = (player as Player).clans
   const twoPlayersGame = game.players.length === 2
   return (

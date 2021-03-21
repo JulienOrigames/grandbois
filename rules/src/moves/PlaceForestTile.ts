@@ -1,3 +1,5 @@
+import GameState from '../GameState'
+import GameView from '../GameView'
 import PlacedTile from '../material/PlacedTile'
 import MoveType from './MoveType'
 
@@ -6,8 +8,10 @@ type PlaceForestTile = {
   placedTile: PlacedTile
 }
 
-export function placeForestTile(placedTile: PlacedTile): PlaceForestTile {
-  return{type: MoveType.PlaceForestTile, placedTile}
-}
-
 export default PlaceForestTile
+
+export function placeForestTile(state: GameState | GameView, move: PlaceForestTile) {
+  state.forest.push(move.placedTile)
+  state.river[state.river.indexOf(move.placedTile.tile)] = null
+  state.tilePlayed = move.placedTile.tile
+}

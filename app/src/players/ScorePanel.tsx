@@ -1,14 +1,15 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import {usePlayerId} from '@gamepark/react-client'
-import React, {FunctionComponent, useMemo, useState} from 'react'
+import {FC, HTMLAttributes, useMemo, useState} from 'react'
 import {getPlayersStartingWith} from '../GameDisplay'
 import PlayerScore from './PlayerScore'
 
-type Props = { game: GameView, animation: boolean } & React.HTMLAttributes<HTMLDivElement>
+type Props = { game: GameView, animation: boolean } & HTMLAttributes<HTMLDivElement>
 
-const ScorePanel: FunctionComponent<Props> = ({game, animation}) => {
+const ScorePanel: FC<Props> = ({game, animation}) => {
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const [displayScore, setDisplayScore] = useState(true)

@@ -1,21 +1,25 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {getForestView, isAvailablePosition} from '@gamepark/grandbois/ForestView'
 import GameView from '@gamepark/grandbois/GameView'
-import {isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
+import {activePlayerCanPlaceTower} from '@gamepark/grandbois/Grandbois'
+import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
+import {getPlacedTileSpaceXY, isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
 import {Clearing} from '@gamepark/grandbois/material/Tile'
 import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {activePlayerCanPlaceTower, getForestView, getPlacedTileSpaceXY, getPlayerName, isAvailablePosition} from '@gamepark/grandbois/Rules'
+import MoveType from '@gamepark/grandbois/moves/MoveType'
 import {useDisplayState, usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
-import React, {FunctionComponent, useContext, useEffect, useRef, useState} from 'react'
+import {FC, useContext, useEffect, useRef, useState} from 'react'
 import {DndContext, DropTargetMonitor, useDrag, useDrop, XYCoord} from 'react-dnd'
 import {getEmptyImage} from 'react-dnd-html5-backend'
 import {useTranslation} from 'react-i18next'
 import ReactTooltip from 'react-tooltip'
-import ChangeActivePlayer, {changeActivePlayer} from '../../../rules/src/moves/ChangeActivePlayer'
-import PlaceTower, {placeTower} from '../../../rules/src/moves/PlaceTower'
+import ChangeActivePlayer from '../../../rules/src/moves/ChangeActivePlayer'
+import PlaceTower from '../../../rules/src/moves/PlaceTower'
 import {towerImage} from '../clans/TowerInfo'
 import DraggedTile from '../drag-objects/DraggedTile'
 import {forestArea} from '../drag-objects/ForestArea'
@@ -32,7 +36,7 @@ type Props = {
   game: GameView
 }
 
-const Forest: FunctionComponent<Props> = ({game}) => {
+const Forest: FC<Props> = ({game}) => {
   const {t} = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
   const [, dropRef] = useDrop({
@@ -121,8 +125,8 @@ const Forest: FunctionComponent<Props> = ({game}) => {
         playerId && playerId === game.activePlayer && activePlayerCanPlaceTower(game) &&
         <div css={towerChoiceStyle(getTowerChoicePosition(game))}>
           {t('Would you like to place your Watchtower here?')}
-            <Button css={css`margin:10px`} onClick={() => play(placeTower())}>{t('Yes')}</Button>
-            <Button css={css`margin:10px`} onClick={() => play(changeActivePlayer())}>{t('No')}</Button>
+            <Button css={css`margin:10px`} onClick={() => play({type: MoveType.PlaceTower})}>{t('Yes')}</Button>
+            <Button css={css`margin:10px`} onClick={() => play({type: MoveType.ChangeActivePlayer})}>{t('No')}</Button>
         </div>
       }
     </div>
@@ -174,10 +178,10 @@ const towerStyle = (tower: TowerColor, x: number, y: number) => css`
 `
 
 const images = new Map<TowerColor, any>()
-images.set(TowerColor.WhiteTower, Images.whiteTower)
-images.set(TowerColor.BlueTower, Images.blueTower)
-images.set(TowerColor.BlackTower, Images.blackTower)
-images.set(TowerColor.BrownTower, Images.brownTower)
+images.set(TowerColor.White, Images.whiteTower)
+images.set(TowerColor.Blue, Images.blueTower)
+images.set(TowerColor.Black, Images.blackTower)
+images.set(TowerColor.Brown, Images.brownTower)
 
 const towerChoiceStyle = (clearingSpace: XYCoord) => css`
   position:absolute;

@@ -1,5 +1,5 @@
-import {css, keyframes} from '@emotion/core'
-import Theme, {LightTheme} from '../Theme'
+import {css, keyframes, Theme} from '@emotion/react'
+import {LightTheme} from '../Theme'
 
 export const screenRatio = 16 / 9
 export const cardScale = 0.7

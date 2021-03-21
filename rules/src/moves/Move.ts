@@ -1,12 +1,12 @@
-import RevealNewRiverTile, {RevealNewRiverTileView} from './RevealNewRiverTile'
-import PlaceForestTile from './PlaceForestTile'
 import ChangeActivePlayer from './ChangeActivePlayer'
+import Concede from './Concede'
+import PlaceForestTile from './PlaceForestTile'
 import PlaceTower from './PlaceTower'
 import RevealClans, {RevealClansView} from './RevealClans'
-import Concede from './Concede'
+import RevealNewRiverTile, {RevealNewRiverTileView} from './RevealNewRiverTile'
 
 type Move = RevealNewRiverTile | PlaceForestTile | ChangeActivePlayer | PlaceTower | RevealClans | Concede
 
 export default Move
 
-export type MoveView = Move | RevealNewRiverTileView | RevealClansView
+export type MoveView = Exclude<Move, RevealNewRiverTile | RevealClans> | RevealNewRiverTileView | RevealClansView

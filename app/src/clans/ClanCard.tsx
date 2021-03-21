@@ -1,19 +1,20 @@
-import {css} from '@emotion/core'
-import React, {FC, useEffect, useRef, useState} from 'react'
-import Images from '../material/Images'
-import Clan from '@gamepark/grandbois/material/Clan'
-import {useTranslation} from 'react-i18next'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import GameView from '@gamepark/grandbois/GameView'
-import {tiles} from '@gamepark/grandbois/material/Tiles'
+import Clan from '@gamepark/grandbois/material/Clan'
 import {isTroop, Space} from '@gamepark/grandbois/material/Tile'
-import VictoryPointsMultiplier from '../players/VictoryPointsMultiplier'
+import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {fadeIn} from '../util/Styles'
+import {FC, HTMLAttributes, useEffect, useRef, useState} from 'react'
+import {useTranslation} from 'react-i18next'
 import ReactTooltip from 'react-tooltip'
+import Images from '../material/Images'
+import VictoryPointsMultiplier from '../players/VictoryPointsMultiplier'
+import {fadeIn} from '../util/Styles'
 
-type Props = { game: GameView, clan?: Clan, showScore: boolean, tower: TowerColor } & React.HTMLAttributes<HTMLDivElement>
+type Props = { game: GameView, clan?: Clan, showScore: boolean, tower: TowerColor } & HTMLAttributes<HTMLDivElement>
 
-const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
+const ClanCard: FC<Props> = (({game, clan, showScore, tower, ...props}) => {
     const {t} = useTranslation()
     const [showClanCard, setShowClanCard] = useState(showScore)
     const ref = useRef<HTMLDivElement>(null)
@@ -23,7 +24,7 @@ const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
       }
     }, [ref])
     return (
-      <div ref={ref} {...props} data-place='left' data-tip={ game.over ? clan : t('Hold the click on this tile to look at your Secret Clan') }
+      <div ref={ref} {...props} data-place='left' data-tip={game.over ? clan : t('Hold the click on this tile to look at your Secret Clan')}
            onMouseDown={() => setShowClanCard(true)} onMouseUp={() => !showScore && setShowClanCard(false)}
            onMouseLeave={() => !showScore && setShowClanCard(false)}
            onTouchStart={() => setShowClanCard(true)} onTouchEnd={() => !showScore && setShowClanCard(false)}
@@ -37,11 +38,11 @@ const ClanCard : FC<Props> = (({game, clan, showScore, tower, ...props}) => {
         )}
         {clan && !game.over && showClanCard &&
         <div css={ruleStyle}>
-            <h3>{t('Victory points reminder')}</h3>
-            <VictoryPointsMultiplier css={multiplierStyle} item={0} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
-            <VictoryPointsMultiplier css={multiplierStyle} item={1} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
-            <VictoryPointsMultiplier css={multiplierStyle} item={2} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
-            <VictoryPointsMultiplier css={multiplierStyle} item={3} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
+          <h3>{t('Victory points reminder')}</h3>
+          <VictoryPointsMultiplier css={multiplierStyle} item={0} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
+          <VictoryPointsMultiplier css={multiplierStyle} item={1} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
+          <VictoryPointsMultiplier css={multiplierStyle} item={2} clans={[clan]} tower={tower} multiplier={2} legend={true}/>
+          <VictoryPointsMultiplier css={multiplierStyle} item={3} clans={[clan]} tower={tower} multiplier={1} legend={true}/>
         </div>
         }
       </div>

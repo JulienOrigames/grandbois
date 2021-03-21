@@ -1,13 +1,14 @@
-import {css} from '@emotion/core'
-import React, {FunctionComponent, useEffect, useState} from 'react'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
+import {FC, HTMLAttributes, MouseEvent, useEffect, useState} from 'react'
 
-type Props = React.HTMLAttributes<HTMLButtonElement> & { disabled?: boolean }
+type Props = HTMLAttributes<HTMLButtonElement> & { disabled?: boolean }
 
-const IconButton: FunctionComponent<Props> = ({children, disabled = false, ...props}) => {
+const IconButton: FC<Props> = ({children, disabled = false, ...props}) => {
   const [active, setActive] = useState(false)
   const [timer, setTimer] = useState<NodeJS.Timeout>()
 
-  function onMouseDown(event: React.MouseEvent<HTMLButtonElement>) {
+  function onMouseDown(event: MouseEvent<HTMLButtonElement>) {
     setActive(true)
     if (timer) {
       clearTimeout(timer)
@@ -17,7 +18,7 @@ const IconButton: FunctionComponent<Props> = ({children, disabled = false, ...pr
     }
   }
 
-  function onMouseUp(event: React.MouseEvent<HTMLButtonElement>) {
+  function onMouseUp(event: MouseEvent<HTMLButtonElement>) {
     setTimer(setTimeout(() => setActive(false), 500))
     if (props.onMouseUp) {
       props.onMouseUp(event)

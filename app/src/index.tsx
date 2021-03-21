@@ -1,16 +1,20 @@
-import GrandBoisRules from '@gamepark/grandbois/Rules'
-import {createGameStore} from '@gamepark/react-client'
-import React from 'react'
+import Grandbois from '@gamepark/grandbois/Grandbois'
+import {GrandboisOptionsDescription} from '@gamepark/grandbois/GrandboisOptions'
+import GrandboisView from '@gamepark/grandbois/GrandboisView'
+import {GameProvider, setupTranslation} from '@gamepark/react-client'
+import {StrictMode} from 'react'
 import ReactDOM from 'react-dom'
-import {Provider} from 'react-redux'
 import App from './App'
+import translations from './translations.json'
 import GrandboisTutorial from './tutorial/Tutorial'
 
+setupTranslation(translations)
+
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={createGameStore('grandbois', GrandBoisRules, {tutorial: GrandboisTutorial})}>
+  <StrictMode>
+    <GameProvider game="grandbois" Rules={Grandbois} RulesView={GrandboisView} optionsDescription={GrandboisOptionsDescription} tutorial={GrandboisTutorial}>
       <App/>
-    </Provider>
-  </React.StrictMode>,
+    </GameProvider>
+  </StrictMode>,
   document.getElementById('root')
 )

@@ -1,11 +1,12 @@
-import {css} from '@emotion/core'
-import {TFunction} from 'i18next'
-import React, {FunctionComponent} from 'react'
-import {useTranslation} from 'react-i18next'
-import Images from '../material/Images'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import Clan from '@gamepark/grandbois/material/Clan'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
+import {TFunction} from 'i18next'
+import {FC, HTMLAttributes} from 'react'
+import {useTranslation} from 'react-i18next'
 import {towerImage} from '../clans/TowerInfo'
+import Images from '../material/Images'
 
 type Props = {
   item: number
@@ -13,9 +14,9 @@ type Props = {
   tower:TowerColor
   multiplier: number
   legend?:boolean
-} & React.HTMLAttributes<HTMLDivElement>
+} & HTMLAttributes<HTMLDivElement>
 
-const VictoryPointsMultiplier: FunctionComponent<Props> = ({item, clans, tower, multiplier, legend,...props}) => {
+const VictoryPointsMultiplier: FC<Props> = ({item, clans, tower, multiplier, legend,...props}) => {
   const {t} = useTranslation()
   return <>
     { clans.map( (clan,index) =>

@@ -1,1 +1,2 @@
-export {default as Rules} from './Rules'
+export {default} from './Grandbois'
+export {GrandboisOptionsDescription as OptionsDescription} from './GrandboisOptions'

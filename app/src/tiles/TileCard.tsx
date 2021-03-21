@@ -1,16 +1,15 @@
-import {css} from '@emotion/core'
-import React, {forwardRef} from 'react'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import Tile from '@gamepark/grandbois/material/Tile'
-import Images from '../material/Images'
 import {
-  Tile1, Tile2, Tile3, Tile4, Tile5, Tile6, Tile7, Tile8, Tile9, Tile10,
-  Tile11, Tile12, Tile13, Tile14, Tile15, Tile16, Tile17, Tile18, Tile19, Tile20,
-  Tile21, Tile22, Tile23, Tile24, Tile25, Tile26, Tile27, Tile28, Tile29, Tile30,
-  Tile31, Tile32, Tile33, Tile34, Tile35, Tile36, TileStart
+  Tile1, Tile10, Tile11, Tile12, Tile13, Tile14, Tile15, Tile16, Tile17, Tile18, Tile19, Tile2, Tile20, Tile21, Tile22, Tile23, Tile24, Tile25, Tile26, Tile27,
+  Tile28, Tile29, Tile3, Tile30, Tile31, Tile32, Tile33, Tile34, Tile35, Tile36, Tile4, Tile5, Tile6, Tile7, Tile8, Tile9, TileStart
 } from '@gamepark/grandbois/material/Tiles'
+import {forwardRef, HTMLAttributes} from 'react'
+import Images from '../material/Images'
 
 
-type Props = { tile?: Tile } & React.HTMLAttributes<HTMLDivElement>
+type Props = { tile?: Tile } & HTMLAttributes<HTMLDivElement>
 
 const TileCard = forwardRef<HTMLDivElement, Props>(({tile, ...props}, ref) => {
   return (

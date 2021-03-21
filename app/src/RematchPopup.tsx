@@ -1,14 +1,14 @@
-import {css, keyframes} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, keyframes, useTheme} from '@emotion/react'
 import {faHourglassEnd, faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {getPlayerName} from '@gamepark/grandbois/Rules'
 import {usePlayerId, usePlayers} from '@gamepark/react-client'
 import RematchOffer from '@gamepark/react-client/dist/Types/RematchOffer'
-import {useTheme} from 'emotion-theming'
-import React, {FunctionComponent} from 'react'
+import {FC} from 'react'
 import {useTranslation} from 'react-i18next'
-import Theme, {LightTheme} from './Theme'
+import {LightTheme} from './Theme'
 import Button from './util/Button'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
 
@@ -17,9 +17,9 @@ type Props = {
   onClose: () => void
 }
 
-const RematchPopup: FunctionComponent<Props> = ({rematchOffer, onClose}) => {
+const RematchPopup: FC<Props> = ({rematchOffer, onClose}) => {
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const playerId = usePlayerId<TowerColor>()
   const players = usePlayers<TowerColor>()
   const getName = (empire: TowerColor) => players.find(p => p.id === empire)?.name || getPlayerName(empire, t)

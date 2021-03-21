@@ -4,4 +4,3 @@ enum Clan {
 
 export default Clan
 
-export const clans = Object.values(Clan) as Clan[]

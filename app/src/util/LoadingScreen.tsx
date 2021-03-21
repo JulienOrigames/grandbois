@@ -1,17 +1,16 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, useTheme} from '@emotion/react'
 import {faLightbulb, faPaintBrush, faWrench} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {useTheme} from 'emotion-theming'
-import React, {FunctionComponent} from 'react'
-import {useTranslation, Trans} from 'react-i18next'
-import Images from '../material/Images'
+import {FC} from 'react'
+import {Trans, useTranslation} from 'react-i18next'
 import GrandboisBox from '../material/grandbois3D.png'
-import Theme from '../Theme'
+import Images from '../material/Images'
 import {backgroundColor, textColor} from './Styles'
 
-const LoadingScreen: FunctionComponent<{ display: boolean }> = ({display}) => {
+const LoadingScreen: FC<{ display: boolean }> = ({display}) => {
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   return (
     <div css={[loadingScreenStyle, textColor(theme), backgroundColor(theme), !display && css`opacity: 0`]}>
       <img css={gameBox} src={GrandboisBox} alt={t('Name')}/>

@@ -1,13 +1,13 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, Theme, useTheme} from '@emotion/react'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {getPlayerName} from '@gamepark/grandbois/Rules'
 import {usePlayers} from '@gamepark/react-client'
-import {useTheme} from 'emotion-theming'
-import React, {FunctionComponent} from 'react'
+import {FC} from 'react'
 import {useTranslation} from 'react-i18next'
-import Theme, {LightTheme} from './Theme'
+import {LightTheme} from './Theme'
 import {closePopupStyle, popupDarkStyle, popupFixedBackgroundStyle, popupLightStyle, popupPosition, popupStyle} from './util/Styles'
 import {humanize} from './util/TimeUtil'
 
@@ -15,9 +15,9 @@ type Props = {
   onClose: () => void
 }
 
-const TimePopup: FunctionComponent<Props> = ({onClose}) => {
+const TimePopup: FC<Props> = ({onClose}) => {
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const players = usePlayers<TowerColor>({withTimeUpdate: true})
   return (
     <div css={popupFixedBackgroundStyle} onClick={onClose}>

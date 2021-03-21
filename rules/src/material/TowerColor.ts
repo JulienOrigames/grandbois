@@ -1,8 +1,8 @@
 enum TowerColor {
-  WhiteTower = 'WhiteTower',
-  BlackTower = 'BlackTower',
-  BlueTower = 'BlueTower',
-  BrownTower = 'BrownTower'
+  White = 'White',
+  Black = 'Black',
+  Blue = 'Blue',
+  Brown = 'Brown'
 }
 
 export default TowerColor

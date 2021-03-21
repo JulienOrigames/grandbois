@@ -1,4 +1,5 @@
-import {css, keyframes} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css, keyframes, useTheme} from '@emotion/react'
 import {
   faChess, faChevronDown, faChevronUp, faClock, faCompress, faExpand, faFastBackward, faHome, faMoon, faSignOutAlt, faSun, faVolumeMute, faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
@@ -6,10 +7,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import {useGame, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/react-client'
-import {useTheme} from 'emotion-theming'
 import fscreen from 'fscreen'
 import NoSleep from 'nosleep.js'
-import React, {useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 import EjectButton from './EjectButton'
 import EjectPopup from './EjectPopup'
@@ -18,7 +18,7 @@ import QuitPopup from './QuitPopup'
 import RematchPopup from './RematchPopup'
 // @ts-ignore
 import toggleSound from './sounds/toggle.mp3'
-import Theme, {LightTheme} from './Theme'
+import {LightTheme} from './Theme'
 import TimePopup from './TimePopup'
 import {resetTutorial} from './tutorial/Tutorial'
 import IconButton from './util/IconButton'
@@ -30,7 +30,7 @@ const MainMenu = () => {
   const game = useGame<GameView>()
   const playerId = usePlayerId<TowerColor>()
   const {t} = useTranslation()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const players = usePlayers<TowerColor>()
   const player = players.find(player => player.id === playerId)
   const quit = game?.players.find(player => player.tower === playerId)?.eliminated
@@ -89,10 +89,10 @@ const MainMenu = () => {
       <div css={[menuStyle, displayMenu && hidden]}>
         {game && !!playerId && !isPlaying && !game.over && <EjectButton openEjectPopup={() => setEjectPopupOpen(true)} css={menuButtonStyle}/>}
         {game && !!playerId && game.over && !game.tutorial &&
-            <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Offer a rematch')} onClick={() => rematch()}>
-              <FontAwesomeIcon icon={faChess}/>
-              {displayRematchTooltip && <span css={tooltipStyle}>{t('Offer a friendly rematch')}</span>}
-            </IconButton>
+        <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Offer a rematch')} onClick={() => rematch()}>
+          <FontAwesomeIcon icon={faChess}/>
+          {displayRematchTooltip && <span css={tooltipStyle}>{t('Offer a friendly rematch')}</span>}
+        </IconButton>
         }
         {fscreen.fullscreenEnabled && (fullScreen ?
             <IconButton css={[menuButtonStyle, fullScreenButtonStyle]} title={t('Leave full screen')} aria-label={t('Leave full screen')}
@@ -117,8 +117,8 @@ const MainMenu = () => {
         </IconButton>
         {game && !!playerId && game.over && !game.tutorial &&
         <IconButton css={[menuButtonStyle, redButtonStyle]} title={t('Offer a rematch')}>
-            <span css={subMenuTitle}>{t('Offer a rematch')}</span>
-            <FontAwesomeIcon icon={faChess}/>
+          <span css={subMenuTitle}>{t('Offer a rematch')}</span>
+          <FontAwesomeIcon icon={faChess}/>
         </IconButton>
         }
         {fscreen.fullscreenEnabled && (fullScreen ?
@@ -162,8 +162,8 @@ const MainMenu = () => {
         }
         {game && player && !quit && !game.over &&
         <IconButton css={[menuButtonStyle, redButtonStyle]} onClick={() => setQuitPopupOpen(true)}>
-            <span css={subMenuTitle}>{t('Leave the game')}</span>
-            <FontAwesomeIcon icon={faSignOutAlt}/>
+          <span css={subMenuTitle}>{t('Leave the game')}</span>
+          <FontAwesomeIcon icon={faSignOutAlt}/>
         </IconButton>
         }
         {game && !!playerId && !isPlaying && !game.over &&
@@ -237,10 +237,12 @@ const menuButtonStyle = css`
   opacity: 0.8;
   white-space: nowrap;
   justify-content: right;
+
   &:hover, &:active, &:focus, &:visited, &:before {
     opacity: 1;
     background-color: transparent;
   }
+
   &:active {
     transform: translateY(1px);
   }
@@ -276,8 +278,12 @@ const tutorialButtonStyle = css`
 `
 
 const displayForAMoment = keyframes`
-  from, to, 50% {opacity: 0}
-  60%, 90% {opacity: 1}
+  from, to, 50% {
+    opacity: 0
+  }
+  60%, 90% {
+    opacity: 1
+  }
 `
 
 const tooltipStyle = css`
@@ -291,6 +297,7 @@ const tooltipStyle = css`
   background: black;
   animation: ${displayForAMoment} 20s forwards;
   pointer-events: none;
+
   &:before {
     content: '';
     width: 0;

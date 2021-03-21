@@ -1,15 +1,16 @@
-import {css} from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
 import {faUserSlash} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import {GameSpeed, useNow, useOptions, usePlayers, useSound} from '@gamepark/react-client'
-import React, {FC} from 'react'
+import {FC, HTMLAttributes} from 'react'
 import {useTranslation} from 'react-i18next'
 import Images from './material/Images'
 import toggleSound from './sounds/toggle.mp3'
 import IconButton from './util/IconButton'
 
-type Props = React.HTMLAttributes<HTMLButtonElement> & {
+type Props = HTMLAttributes<HTMLButtonElement> & {
   openEjectPopup: () => void
   subMenu?: boolean
   disabled?: boolean

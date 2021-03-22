@@ -10,7 +10,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
-    "@gamepark/react-client": "~4.0.3",
+    "@gamepark/react-client": "~4.0.4",
     "@gamepark/react-components": "~4.0.0",
     "@types/fscreen": "^1.0.1",
     "@types/nosleep.js": "^0.9.0",

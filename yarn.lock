@@ -1621,14 +1621,14 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@gamepark/react-client@~4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-4.0.3.tgz#bba1856ae7ea6f4ba68aa632a2491a575a6ecc2e"
-  integrity sha512-z+jHD9YHG+liYson4DCRS2IH0RL5OXo549f+z6Y+mXjR0W28P7QdT3p/5nLQqu1nnlx1nWNfrTHIznycEhNKxQ==
+"@gamepark/react-client@~4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-4.0.4.tgz#99ad29cb1b814c60cea71f5ae0898d75459135cb"
+  integrity sha512-ZrofcCzNB1BlM2/rvrJf75/iNXegl6AcFcOrKPXxukiChmcz78FEjJ3b1eM8bmW6F1KFsMlHHZHUDz8X4QdZhQ==
   dependencies:
     "@apollo/client" "^3.1.3"
     "@datadog/browser-logs" "^1.11.4"
-    "@gamepark/rules-api" "^4.0.2"
+    "@gamepark/rules-api" "^4.0.4"
     "@types/lodash.shuffle" "^4.2.6"
     "@types/react" "^17.0.3"
     assert "^2.0.0"
@@ -1650,10 +1650,10 @@
     "@fortawesome/free-solid-svg-icons" "^5.15.2"
     "@fortawesome/react-fontawesome" "^0.1.14"
 
-"@gamepark/rules-api@^4.0.2", "@gamepark/rules-api@~4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@gamepark/rules-api/-/rules-api-4.0.2.tgz#38cac7c0deecbe9f63cc801cb16bdc40b49f5a5f"
-  integrity sha512-lfG9pIuMCKPjWmjiVkgd58WHadEMCLr48YsJia30wiUp7Bq4jrKa8hPOGEeRiOZ1J929O/6bqqYqHXO/AOTF2A==
+"@gamepark/rules-api@^4.0.4", "@gamepark/rules-api@~4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@gamepark/rules-api/-/rules-api-4.0.4.tgz#044b737a32984b8886430146455627965a93cda7"
+  integrity sha512-F314Gn3ik4UtsftFK/DHobTSagBfDYrnVoTI6KDOsdHyTPW6bBbpHVjbi9ssh9JX7LPAyOo9U0O5sgQbNlr5cQ==
   dependencies:
     fast-deep-equal "^3.1.3"
 

@@ -1621,14 +1621,14 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@gamepark/react-client@~4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-4.0.4.tgz#99ad29cb1b814c60cea71f5ae0898d75459135cb"
-  integrity sha512-ZrofcCzNB1BlM2/rvrJf75/iNXegl6AcFcOrKPXxukiChmcz78FEjJ3b1eM8bmW6F1KFsMlHHZHUDz8X4QdZhQ==
+"@gamepark/react-client@~4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-4.1.1.tgz#3da2c74ed0402d6dbbd9af135c7684d67a33cb66"
+  integrity sha512-KfL3aQc3RJ/HnaaZOivTsZVh9HGYS46KBOW/OZitj+ekZ9Rpsu79LejpsR7UVsoDIplFz5XhQW2QTQ3E5ZVUuw==
   dependencies:
     "@apollo/client" "^3.1.3"
     "@datadog/browser-logs" "^1.11.4"
-    "@gamepark/rules-api" "^4.0.4"
+    "@gamepark/rules-api" "^4.1.1"
     "@types/lodash.shuffle" "^4.2.6"
     "@types/react" "^17.0.3"
     assert "^2.0.0"
@@ -1650,10 +1650,10 @@
     "@fortawesome/free-solid-svg-icons" "^5.15.2"
     "@fortawesome/react-fontawesome" "^0.1.14"
 
-"@gamepark/rules-api@^4.0.4", "@gamepark/rules-api@~4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@gamepark/rules-api/-/rules-api-4.0.4.tgz#044b737a32984b8886430146455627965a93cda7"
-  integrity sha512-F314Gn3ik4UtsftFK/DHobTSagBfDYrnVoTI6KDOsdHyTPW6bBbpHVjbi9ssh9JX7LPAyOo9U0O5sgQbNlr5cQ==
+"@gamepark/rules-api@^4.1.1", "@gamepark/rules-api@~4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@gamepark/rules-api/-/rules-api-4.1.1.tgz#2b06912ad70f5fb46d37bdba0f7bc2d5c0afc05e"
+  integrity sha512-TeJZnUZ/26gx/yzDzkmA3nkdiIOfRi7x8xTjD0lcR7Bz6ap4MUiguWwmWOd/CTr8AQVfLJqpA2PpmmUhPzf6lw==
   dependencies:
     fast-deep-equal "^3.1.3"
 
@@ -6217,10 +6217,19 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-dnd-core@14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-14.0.0.tgz#973ab3470d0a9ac5a0fa9021c4feba93ad12347d"
-  integrity sha512-wTDYKyjSqWuYw3ZG0GJ7k+UIfzxTNoZLjDrut37PbcPGNfwhlKYlPUqjAKUjOOv80izshUiqusaKgJPItXSevA==
+dnd-core@12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-12.0.0.tgz#b5b243121538279782a8ca35c4e55234a621f1ed"
+  integrity sha512-7GQTkQfNmmdFBN85hN0aHKXeP6Vf4yFUZQBT02+yHKbR82C80N504onI4Av5ZKm2goY1ppQr3wdDp5pa5tlaYA==
+  dependencies:
+    "@react-dnd/asap" "^4.0.0"
+    "@react-dnd/invariant" "^2.0.0"
+    redux "^4.0.5"
+
+dnd-core@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-12.0.1.tgz#2263391d6de218801770df4d345294a5f1eccc48"
+  integrity sha512-KzfKXQM9t9uSBO7DFmrILVgXUCShpY3/MbnLPF9/wg1Wcvq2KblbeT72GhjcrplS9cz0DFXilE1NXy43n8plag==
   dependencies:
     "@react-dnd/asap" "^4.0.0"
     "@react-dnd/invariant" "^2.0.0"
@@ -13122,12 +13131,12 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dnd-html5-backend@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-14.0.0.tgz#28d660a2ad1e07447c34a65cd25f7de8f1657194"
-  integrity sha512-2wAQqRFC1hbRGmk6+dKhOXsyQQOn3cN8PSZyOUeOun9J8t3tjZ7PS2+aFu7CVu2ujMDwTJR3VTwZh8pj2kCv7g==
+react-dnd-html5-backend@^12.1.1:
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-12.1.1.tgz#73aa9043f5a2da5b192503593d620d30c0bd7348"
+  integrity sha512-cQZgfuSGQEwHdvdoPtfUOvcrS8rye/V0hU046LjY/BLSgcrdjtQVviE2d/81QQaeJpvK00JizctsZqVY7IvHgA==
   dependencies:
-    dnd-core "14.0.0"
+    dnd-core "12.0.1"
 
 react-dnd-multi-backend@^6.0.2:
   version "6.0.2"
@@ -13153,13 +13162,13 @@ react-dnd-touch-backend@^10.0.2:
     "@react-dnd/invariant" "^2.0.0"
     dnd-core "^10.0.2"
 
-react-dnd-touch-backend@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-14.0.0.tgz#f7f144ca4af17946e20cdfd06a766ebadd170d4d"
-  integrity sha512-fNt3isf9h0xgjj86dIXhBi3dJ7OhC88vKUYdEvsOGypdp3LOFD+TobBAuBu00v26WmJ6II6xqbkhOx+KOcyHxQ==
+react-dnd-touch-backend@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-12.0.0.tgz#47c93044ce424dbeeb09b2da6dc68b1ff04ee6cb"
+  integrity sha512-YcXb0S6/87KIGGJQEGvc+dhgVIoPikM23VJs10y9AKrezao9bIXiMtd5+Sg4dDAcUduptvvbohCTpkm0E6mrtg==
   dependencies:
     "@react-dnd/invariant" "^2.0.0"
-    dnd-core "14.0.0"
+    dnd-core "12.0.0"
 
 react-dnd@^10.0.2:
   version "10.0.2"
@@ -13171,15 +13180,14 @@ react-dnd@^10.0.2:
     dnd-core "^10.0.2"
     hoist-non-react-statics "^3.3.0"
 
-react-dnd@^14.0.1:
-  version "14.0.1"
-  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-14.0.1.tgz#012a855b0fb35a27c7c84aba7ff6c495e0baddb2"
-  integrity sha512-r57KKBfmAYTwmQ/cREQehNjEX9U9Xi4AUWykLX92fB9JkY9z90DMWZhSE1M7o6Y71Y2/a2SBvSPQ385QboNrIQ==
+react-dnd@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-13.1.1.tgz#ea6d3f15cccf542a3ebfb978c097b2e3b1d1c962"
+  integrity sha512-oxQW8846omV1l3Pm2zY/atvNxryx+blW1rxnSmoGvFMgmxXpOHulaXrlXgxRH+OLRvLt2cfVTSxZ4ykbzBypaw==
   dependencies:
     "@react-dnd/invariant" "^2.0.0"
     "@react-dnd/shallowequal" "^2.0.0"
-    dnd-core "14.0.0"
-    fast-deep-equal "^3.1.3"
+    dnd-core "12.0.1"
     hoist-non-react-statics "^3.3.2"
 
 react-dom@^17.0.1:
@@ -13196,10 +13204,10 @@ react-error-overlay@^6.0.9:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
-react-i18next@^11.8.10:
-  version "11.8.10"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.10.tgz#aa64bc20410ee8f660a5b918d53f4e41271edf00"
-  integrity sha512-ckjNzMjYkmx4fQ8zzuaYTosYN3Co6ebrgCQJzuZCcGFYSR/kGHZzSu0xw9VhtnbjJVKx0gEMV3DLRvzi4xDZUw==
+react-i18next@^11.8.11:
+  version "11.8.11"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.11.tgz#bdf0440bad0d576664057a0c1233cb4fecf9eaab"
+  integrity sha512-S17B952IB8T5Zs0SoGNR5zSHU5N7+X2D2OydhAtqNHT+iw9Tbt7WBNExufe9NbmpUQUUjKrCHIkl2diNTdGYtA==
   dependencies:
     "@babel/runtime" "^7.13.6"
     html-parse-stringify2 "^2.0.1"

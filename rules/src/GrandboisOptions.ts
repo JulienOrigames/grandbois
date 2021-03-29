@@ -1,7 +1,7 @@
 import {GameOptions, OptionsDescription, OptionType} from '@gamepark/rules-api'
 import {TFunction} from 'i18next'
 import GameState from './GameState'
-import TowerColor from './material/TowerColor'
+import TowerColor, {towerColors} from './material/TowerColor'
 
 export type GrandboisPlayerOptions = {
   id: TowerColor
@@ -20,7 +20,7 @@ export const GrandboisOptionsDescription: OptionsDescription<{}, GrandboisPlayer
     id: {
       type: OptionType.LIST,
       getLabel: (t: TFunction) => t('Color'),
-      values: Object.values(TowerColor),
+      values: towerColors,
       getValueLabel: (color: TowerColor, t: TFunction) => getPlayerName(color, t)
     }
   }

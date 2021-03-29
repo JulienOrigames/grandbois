@@ -5,7 +5,7 @@ import ForestView, {getForestView, isAvailablePosition, isLegalTilePosition} fro
 import GameState from './GameState'
 import GameView from './GameView'
 import GrandboisOptions, {GrandboisPlayerOptions, isGrandboisOptions} from './GrandboisOptions'
-import Clan from './material/Clan'
+import Clan, {clans} from './material/Clan'
 import {Clearing, isTroop} from './material/Tile'
 import {tiles} from './material/Tiles'
 import TowerColor from './material/TowerColor'
@@ -162,10 +162,10 @@ export default class Grandbois extends SequentialGame<GameState, Move, TowerColo
 }
 
 export function setupPlayers(playerOptions: GrandboisPlayerOptions[]): Player[] {
-  const clans = shuffle(Object.values(Clan))
+  const shuffledClans = shuffle(clans)
   return playerOptions.map(options => ({
     tower: options.id,
-    clans: clans.splice(0, playerOptions.length === 2 ? 2 : 1),
+    clans: shuffledClans.splice(0, playerOptions.length === 2 ? 2 : 1),
     towersPosition: []
   }))
 }

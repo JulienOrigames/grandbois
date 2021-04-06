@@ -6,7 +6,7 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import {useGame, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/react-client'
+import {useGame, useGiveUp, usePlayerId, usePlayers, useRematch, useSound} from '@gamepark/react-client'
 import fscreen from 'fscreen'
 import NoSleep from 'nosleep.js'
 import {useEffect, useRef, useState} from 'react'
@@ -32,8 +32,7 @@ const MainMenu = () => {
   const {t} = useTranslation()
   const theme = useTheme()
   const players = usePlayers<TowerColor>()
-  const player = players.find(player => player.id === playerId)
-  const quit = game?.players.find(player => player.tower === playerId)?.eliminated
+  const [,canGiveUp] = useGiveUp()
   const isPlaying = players.find(player => player.id === playerId)?.time?.playing
   const [fullScreen, setFullScreen] = useState(!fscreen.fullscreenEnabled)
   const [ejectPopupOpen, setEjectPopupOpen] = useState(false)
@@ -160,7 +159,7 @@ const MainMenu = () => {
           <FontAwesomeIcon icon={faClock}/>
         </IconButton>
         }
-        {game && player && !quit && !game.over &&
+        {canGiveUp &&
         <IconButton css={[menuButtonStyle, redButtonStyle]} onClick={() => setQuitPopupOpen(true)}>
           <span css={subMenuTitle}>{t('Leave the game')}</span>
           <FontAwesomeIcon icon={faSignOutAlt}/>

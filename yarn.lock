@@ -1607,6 +1607,13 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.35"
 
+"@fortawesome/free-regular-svg-icons@^5.15.3":
+  version "5.15.3"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-5.15.3.tgz#1ec4f2410ff638db549c5c5484fc60b66407dbe6"
+  integrity sha512-q4/p8Xehy9qiVTdDWHL4Z+o5PCLRChePGZRTXkl+/Z7erDVL8VcZUuqzJjs6gUz6czss4VIPBRdCz6wP37/zMQ==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.35"
+
 "@fortawesome/free-solid-svg-icons@^5.15.2", "@fortawesome/free-solid-svg-icons@^5.15.3":
   version "5.15.3"
   resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.15.3.tgz#52eebe354f60dc77e0bde934ffc5c75ffd04f9d8"
@@ -1621,39 +1628,53 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@gamepark/react-client@~4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-4.2.1.tgz#008dd3878ba2398581abfb158255ee548b25c372"
-  integrity sha512-KEm3RiiN1zdwr235mXL0OLTikTki3Fbuw1pgeasKH/i0D9/I2W9a8fWKrCnhTazb1hpVusjZA0Dlq1vYvRnSCQ==
+"@gamepark/react-client@~4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-4.7.0.tgz#154ee0d3fb217e1547ffe56e8d5f86f61e98ed00"
+  integrity sha512-Ru2BFljRmD64tSRH0PAkIkV1lNP1KQ9PO94eR7A1K2fKrR62jdrZAp54pATJuzBUUWjrQMcIUK5fOGHHt7p16A==
   dependencies:
     "@apollo/client" "^3.1.3"
     "@datadog/browser-logs" "^1.11.4"
-    "@gamepark/rules-api" "^4.2.1"
+    "@fortawesome/free-regular-svg-icons" "^5.15.3"
+    "@fortawesome/free-solid-svg-icons" "^5.15.3"
+    "@fortawesome/react-fontawesome" "^0.1.14"
+    "@gamepark/rules-api" "^4.7.0"
     "@types/lodash.shuffle" "^4.2.6"
     "@types/react" "^17.0.3"
     assert "^2.0.0"
+    fscreen "^1.2.0"
     graphql "^15.3.0"
     i18next-icu "^2.0.2"
     immer "^7.0.9"
     intl-messageformat "^9.5.2"
     lodash.shuffle "^4.2.0"
     moment "^2.29.1"
+    nosleep.js "^0.12.0"
+    o9n "^2.1.0"
     pusher-js "^7.0.0"
     redux ">=4.0.5"
 
-"@gamepark/react-components@~4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@gamepark/react-components/-/react-components-4.0.0.tgz#26b5a457b08c4411caec88fa37b76b8f6f1b7923"
-  integrity sha512-TbxN2dGbifMKuIDMW9XUhBesxzMuPyJInZmdlfAS7cwqjgsiq6ZYAU4mTNMvWdz+46EcSzVxgXkchY5HfdxZMg==
+"@gamepark/react-components@~4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@gamepark/react-components/-/react-components-4.7.0.tgz#72b54cebf26520bc54dfd12019d9cf95fa1750b5"
+  integrity sha512-To/awR0JiLT/8tIzEyjoS0+kYxsOrui7phd4FS83DsbktJzaz2Wp/3kJqQdz/tx6QKY/xJrddhwgxOERYRiL6A==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.34"
     "@fortawesome/free-solid-svg-icons" "^5.15.2"
     "@fortawesome/react-fontawesome" "^0.1.14"
+    "@react-dnd/shallowequal" "^2.0.0"
 
-"@gamepark/rules-api@^4.2.1", "@gamepark/rules-api@~4.2.1":
+"@gamepark/rules-api@^4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@gamepark/rules-api/-/rules-api-4.2.1.tgz#eded03e4988aee9408779d9781ea5aa4294e2f18"
   integrity sha512-6/hYTffwkIlbwlyLbuVnuY79H+wfriC0B0p3iNEUlS/3MtVFGCyq1UJjJ8R85RoLVANBYI3fYLN1y3en3lS2yw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+
+"@gamepark/rules-api@^4.7.0", "@gamepark/rules-api@~4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@gamepark/rules-api/-/rules-api-4.7.0.tgz#9dcc4735f130dc8e12efd9f5df4b1072b2edb1d5"
+  integrity sha512-9a1pegSYPKvqVHTNxbtZy4e740wnwwnKrKe2B119iMIvXEleA4/s+A7Qh3542UxvTUVRr9y6+xOOXOlpD5h2sg==
   dependencies:
     fast-deep-equal "^3.1.3"
 
@@ -3167,10 +3188,10 @@
     react-dnd "^10.0.2"
     react-dnd-touch-backend "^10.0.2"
 
-"@types/react-dom@^16.9.6":
-  version "16.9.8"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.8.tgz#fe4c1e11dfc67155733dfa6aa65108b4971cb423"
-  integrity sha512-ykkPQ+5nFknnlU6lDd947WbQ6TE3NNzbQAkInC2EKY1qeYdTKp7onFusmYZb+ityzx2YviqT6BXSu+LyWWJwcA==
+"@types/react-dom@^17.0.3":
+  version "17.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.3.tgz#7fdf37b8af9d6d40127137865bb3fff8871d7ee1"
+  integrity sha512-4NnJbCeWE+8YBzupn/YrJxZ8VnjcJq5iR1laqQ1vkpQgBiA7bwk0Rp24fxsdNinzJY2U+HHS4dJJDPdoMjdJ7w==
   dependencies:
     "@types/react" "*"
 
@@ -6217,19 +6238,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-dnd-core@12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-12.0.0.tgz#b5b243121538279782a8ca35c4e55234a621f1ed"
-  integrity sha512-7GQTkQfNmmdFBN85hN0aHKXeP6Vf4yFUZQBT02+yHKbR82C80N504onI4Av5ZKm2goY1ppQr3wdDp5pa5tlaYA==
-  dependencies:
-    "@react-dnd/asap" "^4.0.0"
-    "@react-dnd/invariant" "^2.0.0"
-    redux "^4.0.5"
-
-dnd-core@12.0.1:
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-12.0.1.tgz#2263391d6de218801770df4d345294a5f1eccc48"
-  integrity sha512-KzfKXQM9t9uSBO7DFmrILVgXUCShpY3/MbnLPF9/wg1Wcvq2KblbeT72GhjcrplS9cz0DFXilE1NXy43n8plag==
+dnd-core@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-14.0.0.tgz#973ab3470d0a9ac5a0fa9021c4feba93ad12347d"
+  integrity sha512-wTDYKyjSqWuYw3ZG0GJ7k+UIfzxTNoZLjDrut37PbcPGNfwhlKYlPUqjAKUjOOv80izshUiqusaKgJPItXSevA==
   dependencies:
     "@react-dnd/asap" "^4.0.0"
     "@react-dnd/invariant" "^2.0.0"
@@ -7665,6 +7677,11 @@ fscreen@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/fscreen/-/fscreen-1.0.2.tgz#c4c51d96d819d75a19d728e0df445f9be9bb984f"
   integrity sha1-xMUdltgZ11oZ1yjg30Rfm+m7mE8=
+
+fscreen@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/fscreen/-/fscreen-1.2.0.tgz#1a8c88e06bc16a07b473ad96196fb06d6657f59e"
+  integrity sha512-hlq4+BU0hlPmwsFjwGGzZ+OZ9N/wq9Ljg/sq3pX+2CD7hrJsX9tJgWWK/wiNTFM212CLHWhicOoqwXyZGGetJg==
 
 fsevents@^1.2.7:
   version "1.2.12"
@@ -11153,6 +11170,11 @@ normalize-url@^3.0.0, normalize-url@^3.3.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
+nosleep.js@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/nosleep.js/-/nosleep.js-0.12.0.tgz#a01fddab2c13af357d673928b1f40a9013a4dc08"
+  integrity sha512-9d1HbpKLh3sdWlhXMhU6MMH+wQzKkrgfRkYV0EBdvt99YJfj0ilCJrWRDYG2130Tm4GXbEoTCx5b34JSaP+HhA==
+
 nosleep.js@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/nosleep.js/-/nosleep.js-0.9.0.tgz#0f1371b81dc182e3b6bbdb837e880f16db9d7163"
@@ -11287,6 +11309,11 @@ nwsapi@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
   integrity sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==
+
+o9n@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/o9n/-/o9n-2.1.0.tgz#e4566cf95e5abefdd10dd2c2bc304f2d8ebf243c"
+  integrity sha512-Kvf4kB/XBctZwXKwjAmlPVhCqRywMFXl+o0dvhIc04A5gjWdTiQWYgy75vGXPRBxa9TrkWK6rhgtE+o4GnZTYQ==
 
 oauth-sign@~0.9.0:
   version "0.9.0"
@@ -13131,12 +13158,12 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dnd-html5-backend@^12.1.1:
-  version "12.1.1"
-  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-12.1.1.tgz#73aa9043f5a2da5b192503593d620d30c0bd7348"
-  integrity sha512-cQZgfuSGQEwHdvdoPtfUOvcrS8rye/V0hU046LjY/BLSgcrdjtQVviE2d/81QQaeJpvK00JizctsZqVY7IvHgA==
+react-dnd-html5-backend@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-14.0.0.tgz#28d660a2ad1e07447c34a65cd25f7de8f1657194"
+  integrity sha512-2wAQqRFC1hbRGmk6+dKhOXsyQQOn3cN8PSZyOUeOun9J8t3tjZ7PS2+aFu7CVu2ujMDwTJR3VTwZh8pj2kCv7g==
   dependencies:
-    dnd-core "12.0.1"
+    dnd-core "14.0.0"
 
 react-dnd-multi-backend@^6.0.2:
   version "6.0.2"
@@ -13162,13 +13189,13 @@ react-dnd-touch-backend@^10.0.2:
     "@react-dnd/invariant" "^2.0.0"
     dnd-core "^10.0.2"
 
-react-dnd-touch-backend@^12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-12.0.0.tgz#47c93044ce424dbeeb09b2da6dc68b1ff04ee6cb"
-  integrity sha512-YcXb0S6/87KIGGJQEGvc+dhgVIoPikM23VJs10y9AKrezao9bIXiMtd5+Sg4dDAcUduptvvbohCTpkm0E6mrtg==
+react-dnd-touch-backend@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-14.0.0.tgz#f7f144ca4af17946e20cdfd06a766ebadd170d4d"
+  integrity sha512-fNt3isf9h0xgjj86dIXhBi3dJ7OhC88vKUYdEvsOGypdp3LOFD+TobBAuBu00v26WmJ6II6xqbkhOx+KOcyHxQ==
   dependencies:
     "@react-dnd/invariant" "^2.0.0"
-    dnd-core "12.0.0"
+    dnd-core "14.0.0"
 
 react-dnd@^10.0.2:
   version "10.0.2"
@@ -13180,24 +13207,25 @@ react-dnd@^10.0.2:
     dnd-core "^10.0.2"
     hoist-non-react-statics "^3.3.0"
 
-react-dnd@^13.1.1:
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-13.1.1.tgz#ea6d3f15cccf542a3ebfb978c097b2e3b1d1c962"
-  integrity sha512-oxQW8846omV1l3Pm2zY/atvNxryx+blW1rxnSmoGvFMgmxXpOHulaXrlXgxRH+OLRvLt2cfVTSxZ4ykbzBypaw==
+react-dnd@^14.0.2:
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-14.0.2.tgz#57266baec92b887301f81fa3b77f87168d159733"
+  integrity sha512-JoEL78sBCg8SzjOKMlkR70GWaPORudhWuTNqJ56lb2P8Vq0eM2+er3ZrMGiSDhOmzaRPuA9SNBz46nHCrjn11A==
   dependencies:
     "@react-dnd/invariant" "^2.0.0"
     "@react-dnd/shallowequal" "^2.0.0"
-    dnd-core "12.0.1"
+    dnd-core "14.0.0"
+    fast-deep-equal "^3.1.3"
     hoist-non-react-statics "^3.3.2"
 
-react-dom@^17.0.1:
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.1.tgz#1de2560474ec9f0e334285662ede52dbc5426fc6"
-  integrity sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug==
+react-dom@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
+  integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    scheduler "^0.20.1"
+    scheduler "^0.20.2"
 
 react-error-overlay@^6.0.9:
   version "6.0.9"
@@ -13324,10 +13352,10 @@ react-tooltip@^4.2.7:
     prop-types "^15.7.2"
     uuid "^7.0.3"
 
-react@^17.0.1:
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
-  integrity sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
+react@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
+  integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -14025,10 +14053,10 @@ saxes@^5.0.1:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@^0.20.1:
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.20.1.tgz#da0b907e24026b01181ecbc75efdc7f27b5a000c"
-  integrity sha512-LKTe+2xNJBNxu/QhHvDR14wUXHRQbVY5ZOYpOGWRzhydZUqrLb2JBvLPY7cAqFmqrWuDED0Mjk7013SZiOz6Bw==
+scheduler@^0.20.2:
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.20.2.tgz#4baee39436e34aa93b4874bddcbf0fe8b8b50e91"
+  integrity sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

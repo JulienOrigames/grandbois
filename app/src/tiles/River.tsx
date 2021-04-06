@@ -62,10 +62,10 @@ const River: FC<Props> = ({game}) => {
     {
       riverTiles.map((rotatedTile, index) => {
           if (!rotatedTile) return null
-          const item = playingTile && playingTile.tile === rotatedTile.tile ? {type: draggedTile, ...playingTile} : {type: draggedTile, ...rotatedTile}
-          return <Draggable key={rotatedTile.tile} item={item}
+          const item = playingTile && playingTile.tile === rotatedTile.tile ? playingTile : rotatedTile
+          return <Draggable key={rotatedTile.tile} type={draggedTile} item={item}
                             drop={setPlayingTile}
-                            disabled={game.activePlayer !== playerId}
+                            canDrag={game.activePlayer === playerId}
                             animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
                             css={[cardStyle,
                               playingTile && playingTile.tile === rotatedTile.tile ? playingTileStyle(isLegalTile!,playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y, theme) : riverTileStyle(index,theme)

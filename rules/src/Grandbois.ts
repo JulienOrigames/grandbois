@@ -1,4 +1,4 @@
-import {Eliminations, SecretInformation, SequentialGame, TimeLimit} from '@gamepark/rules-api'
+import {SecretInformation, SequentialGame, TimeLimit} from '@gamepark/rules-api'
 import shuffle from 'lodash.shuffle'
 import {XYCoord} from 'react-dnd'
 import ForestView, {getForestView, isAvailablePosition, isLegalTilePosition} from './ForestView'
@@ -10,7 +10,6 @@ import {Clearing, isTroop} from './material/Tile'
 import {tiles} from './material/Tiles'
 import TowerColor from './material/TowerColor'
 import {changeActivePlayer} from './moves/ChangeActivePlayer'
-import {concede} from './moves/Concede'
 import Move, {MoveView} from './moves/Move'
 import MoveType from './moves/MoveType'
 import {placeForestTile} from './moves/PlaceForestTile'
@@ -22,7 +21,7 @@ import Player from './Player'
 export const defaultNumberOfPlayers = 3
 
 export default class Grandbois extends SequentialGame<GameState, Move, TowerColor> implements /* TODO Competitive<Move, TowerColor>,*/
-  SecretInformation<GameState, GameView, Move, MoveView, TowerColor>, Eliminations<GameState, Move, TowerColor>, TimeLimit<GameState, Move, TowerColor> {
+  SecretInformation<GameState, GameView, Move, MoveView, TowerColor>, TimeLimit<GameState, Move, TowerColor> {
 
   constructor(state: GameState)
   constructor(options: GrandboisOptions)
@@ -103,8 +102,6 @@ export default class Grandbois extends SequentialGame<GameState, Move, TowerColo
         return placeTower(this.state)
       case MoveType.RevealClans:
         return revealClans(this.state)
-      case MoveType.Concede:
-        return concede(this.state, move)
     }
   }
 
@@ -142,14 +139,6 @@ export default class Grandbois extends SequentialGame<GameState, Move, TowerColo
         }
     }
     return move
-  }
-
-  isEliminated(playerId: TowerColor): boolean {
-    return !!this.state.players.find(player => player.tower === playerId)?.eliminated
-  }
-
-  getConcedeMove(playerId: TowerColor): Move {
-    return {type: MoveType.Concede, playerId}
   }
 
   giveTime(): number {

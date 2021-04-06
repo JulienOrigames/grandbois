@@ -36,25 +36,25 @@ const PlayerPanel: FC<Props> = ({game, player, position, highlight, showScore, .
   return (
     <div css={[style(position, highlight), (showScore || twoPlayersGame) && endStyle(position)]} {...props}>
       <div css={towersStyle(twoPlayersGame || game.over)}>
-      {
-        ( twoPlayersGame && !game.over ) ?
+        {
+          (twoPlayersGame && !game.over) ?
             <>
-            <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]}
-                 css={towerStyle(player.towersPosition[0] !== undefined && !game.over)} draggable="false"/>
-            <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]}
-                 css={towerStyle(player.towersPosition[1] !== undefined && !game.over)} draggable="false"/>
+              <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]}
+                   css={towerStyle(player.towersPosition[0] !== undefined && !game.over)} draggable="false"/>
+              <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]}
+                   css={towerStyle(player.towersPosition[1] !== undefined && !game.over)} draggable="false"/>
             </>
-          :
+            :
             <img alt={getPlayerName(player.tower, t)} src={towerImage[player.tower]} css={towerStyle(player.towersPosition[0] !== undefined && !game.over)}
-               draggable="false"/>
-      }
+                 draggable="false"/>
+        }
       </div>
-      <h3 css={[titleStyle(showScore || twoPlayersGame), player.eliminated && eliminatedStyle]}>
+      <h3 css={[titleStyle(showScore || twoPlayersGame)]}>
         <span css={nameStyle}>{player.tower === playerId ? t('You') : (playerInfo?.name || getPlayerName(player.tower, t))}</span>
         {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
       </h3>
       {game.over && currentPlayer?.clans.map((clan, index) =>
-        <ClanCard key={clan} css={clanStyle(index,twoPlayersGame)} game={game} clan={clan} showScore={game.over} tower={player.tower}/>
+        <ClanCard key={clan} css={clanStyle(index, twoPlayersGame)} game={game} clan={clan} showScore={game.over} tower={player.tower}/>
       )}
     </div>
   )
@@ -97,9 +97,9 @@ const borderStyle = (highlight: boolean) => highlight ? css`
   box-shadow: 0.2em 0.2em 1em black;
 `
 
-const towersStyle = (notFullHeight:boolean) => css`
+const towersStyle = (notFullHeight: boolean) => css`
   position: absolute;
-  height: ${notFullHeight?90:100}%;
+  height: ${notFullHeight ? 90 : 100}%;
   width: auto;
   bottom: 1%;
   left: 1%;
@@ -134,18 +134,14 @@ const nameStyle = css`
   overflow: hidden;
 `
 
-const eliminatedStyle = css`
-  text-decoration: line-through;
-`
-
 const clanCardWidth = 70 * endPlayerPanelHeight / playerPanelWidth / screenRatio
 
-const clanStyle = (index: number,twoPlayersGame:boolean) => css`
+const clanStyle = (index: number, twoPlayersGame: boolean) => css`
   position: absolute;
   height: 70%;
-  width: ${twoPlayersGame?clanCardWidth*0.7:clanCardWidth}%;
+  width: ${twoPlayersGame ? clanCardWidth * 0.7 : clanCardWidth}%;
   top: 25%;
-  left: ${twoPlayersGame? index * clanCardWidth * 0.7  + 40 : 50}%;
+  left: ${twoPlayersGame ? index * clanCardWidth * 0.7 + 40 : 50}%;
   z-index: 2;
   animation: ${fadeIn} 5s ease-in forwards;
 `

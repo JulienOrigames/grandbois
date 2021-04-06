@@ -3,8 +3,7 @@ enum MoveType {
   PlaceForestTile,
   ChangeActivePlayer,
   PlaceTower,
-  RevealClans,
-  Concede
+  RevealClans
 }
 
 export default MoveType

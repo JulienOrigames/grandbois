@@ -57,7 +57,7 @@ const Forest: FC<Props> = ({game}) => {
     }
   })
   const [{dragging}, dragRef, preview] = useDrag({
-      item: {type: forestArea},
+      type: forestArea,
       collect: monitor => ({
         dragging: monitor.isDragging()
       })

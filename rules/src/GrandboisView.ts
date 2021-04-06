@@ -2,7 +2,6 @@ import {Game} from '@gamepark/rules-api'
 import GameState from './GameState'
 import GameView from './GameView'
 import {changeActivePlayer} from './moves/ChangeActivePlayer'
-import {concede} from './moves/Concede'
 import {MoveView} from './moves/Move'
 import MoveType from './moves/MoveType'
 import {placeForestTile} from './moves/PlaceForestTile'
@@ -14,7 +13,7 @@ export default class GrandboisView implements Game<GameView, MoveView> {
   state: GameView
 
   constructor(state: GameView) {
-     this.state = state
+    this.state = state
   }
 
   play(move: MoveView) {
@@ -29,8 +28,6 @@ export default class GrandboisView implements Game<GameView, MoveView> {
         return placeTower(this.state)
       case MoveType.RevealClans:
         return revealClansInView(this.state, move)
-      case MoveType.Concede:
-        return concede(this.state, move)
     }
   }
 }

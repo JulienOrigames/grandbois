@@ -142,11 +142,7 @@ export default class Grandbois extends SequentialGame<GameState, Move, TowerColo
   }
 
   giveTime(): number {
-    if (this.state.deck.length > 28) {
-      return 120
-    } else {
-      return 60
-    }
+    return 30
   }
 }
 

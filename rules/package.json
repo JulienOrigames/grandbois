@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/grandbois",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Grandbois rules for Game Park",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

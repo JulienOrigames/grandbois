@@ -9,7 +9,6 @@ type GameState = {
   forest: PlacedTile[]
   activePlayer?: TowerColor
   tilePlayed?: number
-  tutorial?: boolean
   over: boolean
 }
 

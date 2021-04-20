@@ -5,8 +5,7 @@ import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView from '@gamepark/grandbois/PlayerView'
-import {useOptions, usePlayer, usePlayerId} from '@gamepark/react-client'
-import {GameSpeed} from '@gamepark/rules-api'
+import {PlayerTimer, usePlayer, usePlayerId} from '@gamepark/react-client'
 import {FC, HTMLAttributes, useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
 import ClanCard from '../clans/ClanCard'
@@ -15,7 +14,6 @@ import {getPlayersStartingWith} from '../GameDisplay'
 import {
   endPlayerPanelHeight, endPlayerPanelY, fadeIn, playerPanelHeight, playerPanelRightMargin, playerPanelWidth, playerPanelY, screenRatio
 } from '../util/Styles'
-import Timer from './Timer'
 
 type Props = {
   game: GameView
@@ -27,7 +25,6 @@ type Props = {
 
 const PlayerPanel: FC<Props> = ({game, player, position, highlight, showScore, ...props}) => {
   const {t} = useTranslation()
-  const options = useOptions()
   const playerInfo = usePlayer<TowerColor>(player.tower)
   const playerId = usePlayerId<TowerColor>()
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
@@ -51,7 +48,7 @@ const PlayerPanel: FC<Props> = ({game, player, position, highlight, showScore, .
       </div>
       <h3 css={[titleStyle(showScore || twoPlayersGame)]}>
         <span css={nameStyle}>{player.tower === playerId ? t('You') : (playerInfo?.name || getPlayerName(player.tower, t))}</span>
-        {options?.speed === GameSpeed.RealTime && playerInfo?.time?.playing && <Timer time={playerInfo.time}/>}
+        <PlayerTimer playerId={player.tower}/>
       </h3>
       {game.over && currentPlayer?.clans.map((clan, index) =>
         <ClanCard key={clan} css={clanStyle(index, twoPlayersGame)} game={game} clan={clan} showScore={game.over} tower={player.tower}/>

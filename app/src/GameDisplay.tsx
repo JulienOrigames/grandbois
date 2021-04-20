@@ -3,7 +3,7 @@ import {css} from '@emotion/react'
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import {isPlayer} from '@gamepark/grandbois/PlayerView'
-import {usePlayerId} from '@gamepark/react-client'
+import {usePlayerId, useTutorial} from '@gamepark/react-client'
 import {Letterbox} from '@gamepark/react-components'
 import {FC, useMemo, useRef} from 'react'
 import ReactTooltip from 'react-tooltip'
@@ -22,6 +22,7 @@ const GameDisplay: FC<{ game: GameView }> = ({game}) => {
   const players = useMemo(() => getPlayersStartingWith(game, playerId), [game, playerId])
   const player = players.filter(isPlayer).find(player => player.tower === playerId)
   const gameWasLive = useRef(!game.over)
+  const tutorial = useTutorial()
   useBellAlert(game)
   return (
     <Letterbox css={letterBoxStyle}>
@@ -35,7 +36,7 @@ const GameDisplay: FC<{ game: GameView }> = ({game}) => {
         <PlayerPanel game={game} key={index} player={player} position={index} highlight={player.tower === game.activePlayer} showScore={game.over}/>
       )}
       {game.over && <ScorePanel game={game} animation={gameWasLive.current}/>}
-      {game.tutorial && <TutorialPopup game={game}/>}
+      {tutorial && <TutorialPopup game={game} tutorial={tutorial}/>}
       <ReactTooltip css={css`font-size: 2em;`} type='info' effect='solid' place='right' backgroundColor='green' globalEventOff='mousedown'/>
     </Letterbox>
   )

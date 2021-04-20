@@ -10,7 +10,7 @@ export function useBellAlert(game: GameView) {
   const playerId = usePlayerId<TowerColor>()
   const options = useOptions()
   const players = usePlayers<TowerColor>()
-  const [sound] = useSound(bellSound)
+  const sound = useSound(bellSound)
   const [playerWasActive, setPlayerWasActive] = useState(false)
   //const [reminders, setReminders] = useState<NodeJS.Timeout[]>([])
 

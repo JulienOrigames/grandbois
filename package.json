@@ -1,6 +1,9 @@
 {
   "private": true,
-  "workspaces": ["rules", "app"],
+  "workspaces": [
+    "rules",
+    "app"
+  ],
   "author": "Julien Bes <julien@origames.fr> (https://game-park.com/)",
   "license": "ISC",
   "devDependencies": {

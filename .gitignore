@@ -26,6 +26,3 @@ yarn-error.log*
 # IntelliJ IDEA
 /.idea
 *.iml
-
-# React
-react-app-env.d.ts

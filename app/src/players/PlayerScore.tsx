@@ -9,12 +9,11 @@ import PlayerView from '@gamepark/grandbois/PlayerView'
 import {FC, HTMLAttributes, useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
 import Images from '../material/Images'
-import {LightTheme} from '../Theme'
 import {fadeIn, gameOverDelay} from '../util/Styles'
 import ScorePart from './ScorePart'
 
 type Props = {
-  game: GameState|GameView
+  game: GameState | GameView
   player: Player | PlayerView
   position: number
   displayScore: boolean
@@ -26,20 +25,23 @@ const PlayerScore: FC<Props> = ({game, player, position, displayScore, setDispla
   const {t} = useTranslation()
   const forestView = getForestView(game)
   const clans = (player as Player).clans
-  const playerScores = useMemo(() => getPlayerScores(clans, player.towersPosition,forestView), [clans, player, forestView])
-  const scoreLines = [playerScores.clanPoints,playerScores.greatestClanPoints,playerScores.towerClanPoints,playerScores.towerOtherClansPoints]
-  const totalScore = scoreLines.reduce((a, b)=>a+b)
-  const scoreMultipliers = [1,2,2,1]
+  const playerScores = useMemo(() => getPlayerScores(clans, player.towersPosition, forestView), [clans, player, forestView])
+  const scoreLines = [playerScores.clanPoints, playerScores.greatestClanPoints, playerScores.towerClanPoints, playerScores.towerOtherClansPoints]
+  const totalScore = scoreLines.reduce((a, b) => a + b)
+  const scoreMultipliers = [1, 2, 2, 1]
   const theme = useTheme()
   const twoPlayersGame = game.players.length === 2
   return (
-    <div css={[style, scoreHeight(twoPlayersGame) ,topPosition(position,twoPlayersGame), backgroundStyle(theme), animation && growAnimation, displayScore ? displayPlayerScore : hidePlayerScore]}>
-      <button css={[arrowStyle(theme), animation && fadeInAnimation, displayScore ? arrowStandardStyle : arrowReverseStyle]} onClick={() => setDisplayScore(!displayScore)}
+    <div
+      css={[style, scoreHeight(twoPlayersGame), topPosition(position, twoPlayersGame), backgroundStyle(theme), animation && growAnimation, displayScore ? displayPlayerScore : hidePlayerScore]}>
+      <button css={[arrowStyle(theme), animation && fadeInAnimation, displayScore ? arrowStandardStyle : arrowReverseStyle]}
+              onClick={() => setDisplayScore(!displayScore)}
               title={displayScore ? t('Hide Scores') : t('Display Scores')}/>
       <div css={scorePartStyle}>
-        { scoreLines.map( (score, index) => <ScorePart key={index} game={game} player={player} item={index} multiplier={scoreMultipliers[index]} score={score}/> ) }
+        {scoreLines.map((score, index) => <ScorePart key={index} game={game} player={player} item={index} multiplier={scoreMultipliers[index]} score={score}/>)}
       </div>
-      <div css={[scoreStyle, animation && fadeInAnimation, displayScore ? displayScoreStyle : hideScoreStyle, totalScore !== 0 && displayScore && equalSign]}>{totalScore}</div>
+      <div
+        css={[scoreStyle, animation && fadeInAnimation, displayScore ? displayScoreStyle : hideScoreStyle, totalScore !== 0 && displayScore && equalSign]}>{totalScore}</div>
     </div>
   )
 }
@@ -59,20 +61,24 @@ const style = css`
 `
 
 const scoreHeight = (twoPlayersGame: boolean) => css`
-  height: ${twoPlayersGame?21.7:16.7}%;
+  height: ${twoPlayersGame ? 21.7 : 16.7}%;
 `
 
-const topPosition = (index: number,twoPlayersGame: boolean) => css`
-  top: ${twoPlayersGame?(1 + index * 25):(3.5 + index * 25)}%;
+const topPosition = (index: number, twoPlayersGame: boolean) => css`
+  top: ${twoPlayersGame ? (1 + index * 25) : (3.5 + index * 25)}%;
 `
 
 const backgroundStyle = (theme: Theme) => css`
-  background-color: ${theme.color === LightTheme ? 'rgba(0, 0, 30, 0.8)' : 'rgba(255, 255, 255, 0.8)'};
+  background-color: ${theme.light ? 'rgba(0, 0, 30, 0.8)' : 'rgba(255, 255, 255, 0.8)'};
 `
 
 const revealScore = keyframes`
-  from { max-width: 22em; }
-  to { max-width: 100%; }
+  from {
+    max-width: 22em;
+  }
+  to {
+    max-width: 100%;
+  }
 `
 
 const growAnimation = css`
@@ -91,24 +97,27 @@ const arrowStyle = (theme: Theme) => css`
   flex-shrink: 0;
   position: relative;
   max-height: 100%;
-  background-image: url(${theme.color === LightTheme ? Images.arrowWhite : Images.arrowOrange});
+  background-image: url(${theme.light ? Images.arrowWhite : Images.arrowOrange});
   background-size: cover;
   background-repeat: no-repeat;
   background-color: transparent;
   border: none;
   z-index: 6;
+
   &:focus {
     outline: 0;
   }
+
   &:hover {
     cursor: pointer;
   }
+
   transition: all 0.5s linear;
 `
 
 const fadeInAnimation = css`
   opacity: 0;
-  animation: ${fadeIn} ${gameOverDelay/3}s ${gameOverDelay*2/3}s ease-in forwards;
+  animation: ${fadeIn} ${gameOverDelay / 3}s ${gameOverDelay * 2 / 3}s ease-in forwards;
 `
 
 const arrowStandardStyle = css`
@@ -133,10 +142,11 @@ const scoreStyle = css`
   height: 1.67em;
   text-align: center;
   transition: margin 0.5s linear;
-  padding-right:1em;
-  position:relative;
+  padding-right: 1em;
+  position: relative;
+
   &:after {
-    content:'';
+    content: '';
     background-image: url(${Images.scoreIcon});
     background-size: contain;
     background-repeat: no-repeat;
@@ -144,9 +154,9 @@ const scoreStyle = css`
     filter: drop-shadow(0.05em 0.05em 0.1em black);
     width: 1em;
     height: 1em;
-    position:absolute;
-    right:0;
-    top:15%;
+    position: absolute;
+    right: 0;
+    top: 15%;
   }
 `
 
@@ -173,8 +183,8 @@ const scorePartStyle = css`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  overflow:hidden;
-  height:100%; 
+  overflow: hidden;
+  height: 100%;
 `
 
 

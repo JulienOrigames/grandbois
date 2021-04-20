@@ -1,5 +1,4 @@
 import {css, keyframes, Theme} from '@emotion/react'
-import {LightTheme} from '../Theme'
 
 export const screenRatio = 16 / 9
 export const cardScale = 0.7
@@ -18,7 +17,7 @@ export const drawpileTop = headerHeight + topMargin
 export const riverLeft = 2
 export const riverTop = headerHeight + topMargin * 2 + 1 + cardHeight
 
-export const riverAreaLeft = riverLeft/2
+export const riverAreaLeft = riverLeft / 2
 export const riverAreaTop = headerHeight
 export const riverAreaWidth = cardWidth + riverLeft
 export const riverAreaHeight = 100 - headerHeight
@@ -32,13 +31,13 @@ export const forestRatioY = 100 / forestHeight
 export const forestRatioX = 100 / forestWidth
 export const forestCardWidth = cardWidth * forestRatioX
 export const forestCardHeight = cardHeight * forestRatioY
-export const forestSpaceWidth = forestCardWidth/2
-export const forestSpaceHeight = forestCardHeight/2
+export const forestSpaceWidth = forestCardWidth / 2
+export const forestSpaceHeight = forestCardHeight / 2
 export const forestCenterLeft = 50 - forestSpaceWidth
 export const forestCenterTop = 50 - forestSpaceHeight
 
-export const centerLeft = forestLeft + forestWidth/2 - spaceWidth
-export const centerTop = forestTop + forestHeight/2 - spaceHeight
+export const centerLeft = forestLeft + forestWidth / 2 - spaceWidth
+export const centerTop = forestTop + forestHeight / 2 - spaceHeight
 
 export const tokenWidth = 4
 export const tokenHeight = tokenWidth * screenRatio
@@ -78,30 +77,34 @@ export const forestCardStyle = css`
   height: ${forestCardHeight}%;
 `
 
-export const forestCardX = (x: number) => forestCenterLeft + ( forestSpaceWidth * x )
-export const forestCardY = (y: number) => forestCenterTop + ( forestSpaceHeight * y )
+export const forestCardX = (x: number) => forestCenterLeft + (forestSpaceWidth * x)
+export const forestCardY = (y: number) => forestCenterTop + (forestSpaceHeight * y)
 
-export const placedCardX = (x: number, delta:number) => centerLeft + ( spaceWidth * x ) + delta
-export const placedCardY = (y: number, delta:number) => centerTop + ( spaceHeight * y ) + delta
+export const placedCardX = (x: number, delta: number) => centerLeft + (spaceWidth * x) + delta
+export const placedCardY = (y: number, delta: number) => centerTop + (spaceHeight * y) + delta
 
-export const getCardFocusTransform = (rotation:number) => css`
+export const getCardFocusTransform = (rotation: number) => css`
   z-index: 100;
   transform: translate(${50 * 100 / cardWidth - 50}%, ${50 * 100 / cardHeight - 50}%) scale(3) rotate(${90 * rotation}deg) !important;
 `
 
 export const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 `
 
 export const textColor = (theme: Theme) => css`
-  color: ${theme.color === LightTheme ? '#333' : '#FFF'};
-  fill: ${theme.color === LightTheme ? '#333' : '#FFF'};
+  color: ${theme.light ? '#333' : '#FFF'};
+  fill: ${theme.light ? '#333' : '#FFF'};
 `
 
 export const backgroundColor = (theme: Theme) => css`
   &:before {
-    background-color: ${theme.color === LightTheme ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 30, 0.7)'};
+    background-color: ${theme.light ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 30, 0.7)'};
     transition: background-color 1s ease-in;
   }
 `
@@ -151,7 +154,7 @@ export const popupStyle = css`
   position: absolute;
   text-align: center;
   max-height: 70%;
-  z-index : 102;
+  z-index: 102;
   border-radius: 1em;
   box-sizing: border-box;
   align-self: center;
@@ -160,18 +163,21 @@ export const popupStyle = css`
   outline: none;
   box-shadow: 1em 2em 2.5em -1.5em hsla(0, 0%, 0%, 0.2);
   border-radius: 40em 3em 40em 3em/3em 40em 3em 40em;
-  
-  &:hover{
-      box-shadow: 2em 4em 5em -3em hsla(0,0%,0%,.5);
-    }
+
+  &:hover {
+    box-shadow: 2em 4em 5em -3em hsla(0, 0%, 0%, .5);
+  }
+
   & > h2 {
     font-size: 5em;
-    margin:0;
+    margin: 0;
   }
+
   & > p {
     font-size: 4em;
     margin: 2% 0;
   }
+
   & > button {
     font-size: 4em;
   }
@@ -201,7 +207,8 @@ export const closePopupStyle = css`
   margin-top: -2%;
   margin-right: -0%;
   font-size: 4em;
-  &:hover{
+
+  &:hover {
     cursor: pointer;
     color: #26d9d9;
   }
@@ -217,14 +224,17 @@ export const button = css`
   background: rgba(0, 0, 0, 0.7);
   border-radius: 1em;
   padding: 0.3em 0.6em;
+
   & svg {
     margin-right: 0.3em;
   }
+
   &:hover, &:focus {
-    outline:0;
+    outline: 0;
     transform: translateY(1px) scale(1.05);
     cursor: pointer;
   }
+
   &:active {
     border-style: inset;
     transform: translateY(1px);

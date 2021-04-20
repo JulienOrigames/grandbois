@@ -1,10 +1,10 @@
 import Grandbois from '@gamepark/grandbois/Grandbois'
 import {GrandboisOptionsDescription} from '@gamepark/grandbois/GrandboisOptions'
-import GrandboisView from '@gamepark/grandbois/GrandboisView'
 import {GameProvider, setupTranslation} from '@gamepark/react-client'
 import {StrictMode} from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
+import GrandboisView from './GrandboisView'
 import translations from './translations.json'
 import GrandboisTutorial from './tutorial/Tutorial'
 

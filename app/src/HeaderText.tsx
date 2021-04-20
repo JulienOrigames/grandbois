@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import {css, Theme, useTheme} from '@emotion/react'
 import {getForestView} from '@gamepark/grandbois/ForestView'
 import GameView from '@gamepark/grandbois/GameView'
 import {activePlayerCanPlaceTower, getPlayerScores} from '@gamepark/grandbois/Grandbois'
@@ -8,59 +7,26 @@ import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import MoveType from '@gamepark/grandbois/moves/MoveType'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView, {isPlayer} from '@gamepark/grandbois/PlayerView'
-import {usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
-import Animation from '@gamepark/react-client/dist/animations/Animation'
+import {Tutorial, useGame, usePlay, usePlayerId, usePlayers, useTutorial} from '@gamepark/react-client'
 import PlayerInfo from '@gamepark/react-client/dist/Types/Player'
 import {TFunction} from 'i18next'
 import {FC, useEffect, useState} from 'react'
 import {Trans, useTranslation} from 'react-i18next'
 import Move from '../../rules/src/moves/Move'
-import MainMenu from './MainMenu'
-import {LightTheme} from './Theme'
 import Button from './util/Button'
-import {gameOverDelay, headerHeight, textColor} from './util/Styles'
-
-
-const headerStyle = (theme: Theme) => css`
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: ${headerHeight}em;
-  padding: 0 30em 0 0;
-  text-align: center;
-  background-color: ${theme.color === LightTheme ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 30, 0.5)'};
-  transition: background-color 1s ease-in;
-`
-
-const bufferArea = css`
-  width: 30em;
-  flex-shrink: 1;
-`
-
-const textStyle = css`
-  flex-grow: 1;
-  flex-shrink: 0;
-  transition: color 1s ease-in;
-  padding: 0.25em;
-  margin: 0;
-  line-height: 1.25;
-  font-size: 4em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-`
+import {gameOverDelay} from './util/Styles'
 
 type Props = {
-  game?: GameView
   loading: boolean
 }
 
-const Header: FC<Props> = ({game, loading}) => {
+const HeaderText: FC<Props> = ({loading}) => {
+  const game = useGame<GameView>()
   const tower = usePlayerId<TowerColor>()
   const play = usePlay<Move>()
   const players = usePlayers<TowerColor>()
   const {t} = useTranslation()
-  const theme = useTheme()
+  const tutorial = useTutorial()
   const gameOver = game !== undefined && game.over
   const [scoreSuspense, setScoreSuspense] = useState(false)
   useEffect(() => {
@@ -70,21 +36,15 @@ const Header: FC<Props> = ({game, loading}) => {
       setScoreSuspense(true)
     }
   }, [game, gameOver, setScoreSuspense])
-  const text = loading ? t('Game loading…') :
+  const text = loading ? t('Game loading...') :
     gameOver && scoreSuspense ? t('Score calculation…') :
-      getText(t, play, players, game!, tower)
-  return (
-    <header css={headerStyle(theme)}>
-      <div css={bufferArea}/>
-      <h1 css={[textStyle, textColor(theme)]}>{text}</h1>
-      <MainMenu/>
-    </header>
-  )
+      getText(t, play, players, game!, tower, tutorial || undefined)
+  return <>{text}</>
 }
 
-function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerInfo<TowerColor>[], game: GameView, tower?: TowerColor, animation?: Animation<Move>) {
+function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerInfo<TowerColor>[], game: GameView, tower?: TowerColor, tutorial?: Tutorial) {
   const player = game.players.find(player => player.tower === tower)
-  if (game.tutorial && !animation && player && isPlayer(player)) {
+  if (tutorial && player && isPlayer(player)) {
     const tutorialText = getTutorialText(t, game, player)
     if (tutorialText){
       return tutorialText
@@ -250,4 +210,4 @@ function getEndOfGameText(t: TFunction, playersInfo: PlayerInfo<TowerColor>[], g
   }
 }
 
-export default Header
+export default HeaderText

@@ -5,11 +5,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import GameView from '@gamepark/grandbois/GameView'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import Move from '@gamepark/grandbois/moves/Move'
-import {useActions, useFailures, usePlayerId} from '@gamepark/react-client'
+import {Tutorial, useActions, useFailures, usePlayerId} from '@gamepark/react-client'
 import {TFunction} from 'i18next'
 import {FC, useEffect, useRef, useState} from 'react'
 import {useTranslation} from 'react-i18next'
-import {LightTheme} from '../Theme'
 import Button from '../util/Button'
 import {
   closePopupStyle, discordUri, hidePopupOverlayStyle, platformUri, popupDarkStyle, popupLightStyle, popupOverlayStyle, popupStyle, showPopupOverlayStyle
@@ -18,7 +17,12 @@ import tutorialArrowDark from '../util/tutorial-arrow-dark.png'
 import tutorialArrowLight from '../util/tutorial-arrow-light.png'
 import {resetTutorial} from './Tutorial'
 
-const TutorialPopup: FC<{ game: GameView }> = ({game}) => {
+type Props = {
+  game: GameView
+  tutorial: Tutorial
+}
+
+const TutorialPopup: FC<Props> = ({game, tutorial}) => {
   const {t} = useTranslation()
   const theme = useTheme()
   const [failures] = useFailures()
@@ -30,6 +34,7 @@ const TutorialPopup: FC<{ game: GameView }> = ({game}) => {
   const [tutorialEnd, setTutorialEnd] = useState(false)
   const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > actionsNumber)
   const [hideLastTurnInfo, setHideLastTurnInfo] = useState(false)
+  useEffect(() => tutorial.setOpponentsPlayAutomatically(true), [tutorial])
   const toggleTutorialEnd = () => {
     setTutorialEnd(!tutorialEnd)
   }
@@ -68,7 +73,7 @@ const TutorialPopup: FC<{ game: GameView }> = ({game}) => {
     <>
       <div css={[popupOverlayStyle, displayPopup ? showPopupOverlayStyle : hidePopupOverlayStyle(85, 90), style]}
            onClick={() => setTutorialDisplay(false)}>
-        <div css={[popupStyle, theme.color === LightTheme ? popupLightStyle : popupDarkStyle, displayPopup ? popupPosition(currentMessage) : hidePopupStyle]}
+        <div css={[popupStyle, theme.light ? popupLightStyle : popupDarkStyle, displayPopup ? popupPosition(currentMessage) : hidePopupStyle]}
              onClick={event => event.stopPropagation()}>
           <div css={closePopupStyle} onClick={() => setTutorialDisplay(false)}><FontAwesomeIcon icon={faTimes}/></div>
           {currentMessage && <h2>{currentMessage.title(t)}</h2>}
@@ -83,12 +88,12 @@ const TutorialPopup: FC<{ game: GameView }> = ({game}) => {
       }
       {
         currentMessage && currentMessage.arrow &&
-        <img alt='Arrow pointing toward current tutorial interest' src={theme.color === LightTheme ? tutorialArrowLight : tutorialArrowDark} draggable="false"
+        <img alt="Arrow pointing toward current tutorial interest" src={theme.light ? tutorialArrowLight : tutorialArrowDark} draggable="false"
              css={[arrowStyle(currentMessage.arrow.angle), displayPopup ? showArrowStyle(currentMessage.arrow.top, currentMessage.arrow.left) : hideArrowStyle]}/>
       }
       {
         game.deck === 0 && game.forest.length < 36 && !hideLastTurnInfo &&
-        <div css={[popupStyle, popupPosition(lastTurnInfo), theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}>
+        <div css={[popupStyle, popupPosition(lastTurnInfo), theme.light ? popupLightStyle : popupDarkStyle]}>
           <div css={closePopupStyle} onClick={() => setHideLastTurnInfo(true)}><FontAwesomeIcon icon={faTimes}/></div>
           <h2>{lastTurnInfo.title(t)}</h2>
           <p>{lastTurnInfo.text(t)}</p>
@@ -97,7 +102,7 @@ const TutorialPopup: FC<{ game: GameView }> = ({game}) => {
       }
       {
         game.over &&
-        <div css={[popupStyle, popupPosition(tutorialEndGame), tutorialEnd && buttonsPosition, theme.color === LightTheme ? popupLightStyle : popupDarkStyle]}>
+        <div css={[popupStyle, popupPosition(tutorialEndGame), tutorialEnd && buttonsPosition, theme.light ? popupLightStyle : popupDarkStyle]}>
           <div css={closePopupStyle} onClick={() => toggleTutorialEnd()}><FontAwesomeIcon icon={tutorialEnd ? faPlusSquare : faMinusSquare}/></div>
           {!tutorialEnd &&
           <>

@@ -6,16 +6,15 @@ import PlacedTile, {isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
 import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import MoveType from '@gamepark/grandbois/moves/MoveType'
-import {useDisplayState, usePlay, usePlayerId} from '@gamepark/react-client'
+import {usePlay, usePlayerId} from '@gamepark/react-client'
 import {Draggable} from '@gamepark/react-components'
 import equal from 'fast-deep-equal'
 import {FC, MouseEvent, useEffect, useState} from 'react'
-import {useDrop, XYCoord} from 'react-dnd'
+import {useDrop} from 'react-dnd'
 import {useTranslation} from 'react-i18next'
 import PlaceForestTile from '../../../rules/src/moves/PlaceForestTile'
 import DraggedTile, {draggedTile} from '../drag-objects/DraggedTile'
 import Images from '../material/Images'
-import {LightTheme} from '../Theme'
 import Button from '../util/Button'
 import {
   cardHeight, cardStyle, placedCardX, placedCardY, riverAreaHeight, riverAreaLeft, riverAreaTop, riverAreaWidth, riverLeft, riverTop, topMargin
@@ -34,7 +33,7 @@ const River: FC<Props> = ({game}) => {
   const playerId = usePlayerId<TowerColor>()
   const play = usePlay<PlaceForestTile>()
   const [playingTile, setPlayingTile] = useState<PlacedTile>()
-  const [riverTiles, setRiverTiles] = useState<(RotatedTile|null)[]>([])
+  const [riverTiles, setRiverTiles] = useState<(RotatedTile | null)[]>([])
   useEffect(() => {
     if (playingTile && !game.river.some(tile => tile === playingTile.tile))
       setPlayingTile(undefined)
@@ -42,15 +41,15 @@ const River: FC<Props> = ({game}) => {
   const rotate = (event: MouseEvent<HTMLDivElement>, tile: number) => {
     event.stopPropagation()
     if (playingTile && playingTile.tile === tile) {
-       setPlayingTile({...playingTile, rotation: (playingTile.rotation + 1) % 4})
+      setPlayingTile({...playingTile, rotation: (playingTile.rotation + 1) % 4})
     }
-    setRiverTiles(riverTiles.map(riverTile => riverTile?.tile === tile?{...riverTile, rotation:(riverTile.rotation + 1) % 4}:riverTile ))
+    setRiverTiles(riverTiles.map(riverTile => riverTile?.tile === tile ? {...riverTile, rotation: (riverTile.rotation + 1) % 4} : riverTile))
   }
   useEffect(() => {
-    if(!equal(game.river, riverTiles.map(riverTile => riverTile?.tile || null )))
+    if (!equal(game.river, riverTiles.map(riverTile => riverTile?.tile || null)))
       setRiverTiles(game.river.map(tile => tile ? riverTiles.find(rotatedTile => rotatedTile?.tile === tile) || {tile, rotation: 0} : null))
   }, [game, riverTiles])
-  const [forestCenter] = useDisplayState<XYCoord>(initialForestPosition)
+  const forestCenter = game.forestCenter ?? initialForestPosition
   const deltaPercent = convertIntoPercent(forestCenter)
   const isLegalTile = playingTile && isLegalTilePosition(getForestView(game), playingTile)
   const [, ref] = useDrop({
@@ -68,7 +67,7 @@ const River: FC<Props> = ({game}) => {
                             canDrag={game.activePlayer === playerId}
                             animation={{properties: ['transform', 'left', 'top'], seconds: 0.2}}
                             css={[cardStyle,
-                              playingTile && playingTile.tile === rotatedTile.tile ? playingTileStyle(isLegalTile!,playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y, theme) : riverTileStyle(index,theme)
+                              playingTile && playingTile.tile === rotatedTile.tile ? playingTileStyle(isLegalTile!, playingTile.x, deltaPercent.x, playingTile.y, deltaPercent.y, theme) : riverTileStyle(index, theme)
                             ]}>
             <TileCard tile={tiles[rotatedTile.tile]} css={rotatedStyle(rotatedTile.rotation)}
                       onClick={event => rotate(event, rotatedTile.tile)}/>
@@ -80,17 +79,17 @@ const River: FC<Props> = ({game}) => {
       playingTile && isLegalTile
       && <Button css={validStyle} onClick={() => play({type: MoveType.PlaceForestTile, placedTile: playingTile})}>{t('Validate')}</Button>
     }
-    <div ref={ref} css={riverAreaStyle} />
+    <div ref={ref} css={riverAreaStyle}/>
   </>
 }
 
 const riverAreaStyle = css`
-  z-index:1;
-  position:absolute;
+  z-index: 1;
+  position: absolute;
   left: ${riverAreaLeft}%;
-  top:${riverAreaTop}%;
-  width:${riverAreaWidth}%;
-  height:${riverAreaHeight}%;
+  top: ${riverAreaTop}%;
+  width: ${riverAreaWidth}%;
+  height: ${riverAreaHeight}%;
   background-image: url(${Images.woodTexture});
   background-position: center center;
   background-repeat: repeat;
@@ -101,11 +100,11 @@ const riverAreaStyle = css`
 `
 
 const validStyle = css`
-  position:absolute;
+  position: absolute;
   bottom: 37%;
   right: 2%;
-  font-size:4em;
-  z-index:2;
+  font-size: 4em;
+  z-index: 2;
 `
 
 const playingTileStyle = (highlight: boolean, x: number, deltaX: number, y: number, deltaY: number, theme: Theme) => css`
@@ -120,7 +119,8 @@ const riverTileStyle = (index: number, theme: Theme) => css`
   top: ${riverCardY(index)}%;
   left: ${riverLeft}%;
   z-index: 2;
-  &:hover{
+
+  &:hover {
     ${rotationArrowStyle(theme)}
   }
 `
@@ -143,9 +143,9 @@ const rotationArrowStyle = (theme: Theme) => css`
     position: absolute;
     width: 80%;
     height: 80%;
-    left:85%;
-    top:20%;
-    background-image: url(${theme.color === LightTheme ? Images.rotate : Images.rotateDark});
+    left: 85%;
+    top: 20%;
+    background-image: url(${theme.light ? Images.rotate : Images.rotateDark});
     background-size: contain;
     background-repeat: no-repeat;
     transform: rotate(-60deg);

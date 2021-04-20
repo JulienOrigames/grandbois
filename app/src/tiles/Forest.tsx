@@ -11,19 +11,18 @@ import {Clearing} from '@gamepark/grandbois/material/Tile'
 import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
 import MoveType from '@gamepark/grandbois/moves/MoveType'
-import {useDisplayState, usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
+import {usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
 import {FC, useContext, useEffect, useRef, useState} from 'react'
 import {DndContext, DropTargetMonitor, useDrag, useDrop, XYCoord} from 'react-dnd'
 import {getEmptyImage} from 'react-dnd-html5-backend'
 import {useTranslation} from 'react-i18next'
 import ReactTooltip from 'react-tooltip'
-import ChangeActivePlayer from '../../../rules/src/moves/ChangeActivePlayer'
-import PlaceTower from '../../../rules/src/moves/PlaceTower'
 import {towerImage} from '../clans/TowerInfo'
 import DraggedTile from '../drag-objects/DraggedTile'
 import {forestArea} from '../drag-objects/ForestArea'
 import Images from '../material/Images'
+import {moveForestMove} from '../moves/MoveForest'
 import Button from '../util/Button'
 import {
   button, closeButton, forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestSpaceHeight, forestSpaceWidth, forestTop, forestWidth,
@@ -38,6 +37,7 @@ type Props = {
 
 const Forest: FC<Props> = ({game}) => {
   const {t} = useTranslation()
+  const play = usePlay()
   const ref = useRef<HTMLDivElement>(null)
   const [, dropRef] = useDrop({
     accept: 'Tile',
@@ -67,18 +67,13 @@ const Forest: FC<Props> = ({game}) => {
     preview(getEmptyImage())
   }, [preview])
   const dragOffsetDiff = useDragOffsetDiff(dragging)
-  const [forestCenter, setForestCenter] = useDisplayState<XYCoord>(initialForestPosition)
+  const forestCenter = game.forestCenter ?? initialForestPosition
   useEffect(() => {
     if (!dragging && dragOffsetDiff && (dragOffsetDiff.x || dragOffsetDiff.y))
-      setForestCenter({
-          x: forestCenter.x + dragOffsetDiff.x,
-          y: forestCenter.y + dragOffsetDiff.y
-        }
-      )
-  }, [dragOffsetDiff, dragging, forestCenter, setForestCenter])
+      play(moveForestMove(dragOffsetDiff), {local: true})
+  }, [dragOffsetDiff, dragging, forestCenter, play])
   dragRef(dropRef(ref))
   const playerId = usePlayerId<TowerColor>()
-  const play = usePlay<PlaceTower | ChangeActivePlayer>()
   const playersInfo = usePlayers<TowerColor>()
   const [focusedTile, setFocusedTile] = useState<number>()
   const [towersPlaced, setTowersPlaced] = useState<number>(0)

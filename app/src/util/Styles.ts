@@ -62,7 +62,7 @@ export const endPlayerPanelY = (index: number) => headerHeight + playerPanelMarg
 export const playerPanelRightMargin = 1
 export const gameOverDelay = 10
 
-export const platformUri = process.env.REACT_APP_PLATFORM_URI || 'http://localhost:3000'
+export const platformUri = process.env.REACT_APP_PLATFORM_URI ?? 'https://game-park.com'
 export const discordUri = 'https://discord.gg/nMSDRag'
 
 export const cardStyle = css`

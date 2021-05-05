@@ -29,7 +29,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Global styles={(theme: Theme) => [globalStyle, themeStyle(theme)]}/>
         <LoadingScreen display={loading} gameBox={GrandboisBox} css={textColor(theme)}
-                       author="Frédéric Guérard" artist="Camille Chaussy" publisher={['The Flying Games', 'Origames']}/>
+                       author="Frédéric Guérard" artist="Camille Chaussy" publisher={['The Flying Games', 'Origames']} developer="Origames"/>
         {!loading && <GameDisplay game={game!}/>}
         <Header><HeaderText loading={loading}/></Header>
         <Menu/>

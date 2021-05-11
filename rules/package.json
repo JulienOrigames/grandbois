@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@gamepark/rules-api": "~4.14.8",
+    "@gamepark/rules-api": "~4.14.11",
     "@types/lodash.shuffle": "^4.2.6",
     "lodash.shuffle": "^4.2.0"
   },

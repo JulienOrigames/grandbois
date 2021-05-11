@@ -108,6 +108,7 @@
       "Confirm": "Confirm",
       "Close": "Close",
       "Help": "Help",
+      "Play": "Play",
       "authors.1": "A game by <0>{author}</0>",
       "authors.2": "A game by <0>{author1}</0> and <0>{author2}</0>",
       "artists.1": "Illustrated by <0>{artist}</0>",
@@ -116,6 +117,7 @@
       "publishers.2": "Published by <0>{publisher1}</0> and <0>{publisher2}</0>",
       "developers.1": "Adapted by <0>{developer}</0>",
       "developers.2": "Adapted by <0>{developer1}</0> and <0>{developer2}</0>",
+      "See overall ranking": "See overall ranking",
       "Player {number}": "Player {number}",
       "Game loading...": "Game loading...",
       "Whoops...": "Whoops...",
@@ -147,7 +149,9 @@
       "Enable sound": "Enable sound",
       "Mute sound": "Mute sound",
       "Light mode": "Light mode",
-      "Dark mode": "Dark mode"
+      "Dark mode": "Dark mode",
+      "Back to Game Park": "Back to Game Park",
+      "Play again": "Play again"
     }
   },
   "fr": {
@@ -259,6 +263,7 @@
       "Confirm": "Confirmer",
       "Close": "Fermer",
       "Help": "Aide",
+      "Play": "Jouer",
       "authors.1": "Un jeu de <0>{author}</0>",
       "authors.2": "Un jeu de <0>{author1}</0> et <0>{author2}</0>",
       "artists.1": "Illustré par <0>{artist}</0>",
@@ -267,6 +272,7 @@
       "publishers.2": "Édité par <0>{publisher1}</0> et <0>{publisher2}</0>",
       "developers.1": "Adapté par <0>{developer}</0>",
       "developers.2": "Adapté par <0>{developer1}</0> et <0>{developer2}</0>",
+      "See overall ranking": "Voir le classement",
       "Player {number}": "Joueur {number}",
       "Game loading...": "Chargement de la partie...",
       "Whoops...": "Oups...",
@@ -298,7 +304,9 @@
       "Enable sound": "Activer le son",
       "Mute sound": "Couper le son",
       "Light mode": "Mode clair",
-      "Dark mode": "Mode sombre"
+      "Dark mode": "Mode sombre",
+      "Back to Game Park": "Retour à Game Park",
+      "Play again": "Rejouer"
     }
   },
   "de": {
@@ -313,12 +321,14 @@
       "Confirm": "Bestätigen",
       "Close": "Schließen",
       "Help": "Hilfe",
+      "Play": "Spielen",
       "authors.1": "Ein Spiel von <0>{author}</0>",
       "authors.2": "Ein Spiel von <0>{author1}</0> und <0>{author2}</0>",
       "artists.1": "Illustriert von <0>{artist}</0>",
       "artists.2": "Illustriert von <0>{artist1}</0> und <0>{artist2}</0>",
       "publishers.1": "Herausgegeben von <0>{publisher}</0>",
       "publishers.2": "Herausgegeben von <0>{publisher1}</0> und <0>{publisher2}</0>",
+      "See overall ranking": "Zur allgemeinen Rangliste",
       "Game loading...": "Spiel lädt ...",
       "Whoops...": "Ups ...",
       "failure.dialog.network": "Eine Aktion konnte nicht abgeschlossen werden und wurde abgebrochen. Bitte überprüfe dein Internetverbindung.",

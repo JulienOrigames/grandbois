@@ -10,7 +10,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
-    "@gamepark/react-client": "~4.14.11",
+    "@gamepark/react-client": "~4.14.14",
     "@gamepark/react-components": "~4.14.10",
     "@gamepark/rules-api": "^4.14.11",
     "@types/react-dnd-multi-backend": "^6.0.0",

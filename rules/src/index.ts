@@ -1,2 +1,2 @@
 export {default} from './Grandbois'
-export {GrandboisOptionsDescription} from './GrandboisOptions'
+export {GrandboisOptionsSpec} from './GrandboisOptions'

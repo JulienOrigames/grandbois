@@ -1,4 +1,4 @@
-import {GameOptions, OptionsDescription, OptionType} from '@gamepark/rules-api'
+import {OptionsSpec} from '@gamepark/rules-api'
 import {TFunction} from 'i18next'
 import GameState from './GameState'
 import TowerColor, {towerColors} from './material/TowerColor'
@@ -7,7 +7,9 @@ export type GrandboisPlayerOptions = {
   id: TowerColor
 }
 
-type GrandboisOptions = GameOptions<{}, GrandboisPlayerOptions>
+type GrandboisOptions = {
+  players: GrandboisPlayerOptions[]
+}
 
 export default GrandboisOptions
 
@@ -15,18 +17,17 @@ export function isGrandboisOptions(arg: GameState | GrandboisOptions): arg is Gr
   return typeof (arg as GameState).deck === 'undefined'
 }
 
-export const GrandboisOptionsDescription: OptionsDescription<{}, GrandboisPlayerOptions> = {
+export const GrandboisOptionsSpec: OptionsSpec<GrandboisOptions> = {
   players: {
     id: {
-      type: OptionType.LIST,
-      getLabel: (t: TFunction) => t('Color'),
+      label: (t: TFunction) => t('Color'),
       values: towerColors,
-      getValueLabel: (color: TowerColor, t: TFunction) => getPlayerName(color, t)
+      valueLabel: getPlayerName
     }
   }
 }
 
-export function getPlayerName(color: TowerColor, t: (name: string) => string) {
+export function getPlayerName(color: TowerColor, t: TFunction) {
   switch (color) {
     case TowerColor.Black:
       return t('Black player')

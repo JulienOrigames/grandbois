@@ -17,6 +17,7 @@ import {placeTower} from './moves/PlaceTower'
 import {revealClans} from './moves/RevealClans'
 import {revealNewRiverTile} from './moves/RevealNewRiverTile'
 import Player from './Player'
+import PlacedTile from './material/PlacedTile'
 
 export const defaultNumberOfPlayers = 3
 
@@ -177,6 +178,16 @@ export function activePlayerCanPlaceTower(game: GameState | GameView) {
   return game.tilePlayed !== undefined
     && (twoPlayersGame ? activePlayer.towersPosition.length < 2 : activePlayer.towersPosition.length === 0)
     && tiles[game.tilePlayed].find(space => space === Clearing)
+    && !(twoPlayersGame && activePlayer.towersPosition.length === 1 && isTowerJustPlayed(game, activePlayer.towersPosition[0]))
+}
+
+export function activePlayerCouldPlaceTower(game: GameState | GameView, playingTile : PlacedTile) {
+  const activePlayer = game.players.find(player => player.tower === game.activePlayer)
+  if (!activePlayer) return false
+  const twoPlayersGame = game.players.length === 2
+  return playingTile !== undefined
+    && (twoPlayersGame ? activePlayer.towersPosition.length < 2 : activePlayer.towersPosition.length === 0)
+    && tiles[playingTile.tile].find(space => space === Clearing)
     && !(twoPlayersGame && activePlayer.towersPosition.length === 1 && isTowerJustPlayed(game, activePlayer.towersPosition[0]))
 }
 

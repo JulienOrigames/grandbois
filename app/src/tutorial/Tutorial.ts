@@ -14,7 +14,7 @@ const GrandboisTutorial: TutorialDescription<GameState, Move, TowerColor> = {
     const tileStart = startDeck.splice(0, 1)[0]
     const river = startDeck.splice(0, 4)
     const deck = shuffle(startDeck)
-    const players = setupPlayers([{id: TowerColor.Blue}, {id: TowerColor.Black}])
+    const players = setupPlayers([{id: TowerColor.Blue}, {id: TowerColor.Black}, {id: TowerColor.White}])
     return [{
       players,
       deck,

@@ -57,7 +57,7 @@ const letterBoxStyle = css`
 const clanStyle = (index: number) => css`
   bottom: 1%;
   right: ${1 + index * (1 + cardWidth)}%;
-  z-index: ${3 - index};
+  z-index: ${6 - index};
 `
 
 export default GameDisplay

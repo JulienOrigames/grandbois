@@ -1,19 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import {getForestView} from '@gamepark/grandbois/ForestView'
 import GameView from '@gamepark/grandbois/GameView'
-import {activePlayerCanPlaceTower, getPlayerScores} from '@gamepark/grandbois/Grandbois'
+import {getPlayerScores} from '@gamepark/grandbois/Grandbois'
 import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import MoveType from '@gamepark/grandbois/moves/MoveType'
 import Player from '@gamepark/grandbois/Player'
 import PlayerView, {isPlayer} from '@gamepark/grandbois/PlayerView'
 import {Tutorial, useGame, usePlay, usePlayerId, usePlayers, useTutorial} from '@gamepark/react-client'
 import PlayerInfo from '@gamepark/react-client/dist/Types/Player'
 import {TFunction} from 'i18next'
 import {FC, useEffect, useState} from 'react'
-import {Trans, useTranslation} from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 import Move from '../../rules/src/moves/Move'
-import Button from './util/Button'
 import {gameOverDelay} from './util/Styles'
 
 type Props = {
@@ -52,19 +50,10 @@ function getText(t: TFunction, play: (move: Move) => void, playersInfo: PlayerIn
   }
   if (!game.activePlayer)  return getEndOfGameText(t, playersInfo, game, player)
   if( tower === game.activePlayer){
-    if (activePlayerCanPlaceTower(game))
-      return <Trans defaults="Would you like to place your Watchtower here? <0>Yes</0> <1>No</1>"
-        components={[<Button onClick={() => play({type: MoveType.PlaceTower})}>{t('Yes')}</Button>,
-                      <Button onClick={() => play({type: MoveType.ChangeActivePlayer})}>{t('No')}</Button>]}
-              />
-    else
       return t('You must choose a tile in the river and place it in the forest')
   }
   else {
     const activePlayerName = playersInfo.find(p => p.id === game.activePlayer)?.name || getPlayerName(game.activePlayer, t)
-    if (activePlayerCanPlaceTower(game))
-      return t('{player} can place  his Watchtower', {player: activePlayerName})
-    else
       return t('{player} must place a tile in the forest', {player: activePlayerName})
   }
 }

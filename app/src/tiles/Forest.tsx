@@ -4,13 +4,10 @@ import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {getForestView, isAvailablePosition} from '@gamepark/grandbois/ForestView'
 import GameView from '@gamepark/grandbois/GameView'
-import {activePlayerCanPlaceTower} from '@gamepark/grandbois/Grandbois'
 import {getPlayerName} from '@gamepark/grandbois/GrandboisOptions'
-import {getPlacedTileSpaceXY, isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
-import {Clearing} from '@gamepark/grandbois/material/Tile'
+import {isPlacedTile} from '@gamepark/grandbois/material/PlacedTile'
 import {tiles} from '@gamepark/grandbois/material/Tiles'
 import TowerColor from '@gamepark/grandbois/material/TowerColor'
-import MoveType from '@gamepark/grandbois/moves/MoveType'
 import {usePlay, usePlayerId, usePlayers} from '@gamepark/react-client'
 import {DragDropManager} from 'dnd-core/lib/interfaces'
 import {FC, useContext, useEffect, useRef, useState} from 'react'
@@ -23,7 +20,6 @@ import DraggedTile from '../drag-objects/DraggedTile'
 import {forestArea} from '../drag-objects/ForestArea'
 import Images from '../material/Images'
 import {moveForestMove} from '../moves/MoveForest'
-import Button from '../util/Button'
 import {
   button, closeButton, forestCardStyle, forestCardX, forestCardY, forestHeight, forestLeft, forestSpaceHeight, forestSpaceWidth, forestTop, forestWidth,
   getCardFocusTransform, popupBackgroundStyle, riverLeft, screenRatio, spaceHeight, spaceWidth
@@ -116,25 +112,13 @@ const Forest: FC<Props> = ({game}) => {
           )
         )
       }
-      {
-        playerId && playerId === game.activePlayer && activePlayerCanPlaceTower(game) &&
-        <div css={towerChoiceStyle(getTowerChoicePosition(game))}>
-          {t('Would you like to place your Watchtower here?')}
-            <Button css={css`margin:10px`} onClick={() => play({type: MoveType.PlaceTower})}>{t('Yes')}</Button>
-            <Button css={css`margin:10px`} onClick={() => play({type: MoveType.ChangeActivePlayer})}>{t('No')}</Button>
-        </div>
-      }
     </div>
   </div>
 }
 
 export const initialForestPosition = {x: 0, y: 0}
 
-function getTowerChoicePosition(game: GameView) {
-  const lastTile = game.forest[game.forest.length - 1]
-  const clearingIndex = tiles[lastTile.tile].findIndex(space => space === Clearing)
-  return getPlacedTileSpaceXY(lastTile, clearingIndex)
-}
+
 
 function countTowerPlaced(game:GameView){
   return game.players.reduce((sum, player) => sum + player.towersPosition.length, 0)
@@ -177,25 +161,6 @@ images.set(TowerColor.White, Images.whiteTower)
 images.set(TowerColor.Blue, Images.blueTower)
 images.set(TowerColor.Black, Images.blackTower)
 images.set(TowerColor.Brown, Images.brownTower)
-
-const towerChoiceStyle = (clearingSpace: XYCoord) => css`
-  position:absolute;
-  left: ${forestCardX(clearingSpace.x) + (spaceWidth / 2)}%;
-  top: ${forestCardY(clearingSpace.y) + (spaceHeight / 2)}%;
-  width:20%;
-  font-size:2.5em;
-  padding:0.5em;
-  z-index:5;
-  background-image: url(${Images.woodTexture});
-  background-position: center center;
-  background-repeat: repeat;
-  background-size: cover;
-  border-radius: 0 1em 1em 1em;
-  border: solid 0.1em #8b4513;
-  box-shadow: 0 0 1em #000;
-  text-align:center;
-  color:#fff381;
-`
 
 function getForestPosition(game: GameView, item: DraggedTile, monitor: DropTargetMonitor, forestCenter: XYCoord) {
 

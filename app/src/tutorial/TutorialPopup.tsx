@@ -34,7 +34,7 @@ const TutorialPopup: FC<Props> = ({game, tutorial}) => {
   const [tutorialEnd, setTutorialEnd] = useState(false)
   const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > actionsNumber)
   const [hideLastTurnInfo, setHideLastTurnInfo] = useState(false)
-  useEffect(() => tutorial.setOpponentsPlayAutomatically(true), [tutorial])
+  useEffect(() => tutorial.setOpponentsPlayAutomatically(true), [])
   const toggleTutorialEnd = () => {
     setTutorialEnd(!tutorialEnd)
   }
